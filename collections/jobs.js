@@ -97,12 +97,15 @@ Meteor.methods({
         //avoid repeatition of code to same seller
         var countJ = Jobs.find({
             adderId: adderId,
+            deleted: false,
             code: code,
             createdAt: {
                 $gte: today()
             }
         }).count();
+        console.log('J: ' + countJ);
         if (countJ === 0 && Roles.userIsInRole(this.userId, ['admin', 'seller'])) {
+            console.log('really adding now');
             return Jobs.insert({
                 orderId: id,
                 code: code,

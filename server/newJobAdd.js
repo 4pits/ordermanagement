@@ -6,6 +6,7 @@ var idsFirstJob = function() {
     d.setMinutes(0);
     d.setSeconds(0);
     Jobs.find({
+        deleted: false,
         $or: [{
             createdAt: {
                 $gt: d
@@ -25,6 +26,7 @@ var idsSecondJob = function() {
     var d = new Date();
     d.setDate(d.getDate() - 1);
     Jobs.find({
+        deleted: false,
         $or: [{
             createdAt: {
                 $gt: d
@@ -52,8 +54,7 @@ var jobcount = function(ordr, count, adderId) {
     return jobcount;
 }
 
-var allowedRides = function() {
-    var id = Meteor.userId();
+var allowedRides = function(id) {
     if (Roles.userIsInRole(id, 'two-ride-seller')) {
         return 2;
     } else if (Roles.userIsInRole(id, 'ten-ride-seller')) {
@@ -67,8 +68,7 @@ var allowedRides = function() {
     }
     return 0;
 };
-var sellerDailyLimit = function() {
-    var id = Meteor.userId();
+var sellerDailyLimit = function(id) {
     if (Roles.userIsInRole(id, 'two-ride-seller')) {
         return 20;
     } else if (Roles.userIsInRole(id, 'ten-ride-seller')) {
@@ -85,17 +85,20 @@ var sellerDailyLimit = function() {
 
 
 var userRunningRides = function(adderId) {
+    //  console.log('adderId ' + adderId);
     var total = 0;
     Jobs.find({
         adderId: adderId,
-        done: false
+        done: false,
+        deleted: false
     }).map(function(job) {
-        total = toal + job.count;
+        total = total + job.count;
     });
     return total;
 }
 
 var userDailyRunningRidesCount = function(adderId) {
+    //  console.log('adderId ' + adderId);
     var total = 0;
     var d = new Date();
     d.setHours(0);
@@ -103,21 +106,29 @@ var userDailyRunningRidesCount = function(adderId) {
     d.setSeconds(0);
     Jobs.find({
         adderId: adderId,
+        deleted: false,
         createdAt: {
             $gt: d
         }
     }).map(function(job) {
-        total = toal + job.count;
+        total = total + job.count;
     });
     return total;
 }
 
 Meteor.methods({
     "addJobOrder": function(adderId, count) {
+        console.log('count: ' + count);
         if (!Roles.userIsInRole(this.userId, ['admin', 'seller'])) return;
-        if (allowedRides() <= userRunningRides()) return;
-        if (sellerDailyLimit() <= userDailyRunningRidesCount()) return;
+        console.log('allowed ' + allowedRides(adderId));
+        console.log('userrun ' + userRunningRides(adderId));
+        console.log('limit ' + sellerDailyLimit(adderId));
+        console.log('userdailyrun ' + userDailyRunningRidesCount(adderId));
+        if (allowedRides(adderId) <= userRunningRides(adderId)) return;
+        if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId)) return;
         if (count < 1) return;
+        console.log('adding now');
+        console.log(idsFirstJob());
         Orders.find({
             _id: {
                 $nin: idsFirstJob()
