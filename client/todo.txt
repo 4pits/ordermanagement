@@ -10,3 +10,4 @@ todo list
 8. add show more button for completed orders to admin, show only all added orders only.
 9. change icons for add, reduce, etc.
 10. add dummy jobs in completed status for add button, remove button for completed jobs only at one order page.
+11. test
