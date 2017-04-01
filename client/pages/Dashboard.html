@@ -1,0 +1,5 @@
+<template name="Dashboard">
+  {{#if isInRole 'admin'}}
+  {{> dashboard}}
+  {{/if}}
+</template>

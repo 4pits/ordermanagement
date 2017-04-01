@@ -1,0 +1,10 @@
+todo list
+
+1. add button for each seller on jobs and completed jobs, click of a button will display per user jobs.
+2. add todays running jobs count on some summary page.
+3. create dashboard/summary page
+5. optimize for mobile, login page and sing up page.
+6. add reset/forgot pass link
+
+7. add completed button to one order page.
+8. add show more button for completed orders to admin, show only all added orders only.

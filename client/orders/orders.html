@@ -1,0 +1,151 @@
+<template name="orders">
+<div class="container">
+    <div id="order-insert">
+        {{#if insertMode}}
+            <button id="showHide" class="btn btn-default">Close Order Form</button>
+        {{else}}
+            <button id="showHide" class="btn btn-default">New Order</button>
+        {{/if}}
+
+        {{#if insertMode}}
+            <div class="new-order-form">
+                {{> quickForm collection="Orders" id="insertOrderForm" type="insert"}}
+            </div>
+        {{/if}}
+
+    </div>
+
+        {{#if isInRole 'admin'}}
+            {{#if showEditOrder}}
+                <div >
+                    <i class="close-order-form fa fa-times" aria-hidden="true"></i>
+                    {{#autoForm id="afUpdateDemo" type=formType collection="Orders" doc=selectedOrderDoc autosave=autoSaveMode}}
+                        {{> afQuickField name="name"}}
+                        {{> afQuickField name="code"}}
+                        {{> afQuickField name="rides"}}
+                        {{> afQuickField name="comment"}}
+                        {{#unless autoSaveMode}}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" disabled="{{disableButtons}}">Submit</button>
+                                <button type="reset" class="btn btn-default" disabled="{{disableButtons}}">Reset Form</button>
+                            </div>
+                        {{/unless}}
+                    {{/autoForm}}
+                </div>
+            {{/if}}
+        {{/if}}
+        <h3>Orders</h3>
+        {{#if isInRole 'admin'}}
+          <h4>New Orders #{{newOrderCount}}</h4>
+          <h4>Running Orders #{{runningOrderCount}}</h4>
+        <h4>All added #{{allAddedCount}}</h4>
+        {{/if}}
+        <table class="table table-hover table-condensed">
+            <thead><th>Status</th>
+                <th>Order Date</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Ordered</th>
+                <th>Added</th>
+                <th>Pending</th>
+                {{#if isInRole 'admin'}}
+                    <th>Premium</th>
+                    <th>BRun</th>
+                    <th>Status</th>
+                    <th>Remove</th>
+                    <th>Add</th>
+                    <th>Reduce</th>
+                    <th>Reset</th>
+                    <th>Pause</th>
+                {{/if}}
+            </thead>
+            <tbody>
+                {{#each newOrders}}
+                    {{> order}}
+                {{else}}
+                    <tr>
+                        <td colspan=15>
+                            <p class="lead">Add new order.</p>
+                        </td>
+                    </tr>
+
+                {{/each}}
+                {{#each runningOrders}}
+                    {{> order}}
+                {{else}}
+                    <tr>
+                        <td colspan=15>
+                            <p class="lead">No order running yet.</p>
+                        </td>
+                    </tr>
+
+                {{/each}}
+                {{#each allAddedOrders}}
+                    {{> order}}
+                {{else}}
+                    <tr>
+                        <td colspan=15>
+                            <p class="lead">Check <a href="/completed-orders">completed orders</a> here, if any.</p>
+                        </td>
+                    </tr>
+
+                {{/each}}
+
+            </tbody>
+
+        </table>
+    </div>
+</template>
+<template name="orderForm">
+    <div id="name">
+        {{> quickForm collection="Orders" id="insertOrderForm" type="insert"}}
+    </div>
+
+</template>
+
+<template name="order">
+    <tr class="{{#if allAdded}} success {{/if}} {{#if pause}} warning {{/if}}">
+      <td>{{orderStatus}}</td>
+        <td class="order-row">{{formatDate createdAt}}</td>
+        <td><a href="/order/{{_id}}">{{name}}</a></td>
+        <td>{{code}}</td>
+        <td>{{rides}}</td>
+        <td>{{added}}</td>
+        <td>{{pendingRides}}</td>
+        {{#if isInRole 'admin'}}
+            <td>
+                <i class="fa {{#if premium}} fa-toggle-on{{else}}fa-toggle-off {{/if}}" aria-hidden="true"></i>
+            </td>
+            <td>
+                <i class="fa {{#if runStatus}} fa-toggle-on{{else}}fa-toggle-off {{/if}} run-status" aria-hidden="true"></i>
+            </td>
+            <td>
+                    {{#if done}}
+                    <i class="fa fa-check completed" aria-hidden="true"></i>
+                    {{else}}
+                    <i class="fa fa-spinner completed" aria-hidden="true"></i>
+                      {{/if}}
+            </td>
+            <td>
+                <i class="fa fa-trash-o remove-order" aria-hidden="true"></i>
+            </td>
+            <td>
+                <i class="fa fa-plus add-ride" aria-hidden="true"></i>
+            </td>
+            <td>
+                <i class="fa fa-minus reduce-ride" aria-hidden="true"></i>
+            </td>
+            <td>
+                <i class="fa fa-undo reset-ride" aria-hidden="true"></i>
+            </td>
+            <td>
+              {{#if pause}}
+                <i class="fa fa-play pause-toggle" aria-hidden="true"></i>
+              {{else}}
+                <i class="fa fa-pause pause-toggle" aria-hidden="true"></i>
+              {{/if}}
+
+            </td>
+        {{/if}}
+    </tr>
+</template>

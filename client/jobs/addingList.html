@@ -1,0 +1,72 @@
+<template name="addingList">
+
+    <div class="container">
+            <h3>Running List</h3>
+            <h4>Running #{{runningRides}}</h4>
+            {{#if isInRole 'admin'}}
+                <select id="adder" class="form-control">
+                    {{>ListUsers}}
+                </select>
+            {{/if}} <br>
+            {{#if runningCountNotZero}}
+            <button class="btn btn-default btn-copy-link" name="button" data-clipboard-text="{{#each runningList}}{{count}} ride {{code}}
+{{/each}}">Copy all code</button>
+            {{/if}}
+
+{{#if showmorecodebutton runningRides}}
+  <button type="button" class="addCode btn btn-default" name="showCode">Show New Codes</button><br>
+{{else}}
+  <h4>Complete running job to get more code.</h4>
+{{/if}}
+
+            <table class="table table-hover">
+{{#if runningCountNotZero}}
+<thead>
+  <th>Started At</th>
+    {{#if isInRole 'admin'}}<th>Added By</th>{{/if}}
+    <th>Job</th>
+    <th>Remove Job</th>
+    <th>Status</th>
+</thead>
+
+{{/if}}
+                <tbody>
+                    {{#each runningList}}
+                        {{> runningCode}}
+                        {{else}}
+                        <tr>
+                          <td colspan=4><p class="lead">Either you haven't click on "Show new Code" button or No Codes available . <br>
+                            Please click on above button "Show New Codes" to get code.</p></td>
+                        </tr>
+
+                    {{/each}}
+
+                </tbody>
+            </table>
+    </div>
+</template>
+
+
+<template name="runningCode">
+    <tr class="{{#if done}} success{{/if}}">
+      <td>{{formatDate createdAt}}</td>
+        {{#if isInRole 'admin'}}
+            <td>
+                {{addedBy}}
+            </td>
+        {{/if}}
+        <td>{{count}} ride {{code}}</td>
+            <td>
+                <button class="removeWork btn btn-default">Remove</button>
+            </td>
+        <td>
+            {{#unless done}}
+                <button class="workDone btn btn-default">Done</button>
+
+            {{else}}
+                <button class="Added btn btn-default">Added</button>
+            {{/unless}}
+        </td>
+
+    </tr>
+</template>

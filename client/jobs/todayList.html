@@ -1,0 +1,24 @@
+<template name="todayList">
+  <h3> Jobs Started Today ( {{todayCount}} )  <small>{{formatDay today}}</small> </h3>
+        <table class="table table-hover">
+          <thead>
+            <th>Started At</th>
+            <th>Completed At</th>
+            <th>Time Taken</th>
+              {{#if isInRole 'admin'}}<th>Added By</th>{{/if}}
+            <th>Job</th>
+            {{#if isInRole 'admin'}}<th>Remove</th>{{/if}}
+            <th>Status</th>
+            <th>Payment</th>
+          </thead>
+            <tbody>
+                {{#each todayList}}
+                    {{> completedCode}}
+                    {{else}}
+                    <p class="lead">No jobs completed today.</p>
+                {{/each}}
+
+            </tbody>
+        </table>
+
+</template>

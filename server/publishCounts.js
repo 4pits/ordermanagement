@@ -1,0 +1,56 @@
+Meteor.publish('jobsCount', function() {
+    Counts.publish(this, 'jobsC', Jobs.find({
+        deleted: false
+    }), {
+        countFromField: 'count'
+    });
+    Counts.publish(this, 'jobsDone', Jobs.find({
+        done: true,
+        deleted: false
+    }), {
+        countFromField: 'count'
+    });
+    Counts.publish(this, 'jobsRunning', Jobs.find({
+        deleted: false,
+        done: false
+    }), {
+        countFromField: 'count'
+    });
+    Counts.publish(this, 'jobsPaid', Jobs.find({
+        deleted: false,
+        paid: true
+    }), {
+        countFromField: 'count'
+    });
+    Counts.publish(this, 'jobsUnpaid', Jobs.find({
+        deleted: false,
+        paid: false
+    }), {
+        countFromField: 'count'
+    });
+});
+Meteor.publish('ordersCount', function() {
+    Counts.publish(this, 'ordersC', Orders.find({
+        deleted: false
+    }));
+    Counts.publish(this, 'allRidesCount', Orders.find({
+        deleted: false
+    }), {
+        countFromField: 'rides'
+    });
+    Counts.publish(this, 'allAddedCount', Orders.find({
+        deleted: false
+    }), {
+        countFromField: 'added'
+    });
+});
+
+Meteor.publish('userCount', function() {
+    Counts.publish(this, 'buyersCount', Meteor.users.find({
+        roles: 'buyer'
+    }));
+    Counts.publish(this, 'sellersCount', Meteor.users.find({
+        roles: 'seller'
+    }));
+    Counts.publish(this, 'usersCount', Meteor.users.find());
+});

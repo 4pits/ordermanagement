@@ -1,0 +1,76 @@
+<template name="completedOrders">
+    <div class="container">
+        <h3>Completed Orders</h3>
+
+        <h4>All added
+            {{#if isInRole 'admin'}}#{{allAddedCount}}{{/if}}
+        </h4>
+        <table class="table table-hover">
+            <thead>
+                <th>Order Date</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Ordered</th>
+                <th>Added</th>
+                <th>Pending</th>
+                <th>Status</th>
+            </thead>
+            <tbody>
+                {{#each allAddedOrders}}
+                    {{> completeOrder}}
+                {{else}}
+                    <p class="lead">No order completed yet.</p>
+                {{/each}}
+            </tbody>
+        </table>
+        <h4>Mark Completed
+            {{#if isInRole 'admin'}}#{{markCompletedCount}}{{/if}}
+        </h4>
+        <table class="table table-hover">
+            <thead>
+                <th>Order Date</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Ordered</th>
+                <th>Added</th>
+                <th>Pending</th>
+                <th>Status</th>
+            </thead>
+            <tbody>
+                {{#each completOrders}}
+                    {{> completeOrder}}
+                {{else}}
+                    <p class="lead">No order completed yet.</p>
+                {{/each}}
+            </tbody>
+        </table>
+
+    </div>
+</template>
+
+<template name="completeOrder">
+    <tr class="{{#if done}} success {{/if}} {{#if pause}} warning {{/if}}">
+        <td>{{formatDate createdAt}}</td>
+        <td><a href="/order/{{_id}}">{{name}}</a></td>
+        <td>{{code}}</td>
+        <td>{{rides}}</td>
+        <td>{{added}}</td>
+        <td>{{pendingRides}}</td>
+        <td>
+            {{#if isInRole 'admin'}}
+                {{#if done}}
+                    <i class="fa fa-check completed" aria-hidden="true"></i>
+                {{else}}
+                    <i class="fa fa-spinner completed" aria-hidden="true"></i>
+                {{/if}}
+            {{else}}
+                {{#if done}}
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                {{else}}
+                    <i class="fa fa-spinner" aria-hidden="true"></i>
+                {{/if}}
+            {{/if}}
+        </td>
+    </tr>
+
+</template>

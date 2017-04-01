@@ -1,0 +1,7 @@
+<template name="Jobs">
+  {{#if isInRole 'admin,seller'}}
+{{> addingList}}
+{{else}}
+<p class="lead">No data available here. Go to <a href="/">Home</a> </p>
+{{/if}}
+</template>

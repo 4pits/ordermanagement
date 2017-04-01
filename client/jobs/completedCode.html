@@ -1,0 +1,40 @@
+<template name="completedCode">
+    <tr class="{{#if done}} success{{/if}}">
+      <td>{{formatDate createdAt}}</td>
+      <td>{{formatDate updatedAt}}</td>
+<td>{{timeTaken}}</td>
+        {{#if isInRole 'admin'}}
+            <td>
+                {{addedBy}}
+            </td>
+        {{/if}}
+
+        <td>{{count}} ride {{code}}</td>
+        {{#if isInRole 'admin'}}
+            <td>
+                <button class="removeWork btn btn-default">Remove</button>
+            </td>
+            {{/if}}
+        <td>
+            {{#unless done}}
+                <button class="workDone btn btn-default">Done</button>
+
+            {{else}}
+                <p>Added</p>
+            {{/unless}}
+        </td>
+        <td>
+          {{#if paid}}
+              <p>Paid</p>
+          {{else}}
+          {{#if isInRole 'admin'}}
+            <button class="pay-now btn btn-default">Pay</button>
+          {{else}}
+            <p class="lead">____</p>
+          {{/if}}
+
+          {{/if}}
+        </td>
+
+    </tr>
+</template>
