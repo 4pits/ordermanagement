@@ -96,7 +96,7 @@ Meteor.methods({
     'jobs.insert': function(id, code, count, adderId) {
         //avoid repeatition of code to same seller
         if (Roles.userIsInRole(this.userId, ['admin', 'seller'])) {
-            console.log('really adding now');
+            //      console.log('really adding now');
             return Jobs.insert({
                 orderId: id,
                 code: code,

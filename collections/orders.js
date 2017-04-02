@@ -217,7 +217,7 @@ Meteor.methods({
     },
     'deleteOrderToggle': function(id, flag) {
         if (Roles.userIsInRole(this.userId, 'admin')) {
-            console.log('deleting');
+            //    console.log('deleting');
             return Orders.update({
                 _id: id
             }, {

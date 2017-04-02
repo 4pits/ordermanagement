@@ -80,7 +80,7 @@ Template.oneOrder.events({
     'click .add-ride' () {
         var order = Orders.findOne({});
         var userId = Meteor.userId();
-        console.log(userId);
+        //    console.log(userId);
         if (order.added < order.rides)
             Meteor.call('jobs.insert', order._id, order.code, 1, userId, (error, result) => {
                 if (error) {
@@ -105,7 +105,7 @@ Template.oneOrder.events({
     },
     'click .delete-toggle' () {
         var order = Orders.findOne({});
-        console.log(order.deleted);
+        //  console.log(order.deleted);
         Meteor.call('deleteOrderToggle', order._id, !order.deleted);
     }
 });

@@ -109,7 +109,7 @@ Meteor.publish("jobsCompletedRecently", function() {
 
 Meteor.publish("jobsCompletedOld", function() {
     var dt = new Date();
-    console.log('server date time: ' + dt);
+    //    console.log('server date time: ' + dt);
     var id = this.userId;
     if (Roles.userIsInRole(id, 'admin')) {
         return Jobs.find({

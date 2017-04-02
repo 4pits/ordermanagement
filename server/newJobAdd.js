@@ -135,17 +135,17 @@ var userDailyRunningRidesCount = function(adderId) {
 
 Meteor.methods({
     "addJobOrder": function(adderId, count) {
-        console.log('count: ' + count);
+        //    console.log('count: ' + count);
         if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
-        console.log('allowed ' + allowedRides(adderId));
-        console.log('userrun ' + userRunningRides(adderId));
-        console.log('limit ' + sellerDailyLimit(adderId));
-        console.log('userdailyrun ' + userDailyRunningRidesCount(adderId));
+        //      console.log('allowed ' + allowedRides(adderId));
+        //      console.log('userrun ' + userRunningRides(adderId));
+        //      console.log('limit ' + sellerDailyLimit(adderId));
+        //      console.log('userdailyrun ' + userDailyRunningRidesCount(adderId));
         if (allowedRides(adderId) <= userRunningRides(adderId)) return;
         if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId)) return;
         if (count < 1) return;
-        console.log('adding now');
-        console.log(idsFirstJob());
+        //        console.log('adding now');
+        //        console.log(idsFirstJob());
         Orders.find({
             _id: {
                 $nin: idsFirstJob()
