@@ -1,70 +1,109 @@
 <template name="oneOrder">
-{{#if order}}
-  <h1>Order details</h1>
-  <p class="lead">Buyer Name: {{order.name}}</p>
-  <table class="table">
-  <tbody>
-    <tr>
-      <td>Uber Code :</td>
-      <td>{{order.code}}</td>
-    </tr>
-    <tr>
-      <td>Added/Ordered #</td>
-      <td>{{order.added}}/{{order.rides}}</td>
-    </tr>
-    <tr>
-      <td>Paypal Email : </td>
-      <td>{{order.paypalemail}}</td>
-    </tr>
-    <tr>
-      <td>Paypal TxnID :</td>
-      <td>{{order.txnId}}</td>
-    </tr>
-    <tr>
-      <td>Paid Amount :</td>
-      <td>{{order.paidAmount}}</td>
-    </tr>
-    <tr>
-      <td>Comment :</td>
-      <td>{{order.comment}}</td>
-    </tr>
-  </tbody>
-  </table>
-  
+    {{#if order}}
+        <h1>Order details</h1>
+        <p class="lead">Buyer Name:
+            {{order.name}}</p>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Uber Code :</td>
+                    <td>{{order.code}}</td>
+                </tr>
+                <tr>
+                    <td>Added/Ordered #</td>
+                    <td>{{order.added}}/{{order.rides}}</td>
+                </tr>
+                <tr>
+                    <td>Paypal Email :
+                    </td>
+                    <td>{{order.paypalemail}}</td>
+                </tr>
+                <tr>
+                    <td>Paypal TxnID :</td>
+                    <td>{{order.txnId}}</td>
+                </tr>
+                <tr>
+                    <td>Paid Amount :</td>
+                    <td>{{order.paidAmount}}</td>
+                </tr>
+                <tr>
+                    <td>Comment :</td>
+                    <td>{{order.comment}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-  {{#if isInRole 'admin'}}
-  <h1>Admin Area</h1>
-<p class="lead">Assign this job to selected buyer</p>
-<p> Added/Assigned by : {{user order.userId}}</p>
-<p>Current user: {{user currentUser._id}}</p>
-<select id="buyer" class="form-control">
-    {{#each buyers}}
-    <option value="{{_id}}">{{email}} / {{fname}}</option>
-    {{/each}}
-</select>
-<button type="button" class="assign-buyer btn btn-default" name="button">Assign Buyer</button>
-  {{/if}}
+        {{#if isInRole 'admin'}}
+            <h1>Admin Area</h1>
+            {{#unless order.done}}
+                <button type="button" class="mark-completed btn btn-default" name="button">Mark Completed</button>
+                {{/unless}}
+            {{#if order.deleted}}
+              <button type="button" class="delete-toggle btn btn-danger" name="button">Restore</button>
+            {{else}}
+              <button type="button" class="delete-toggle btn btn-danger" name="button">Delete</button>
+            {{/if}}
+            <button type="button" class="btn btn-default add-ride" name="button">Add 1 Ride</button>
+            {{#if order.pause}}
+                <button type="button" class="btn btn-warning pause-toggle " name="button">unPause</button>
+            {{else}}
+                <button type="button" class="btn btn-default pause-toggle " name="button">Pause</button>
+            {{/if}}
 
-  <table class="table">
-    <thead>
-      <th>Added Date</th>
-      {{#if isInRole 'admin'}}<th>Added By</th>{{/if}}
-      <th>Count</th>
-      <th>Status</th>
-    </thead>
-    <tbody>
-      {{#each jobsList}}
-      <tr class="{{#if done}} success {{/if}}">
-        <td>{{#if updatedAt}}{{formatDate updatedAt}} {{else}}{{formatDate createdAt}}{{/if}}</td>
-        {{#if isInRole 'admin'}}<td>{{addedBy}}</td>{{/if}}
-        <td>{{count}}</td>
-        <td>{{#if done}} Added{{else}} adding{{/if}}</td>
-      </tr>
-      {{else}}
-      <p class="lead">Not started yet.</p>
-      {{/each}}
-    </tbody>
-  </table>
-  {{else}}<p class="lead">No details available, please go to <a href="/orders">orders page</a>. </p>
-  {{/if}}
+            <p class="lead">Assign this job to selected buyer</p>
+            <p>
+                Added/Assigned by :
+                {{user order.userId}}</p>
+            <p>Current user:
+                {{user currentUser._id}}</p>
+            <select id="buyer" class="form-control">
+                {{#each buyers}}
+                    <option value="{{_id}}">{{email}}
+                        /
+                        {{fname}}</option>
+                {{/each}}
+            </select>
+            <button type="button" class="assign-buyer btn btn-default" name="button">Assign Buyer</button>
+        {{/if}}
+
+        <table class="table">
+            <thead>
+                <th>Added Date</th>
+                <th>Count</th>
+                {{#if isInRole 'admin'}}
+                    <th>Added By</th>
+                    <th>Delete</th>
+                {{/if}}
+                <th>Status</th>
+            </thead>
+            <tbody>
+                {{#each jobsList}}
+                    <tr class="{{#if done}} success {{/if}}">
+                        <td>
+                            {{#if updatedAt}}{{formatDate updatedAt}}
+                            {{else}}{{formatDate createdAt}}{{/if}}
+                        </td>
+                        <td>{{count}}</td>
+                        {{#if isInRole 'admin'}}
+                            <td>{{addedBy}}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger remove-job" name="button">Remove</button>
+                            </td>
+                        {{/if}}
+                        <td>
+                            {{#if done}}
+                                Added{{else}}
+                                adding{{/if}}
+                        </td>
+                    </tr>
+                {{else}}
+                    <p class="lead">Not started yet.</p>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <p class="lead">No details available, please go to
+            <a href="/orders">orders page</a>.
+        </p>
+    {{/if}}
 </template>

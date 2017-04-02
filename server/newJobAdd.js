@@ -45,12 +45,29 @@ var idsSecondJob = function() {
 
 var jobcount = function(ordr, count, adderId) {
     var jobcount = 1;
-    if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
-    Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error) => {
-        if (error) {
-            alert(error.error);
+    var d = new Date();
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
+    var countJ = Jobs.find({
+        adderId: adderId,
+        deleted: false,
+        code: code,
+        createdAt: {
+            $gte: d
         }
-    });
+    }).count();
+    console.log('J: ' + countJ);
+    if (countJ === 0) {
+        if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
+        Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error) => {
+            if (error) {
+                alert(error.error);
+            }
+        });
+    } else {
+        jobcount = 0;
+    }
     return jobcount;
 }
 
@@ -119,7 +136,7 @@ var userDailyRunningRidesCount = function(adderId) {
 Meteor.methods({
     "addJobOrder": function(adderId, count) {
         console.log('count: ' + count);
-        if (!Roles.userIsInRole(this.userId, ['admin', 'seller'])) return;
+        if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
         console.log('allowed ' + allowedRides(adderId));
         console.log('userrun ' + userRunningRides(adderId));
         console.log('limit ' + sellerDailyLimit(adderId));

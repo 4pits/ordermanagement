@@ -132,29 +132,7 @@ Template.order.events({
     'click .order-row': function() {
         Session.set('selectedOrderId', this._id);
         Session.set('showEditOrder', true);
-    },
-    'click .remove-order' () {
-        Meteor.call('removeOrder', this._id);
-    },
-    'click .add-ride' () {
-        if (this.added < this.rides)
-            Meteor.call('updateRide', this._id, 1);
-    },
-    'click .completed' () {
-        if (!this.done) {
-            Meteor.call('completeOrder', this._id, 1);
-        }
-    },
-    'click .pause-toggle' () {
-        Meteor.call('pauseOrderToggle', this._id, !this.pause);
-    },
-    'click .reduce-ride' () {
-        if (this.added > 0)
-            Meteor.call('updateRide', this._id, -1);
-    },
-    'click .reset-ride' () {
-        Meteor.call('resetOrder', this._id);
-    },
+    }
 });
 
 Template.order.helpers({
@@ -162,7 +140,9 @@ Template.order.helpers({
         return this.rides - this.added;
     },
     orderStatus: function() {
-        if (!this.done && this.pause && this.rides != this.added)
+        if (this.deleted) {
+            return 'Deleted';
+        } else if (!this.done && this.pause && this.rides != this.added)
             return 'New';
         else if (!this.done && !this.pause && this.rides != this.added) {
             return 'Running'

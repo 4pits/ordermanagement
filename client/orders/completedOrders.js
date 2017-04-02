@@ -6,29 +6,14 @@ Template.completedOrders.onCreated(function() {
 });
 
 Template.completedOrders.helpers({
-    allAddedOrders: function() {
-        return Orders.find({
-            done: false,
-            $where: "this.rides === this.added"
-        });
-    },
     completOrders: function() {
         return Orders.find({
-            done: true,
-            $where: "this.rides === this.added"
+            done: true
         });
-    },
-
-    allAddedCount: function() {
-        return Orders.find({
-            done: false,
-            $where: "this.rides === this.added"
-        }).count();
     },
     markCompletedCount: function() {
         return Orders.find({
-            done: true,
-            $where: "this.rides === this.added"
+            done: true
         }).count();
     }
 });
@@ -36,7 +21,7 @@ Template.completedOrders.helpers({
 Template.completedOrders.events({
     'click .completed' () {
         if (!this.done) {
-            Meteor.call('completeOrder', this._id, 1);
+            Meteor.call('completeOrder', this._id);
         }
     }
 });

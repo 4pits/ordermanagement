@@ -48,16 +48,11 @@
                 <th>Ordered</th>
                 <th>Added</th>
                 <th>Pending</th>
+                <th>Premium</th>
                 {{#if isInRole 'admin'}}
-                    <th>Premium</th>
                     <th>BRun</th>
-                    <th>Status</th>
-                    <th>Remove</th>
-                    <th>Add</th>
-                    <th>Reduce</th>
-                    <th>Reset</th>
-                    <th>Pause</th>
-                {{/if}}
+                      {{/if}}
+                      <th>Status</th>
             </thead>
             <tbody>
                 {{#each newOrders}}
@@ -65,7 +60,7 @@
                 {{else}}
                     <tr>
                         <td colspan=15>
-                            <p class="lead">Add new order.</p>
+                            <p class="lead">Wanna add new order. Click "New Order" button</p>
                         </td>
                     </tr>
 
@@ -75,7 +70,7 @@
                 {{else}}
                     <tr>
                         <td colspan=15>
-                            <p class="lead">No order running yet.</p>
+                            <p class="lead">No order running yet. If order added, make sure you have already paid and added details to order.</p>
                         </td>
                     </tr>
 
@@ -112,40 +107,21 @@
         <td>{{rides}}</td>
         <td>{{added}}</td>
         <td>{{pendingRides}}</td>
-        {{#if isInRole 'admin'}}
+
             <td>
                 <i class="fa {{#if premium}} fa-toggle-on{{else}}fa-toggle-off {{/if}}" aria-hidden="true"></i>
             </td>
+              {{#if isInRole 'admin'}}
             <td>
                 <i class="fa {{#if runStatus}} fa-toggle-on{{else}}fa-toggle-off {{/if}} run-status" aria-hidden="true"></i>
             </td>
+            {{/if}}
             <td>
                     {{#if done}}
-                    <i class="fa fa-check completed" aria-hidden="true"></i>
+                    <i class="fa fa-check" aria-hidden="true"></i>
                     {{else}}
-                    <i class="fa fa-spinner completed" aria-hidden="true"></i>
+                    <i class="fa fa-spinner" aria-hidden="true"></i>
                       {{/if}}
             </td>
-            <td>
-                <i class="fa fa-trash-o remove-order" aria-hidden="true"></i>
-            </td>
-            <td>
-                <i class="fa fa-plus add-ride" aria-hidden="true"></i>
-            </td>
-            <td>
-                <i class="fa fa-minus reduce-ride" aria-hidden="true"></i>
-            </td>
-            <td>
-                <i class="fa fa-undo reset-ride" aria-hidden="true"></i>
-            </td>
-            <td>
-              {{#if pause}}
-                <i class="fa fa-play pause-toggle" aria-hidden="true"></i>
-              {{else}}
-                <i class="fa fa-pause pause-toggle" aria-hidden="true"></i>
-              {{/if}}
-
-            </td>
-        {{/if}}
     </tr>
 </template>

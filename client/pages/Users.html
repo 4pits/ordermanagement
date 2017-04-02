@@ -1,4 +1,5 @@
 <template name="Users">
+  <div class="container">
     <h1>Users</h1>
     <div class="table-responsive">
         <table class="table">
@@ -20,7 +21,7 @@
                         <td>{{dateFormat createdAt}}</td>
                         <td>
                             <p>{{roles}}</p>
-                            <div class="user-edit">              
+                            <div class="user-edit">
                               <button class="toggle-buyer btn {{#if isBuyer}} btn-primary {{else}} btn-success{{/if}}">Buyer</button>
                                 <div class="btn-group" role="group" aria-label="...">
                                     <button class="toggle-seller btn {{#if isSeller}} btn-primary {{else}} btn-success{{/if}}">Seller</button>
@@ -42,5 +43,6 @@
                 {{/each}}
             </tbody>
         </table>
+    </div>
     </div>
 </template>

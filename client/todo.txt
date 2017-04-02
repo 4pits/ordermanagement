@@ -5,9 +5,3 @@ todo list
 3. create dashboard/summary page
 5. optimize for mobile, login page and sing up page.
 6. add reset/forgot pass link
-
-7. add completed button to one order page.
-8. add show more button for completed orders to admin, show only all added orders only.
-9. change icons for add, reduce, etc.
-10. add dummy jobs in completed status for add button, remove button for completed jobs only at one order page.
-11. test

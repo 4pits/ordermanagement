@@ -2,28 +2,7 @@
     <div class="container">
         <h3>Completed Orders</h3>
 
-        <h4>All added
-            {{#if isInRole 'admin'}}#{{allAddedCount}}{{/if}}
-        </h4>
-        <table class="table table-hover">
-            <thead>
-                <th>Order Date</th>
-                <th>Name</th>
-                <th>Code</th>
-                <th>Ordered</th>
-                <th>Added</th>
-                <th>Pending</th>
-                <th>Status</th>
-            </thead>
-            <tbody>
-                {{#each allAddedOrders}}
-                    {{> completeOrder}}
-                {{else}}
-                    <p class="lead">No order completed yet.</p>
-                {{/each}}
-            </tbody>
-        </table>
-        <h4>Mark Completed
+      <h4>Mark Completed
             {{#if isInRole 'admin'}}#{{markCompletedCount}}{{/if}}
         </h4>
         <table class="table table-hover">

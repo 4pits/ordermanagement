@@ -1,39 +1,49 @@
 <template name="Home">
-  <div class="container">
-  <div class="jumbotron">
-    <h1>Welcome to Uber ride tracking page.</h1>
-    {{#if isInRole 'normal-user'}}<p>
-      Ask for permission, contact me on facebook, whatsapp, messanger, where ever you know, I need your email for granting access.
-    </p>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Welcome</h1>
+            {{#if isInRole 'admin,buyer,seller'}}
 
-    {{else}}
-    <p>
-      New to this page, sign-up to start with.
-    </p>
+                {{#if isInRole 'admin,buyer'}}
+                    <h2>Manage/Track your rides</h2>
+                    <h4>Follow Steps</h4>
+                    <p>
+                        Hope , you have already bought rides.<br>
+                        Go to
+                        <a href="/orders">Orders</a>. Click on new order button.<br>
+                        Enter your order details , eg code, count, payment details etc.<br>
+                    </p>
+                {{/if}}
+                {{#if isInRole 'admin,seller'}}
+                    <h2>Rides Adding Jobs</h2>
+                    <h4>Follow Steps</h4>
+                    <p>
+                        Go to
+                        <a href="/jobs">Jobs</a>
+                        <br>
+                        Click on "Show New Code" button to get codes.<br>
+                        Click "Copy All Code" and refer 1 or 2 as mentioned.<br>
+                        Keep me updated what-ever you add. In cse some issue we can check.
+                        <br>
+                        Once referred and you are sure rides added, click on done button for each code.<br>
+                        I will pay you.<br>
+                    </p>
+                {{/if}}
+            {{else}}
+                {{#if isInRole 'normal-user'}}
+                    <p>
+                        Ask for permission, contact me on facebook, whatsapp, messanger, where ever you know, I need your email for granting access.
+                    </p>
 
-    {{/if}}
-    {{#if isInRole 'admin,buyer'}}
-    <h1>Manage/Track your rides </h1>
-    <h2>Follow Steps</h2>
-    <p>
-      Hope , you have already bought rides.<br>
-      Go to <a href="/orders">Orders</a>. Click on new order button.<br>
-      Enter your order details , eg code, count, payment details etc.<br>
-    </p>
-    {{/if}}
-  {{#if isInRole 'admin,seller'}}
-    <h1>Rides Adding Jobs</h1>
-    <h2>Follow Steps</h2>
-    <p>
-      Ask for permission to be a seller via whatsapp, fb.<br>
-      Go to <a href="/jobs">Jobs</a> <br>
-      Click on "Show New Code" button to get codes.<br>
-      Click "Copy All Code" and refer 1 or 2 as mentioned.<br>
-      Keep me updated what-ever you add. <br>
-      Once referred and you are sure rides added, click on done button for each code.<br>
-      I will pay you.<br>
-    </p>
-    {{/if}}
-  </div>
-</div>
+                {{else}}
+                    <p>
+                        New to this page, Register to start with.
+                    </p>
+
+                {{/if}}
+
+            {{/if}}
+
+        </div>
+    </div>
 </template>

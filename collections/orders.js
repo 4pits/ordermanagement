@@ -215,13 +215,14 @@ Meteor.methods({
             });
         }
     },
-    'removeOrder': function(id) {
+    'deleteOrderToggle': function(id, flag) {
         if (Roles.userIsInRole(this.userId, 'admin')) {
+            console.log('deleting');
             return Orders.update({
                 _id: id
             }, {
                 $set: {
-                    deleted: true
+                    deleted: flag
                 }
             });
         }

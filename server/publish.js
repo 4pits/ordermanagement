@@ -2,8 +2,7 @@ Meteor.publish("orders", function(argument) {
     var id = this.userId;
     if (Roles.userIsInRole(id, 'admin'))
         return Orders.find({
-            done: false,
-            deleted: false
+            done: false
         }, {
             fields: {
                 paypalemail: 0,
@@ -33,7 +32,7 @@ Meteor.publish("completedOrders", function(argument) {
     if (Roles.userIsInRole(id, 'admin'))
         return Orders.find({
             deleted: false,
-            $where: "this.rides === this.added"
+            done: true
         }, {
             fields: {
                 paypalemail: 0,
@@ -46,7 +45,7 @@ Meteor.publish("completedOrders", function(argument) {
         return Orders.find({
             userId: id,
             deleted: false,
-            $where: "this.rides === this.added"
+            done: true
         }, {
             fields: {
                 paypalemail: 0,
@@ -163,8 +162,8 @@ Meteor.publish('oneOrder', function(id) {
     var user = this.userId;
     if (Roles.userIsInRole(user, 'admin')) {
         return Orders.find({
-            _id: id,
-            deleted: false
+            _id: id
+            //        deleted: false
         });
     } else if (Roles.userIsInRole(user, 'buyer')) {
         return Orders.find({
