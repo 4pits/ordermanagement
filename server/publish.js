@@ -2,7 +2,8 @@ Meteor.publish("orders", function(argument) {
     var id = this.userId;
     if (Roles.userIsInRole(id, 'admin'))
         return Orders.find({
-            done: false
+            done: false,
+            deleted: false
         }, {
             fields: {
                 paypalemail: 0,

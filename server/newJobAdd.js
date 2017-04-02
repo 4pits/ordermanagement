@@ -46,18 +46,30 @@ var idsSecondJob = function() {
 var jobcount = function(ordr, count, adderId) {
     var jobcount = 1;
     var d = new Date();
-    d.setHours(0);
-    d.setMinutes(0);
-    d.setSeconds(0);
+    d.setDate(d.getDate() - 1);
+    //don't allow to get added by same person in same day
     var countJ = Jobs.find({
         adderId: adderId,
         deleted: false,
-        code: ordr.code,
+        orderId: ordr._id,
         createdAt: {
             $gte: d
         }
     }).count();
-    console.log('J: ' + countJ);
+    //  console.log('J1 ' + countJ);
+    //don't allow to get it added by any person in within 6 hours.
+    var ud = new Date();
+    ud.setHours(ud.getHours() - 6);
+    countJ += Jobs.find({
+        orderId: ordr._id,
+        done: true,
+        deleted: false,
+        paid: false,
+        updatedAt: {
+            $gte: ud
+        }
+    }).count();
+    //    console.log(countJ);
     if (countJ === 0) {
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
         Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error) => {
