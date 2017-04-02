@@ -52,7 +52,7 @@ var jobcount = function(ordr, count, adderId) {
     var countJ = Jobs.find({
         adderId: adderId,
         deleted: false,
-        code: code,
+        code: ordr.code,
         createdAt: {
             $gte: d
         }
