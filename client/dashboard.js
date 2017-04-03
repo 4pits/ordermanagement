@@ -46,6 +46,9 @@ Template.dashboard.helpers({
     },
     newUsersCount: function() {
         return Counts.get('usersCount') - Counts.get('sellersCount') - Counts.get('buyersCount');
+    },
+    newRidesCount: function() {
+        return Counts.get('todayRidesCount');
     }
 });
 
