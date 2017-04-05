@@ -1,15 +1,11 @@
 // first job will be assigned daily after midnight , if its not running.
-var idsFirstJob = function() {
+var idsFirstJob = function(dayStart) {
     let ids = [];
-    var d = new Date();
-    d.setHours(0);
-    d.setMinutes(0);
-    d.setSeconds(0);
     Jobs.find({
         deleted: false,
         $or: [{
             createdAt: {
-                $gt: d
+                $gt: dayStart
             }
         }, {
             done: false
@@ -21,15 +17,15 @@ var idsFirstJob = function() {
     return ids;
 };
 // second job will be assigned after 16 hours of ending last first/second job.
-var idsSecondJob = function() {
+var idsSecondJob = function(dayStart) {
     ids = [];
-    var d = new Date();
-    d.setDate(d.getDate() - 1);
+    var dt = dayStart;
+    dt.setHours(dt.getHours() - 6);
     Jobs.find({
         deleted: false,
         $or: [{
             createdAt: {
-                $gt: d
+                $gt: dt
             }
         }, {
             done: false
@@ -43,23 +39,21 @@ var idsSecondJob = function() {
     return ids;
 };
 
-var jobcount = function(ordr, count, adderId) {
+var jobcount = function(ordr, count, adderId, dayStart) {
     var jobcount = 1;
-    var d = new Date();
-    d.setDate(d.getDate() - 1);
     //don't allow to get added by same person in same day
     var countJ = Jobs.find({
         adderId: adderId,
         deleted: false,
         orderId: ordr._id,
         createdAt: {
-            $gte: d
+            $gte: dayStart
         }
     }).count();
     //  console.log('J1 ' + countJ);
     //don't allow to get it added by any person in within 6 hours.
-    var ud = new Date();
-    ud.setHours(ud.getHours() - 6);
+    var ud = dayStart;
+    ud.setHours(ud.getHours() - 4);
     countJ += Jobs.find({
         orderId: ordr._id,
         done: true,
@@ -126,18 +120,14 @@ var userRunningRides = function(adderId) {
     return total;
 }
 
-var userDailyRunningRidesCount = function(adderId) {
+var userDailyRunningRidesCount = function(adderId, dayStart) {
     //  console.log('adderId ' + adderId);
     var total = 0;
-    var d = new Date();
-    d.setHours(0);
-    d.setMinutes(0);
-    d.setSeconds(0);
     Jobs.find({
         adderId: adderId,
         deleted: false,
         createdAt: {
-            $gt: d
+            $gt: dayStart
         }
     }).map(function(job) {
         total = total + job.count;
@@ -146,18 +136,10 @@ var userDailyRunningRidesCount = function(adderId) {
 }
 
 Meteor.methods({
-    "addJobOrder": function(adderId, count, dt, dtnow) {
-        console.log('client date');
-        console.log(dt);
-        console.log(dtnow);
-        var sd = new Date();
-        console.log('server date');
-        console.log(sd);
-        var d = new Date();
-        d.setHours(0);
-        d.setMinutes(0);
-        d.setSeconds(0);
-        console.log(d);
+    "addJobOrder": function(adderId, count, dayStart) {
+        console.log('dayStart');
+        console.log(dayStart);
+        if (!dayStart || !adderId) return; // return if undefined
         //    console.log('count: ' + count);
         if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
         //      console.log('allowed ' + allowedRides(adderId));
@@ -165,13 +147,13 @@ Meteor.methods({
         //      console.log('limit ' + sellerDailyLimit(adderId));
         //      console.log('userdailyrun ' + userDailyRunningRidesCount(adderId));
         if (allowedRides(adderId) <= userRunningRides(adderId)) return;
-        if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId)) return;
+        if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
         if (count < 1) return;
         //        console.log('adding now');
         //        console.log(idsFirstJob());
         Orders.find({
             _id: {
-                $nin: idsFirstJob()
+                $nin: idsFirstJob(dayStart)
             },
             done: false,
             pause: false,
@@ -184,14 +166,14 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId);
+                count = count - jobcount(ordr, count, adderId, dayStart);
             }
         });
         //currentListPremium
         if (count < 1) return;
         Orders.find({
             _id: {
-                $nin: idsFirstJob()
+                $nin: idsFirstJob(dayStart)
             },
             done: false,
             pause: false,
@@ -206,14 +188,14 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId);
+                count = count - jobcount(ordr, count, adderId, dayStart);
             }
         });
         //    currentListNormalNew: function() {
         if (count < 1) return;
         Orders.find({
             _id: {
-                $nin: idsFirstJob()
+                $nin: idsFirstJob(dayStart)
             },
             done: false,
             pause: false,
@@ -226,7 +208,7 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId);
+                count = count - jobcount(ordr, count, adderId, dayStart);
             }
         });
 
@@ -234,7 +216,7 @@ Meteor.methods({
         if (count < 1) return;
         Orders.find({
             _id: {
-                $nin: idsFirstJob()
+                $nin: idsFirstJob(dayStart)
             },
             done: false,
             pause: false,
@@ -249,7 +231,7 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId);
+                count = count - jobcount(ordr, count, adderId, dayStart);
             }
         });
 
@@ -257,7 +239,7 @@ Meteor.methods({
         if (count < 1) return;
         Orders.find({
             _id: {
-                $nin: idsFirstJob()
+                $nin: idsFirstJob(dayStart)
             },
             done: false,
             pause: false,
@@ -268,7 +250,7 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId);
+                count = count - jobcount(ordr, count, adderId, dayStart);
             }
         });
         //code repeat if all done for first round
@@ -276,7 +258,7 @@ Meteor.methods({
         if (count < 1) return;
         Orders.find({
             _id: {
-                $nin: idsSecondJob()
+                $nin: idsSecondJob(dayStart)
             },
             done: false,
             pause: false,
@@ -289,7 +271,7 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId);
+                count = count - jobcount(ordr, count, adderId, dayStart);
             }
         });
 
@@ -297,7 +279,7 @@ Meteor.methods({
         if (count < 1) return;
         Orders.find({
             _id: {
-                $nin: idsSecondJob()
+                $nin: idsSecondJob(dayStart)
             },
             done: false,
             pause: false,
@@ -310,7 +292,7 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId);
+                count = count - jobcount(ordr, count, adderId, dayStart);
             }
         });
     }

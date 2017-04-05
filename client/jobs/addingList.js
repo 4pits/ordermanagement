@@ -92,12 +92,11 @@ Template.addingList.events({
         else {
             adderId = f.options[f.selectedIndex].value;
         }
-        var dt = new Date();
-        var dtnow = new Date();
-        dtnow.setHours(0);
-        dtnow.setMinutes(0);
-        dtnow.setSeconds(0);
-        Meteor.call('addJobOrder', adderId, count, dt, dtnow);
+        var dayStart = new Date();
+        dayStart.setHours(0);
+        dayStart.setMinutes(0);
+        dayStart.setSeconds(0);
+        Meteor.call('addJobOrder', adderId, count, dayStart);
 
     }
 });
