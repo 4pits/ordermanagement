@@ -146,12 +146,18 @@ var userDailyRunningRidesCount = function(adderId) {
 }
 
 Meteor.methods({
-    "addJobOrder": function(adderId, count, dt) {
+    "addJobOrder": function(adderId, count, dt, dtnow) {
         console.log('client date');
         console.log(dt);
+        console.log(dtnow);
         var sd = new Date();
         console.log('server date');
         console.log(sd);
+        var d = new Date();
+        d.setHours(0);
+        d.setMinutes(0);
+        d.setSeconds(0);
+        console.log(d);
         //    console.log('count: ' + count);
         if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
         //      console.log('allowed ' + allowedRides(adderId));
