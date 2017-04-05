@@ -1,0 +1,81 @@
+<template name="Users">
+    <div class="container">
+       <h1>Users</h1>
+        <div><button type="button" class="btn {{#if newUsersOnly}} btn-primary{{else}}btn-default {{/if}} new-user" name="button">New
+            <span class="badge">{{newUsersCount}}</span>
+        </button>
+
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn {{#if allUsers}} btn-primary{{else}}btn-default {{/if}} all-user" name="button">All
+                    <span class="badge">{{usersCount}}</span>
+                </button>
+                <button type="button" class="btn {{#if onlySeller}} btn-primary{{else}}btn-default {{/if}} only-seller" name="button">Sellers
+                    <span class="badge">{{sellersCount}}</span>
+                </button>
+                <button type="button" class="btn {{#if onlyBuyer}} btn-primary{{else}}btn-default {{/if}} only-buyer" name="button">Buyers
+                    <span class="badge">{{buyersCount}}</span>
+                </button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name <br>Email </th>
+                        <th>Created At</th>
+                        <th>Roles</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if newUsersOnly}}
+                        {{#each newUsers}}
+                            {{> user}}
+                        {{/each}}
+
+                    {{/if}}
+                    {{#if allUsers}}
+                        {{#each users}}
+                            {{> user}}
+                        {{/each}}
+                    {{/if}}
+                    {{#if onlySeller}}
+                        {{#each sellers}}
+                            {{> user}}
+                        {{/each}}
+                    {{/if}}
+                    {{#if onlyBuyer}}
+                        {{#each buyers}}
+                            {{> user}}
+                        {{/each}}
+                    {{/if}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+<template name="user">
+    <tr>
+        <td>{{profile.firstName}} <br> {{userEmail}} </td>
+        <td>{{dateFormat createdAt}}</td>
+        <td>
+            <p>{{roles}}</p>
+            <div class="user-edit">
+                <button class="toggle-buyer btn {{#if isBuyer}} btn-primary {{else}} btn-success{{/if}}">Buyer</button>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button class="toggle-seller btn {{#if isSeller}} btn-primary {{else}} btn-success{{/if}}">Seller</button>
+                    <button class="toggle-premium-seller btn {{#if isPremiumSeller}} btn-primary {{else}} btn-success{{/if}}">Premium</button>
+                    <button class="toggle-2ride-seller btn {{#if isTwoRideSeller}} btn-primary {{else}} btn-success{{/if}}">2 Ride</button>
+                    <button class="toggle-10ride-seller btn {{#if isTenRideSeller}} btn-primary {{else}} btn-success{{/if}}">10 Ride</button>
+                    <button class="toggle-20ride-seller btn {{#if isTwentyRideSeller}} btn-primary {{else}} btn-success{{/if}}">20 Ride</button>
+                </div>
+            </div>
+        </td>
+        <td>
+            {{#if isBuyer}}
+                <a href="/orders">User Order</a>
+            {{/if}}
+            {{#if isSeller}}
+                <a href="/jobs">User Jobs</a>
+            {{/if}}
+        </td>
+    </tr>
+</template>

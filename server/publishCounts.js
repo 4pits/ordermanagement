@@ -56,6 +56,21 @@ Meteor.publish('ordersCount', function() {
     }), {
         countFromField: 'rides'
     });
+    var yd = new Date();
+    yd.setHours(0);
+    yd.setMinutes(0);
+    yd.setSeconds(0);
+    yd.setDate(yd.getDate() - 1);
+    Counts.publish(this, 'yesterdayRidesCount', Orders.find({
+        deleted: false,
+        pause: false,
+        createdAt: {
+            $gte: yd,
+            $lt: d
+        }
+    }), {
+        countFromField: 'rides'
+    });
 
 });
 

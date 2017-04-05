@@ -49,6 +49,9 @@ Template.dashboard.helpers({
     },
     newRidesCount: function() {
         return Counts.get('todayRidesCount');
+    },
+    yesterdayRidesCount: function() {
+        return Counts.get('yesterdayRidesCount');
     }
 });
 
