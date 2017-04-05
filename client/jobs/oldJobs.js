@@ -17,7 +17,7 @@ var yesterday = function() {
 Template.oldJobs.helpers({
     oldList: function() {
         var dt = new Date();
-        console.log('console time' + dt);
+        //    console.log('console time' + dt);
         return Jobs.find({
             createdAt: {
                 $lt: yesterday()

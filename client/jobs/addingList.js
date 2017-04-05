@@ -92,7 +92,8 @@ Template.addingList.events({
         else {
             adderId = f.options[f.selectedIndex].value;
         }
-        Meteor.call('addJobOrder', adderId, count);
+        var dt = new Date();
+        Meteor.call('addJobOrder', adderId, count, dt);
 
     }
 });
