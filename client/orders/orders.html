@@ -1,6 +1,8 @@
 <template name="orders">
 <div class="container">
-    <div id="order-insert">
+  <h3>Orders</h3>
+  <div class="alert alert-info" role="alert">Wanna add new order. Click "New Order" button. Please make sure you have already paid for the number of rides.</div>
+    <div id="order-insert">  
         {{#if insertMode}}
             <button id="showHide" class="btn btn-default">Close Order Form</button>
         {{else}}
@@ -34,7 +36,7 @@
                 </div>
             {{/if}}
         {{/if}}
-        <h3>Orders</h3>
+
         {{#if isInRole 'admin'}}
           <h4>New Orders #{{newOrderCount}}</h4>
           <h4>Running Orders #{{runningOrderCount}}</h4>

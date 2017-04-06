@@ -1,72 +1,77 @@
 <template name="addingList">
 
     <div class="container">
-            <h3>Running List</h3>
-            <h4>Running #{{runningRides}}</h4>
-            {{#if isInRole 'admin'}}
-                <select id="adder" class="form-control">
-                    {{>ListUsers}}
-                </select>
-            {{/if}} <br>
-            {{#if runningCountNotZero}}
+        <div class="page-header">
+            <h3>Get New Code Here</h3>
+        </div>
+
+        <h4>Running #{{runningRides}}</h4>
+        <div class="alert alert-info" role="alert">
+            <b>Change:</b>
+            Ab se jab bhi done pe click karoge, uska detail dena hoga, jaise kis naam se add kiye ho, serial number ya aur kuch jisse baad me verify kar sake.
+            Kabhi kabhi customer ko confusion ho jata hai, ya add karne wale ko bhi ho sakta hai.
+        </div>
+        {{#if isInRole 'admin'}}
+            <select id="adder" class="form-control">
+                {{>ListUsers}}
+            </select>
+        {{/if}}
+        <br>
+        {{#if runningCountNotZero}}
             <button class="btn btn-default btn-copy-link" name="button" data-clipboard-text="{{#each runningList}}{{count}} ride {{code}}
 {{/each}}">Copy all code</button>
-            {{/if}}
+        {{/if}}
 
-{{#if showmorecodebutton runningRides}}
-  <button type="button" class="addCode btn btn-default" name="showCode">Show New Codes</button><br>
-{{else}}
-  <h4>Complete running job to get more code.</h4>
-{{/if}}
+        {{#if showmorecodebutton runningRides}}
+            <button type="button" class="addCode btn btn-default" name="showCode">Show New Codes</button><br>
+        {{else}}
+            <h4>Complete running job to get more code.</h4>
+        {{/if}}
+<br>
 
-            <table class="table table-hover">
-{{#if runningCountNotZero}}
-<thead>
-  <th>Started At</th>
-    {{#if isInRole 'admin'}}<th>Added By</th>{{/if}}
-    <th>Job</th>
-    <th>Remove Job</th>
-    <th>Status</th>
-</thead>
-
-{{/if}}
-                <tbody>
-                    {{#each runningList}}
-                        {{> runningCode}}
-                        {{else}}
-                        <tr>
-                          <td colspan=4><p class="lead">Either you haven't click on "Show new Code" button or No Codes available . <br>
-                            Please click on above button "Show New Codes" to get code.</p></td>
-                        </tr>
-
-                    {{/each}}
-
-                </tbody>
-            </table>
+    {{#each runningList}}
+    {{> runningCode}}
+        {{else}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Nothing in progress.</h3>
+            </div>
+            <div class="panel-body">
+              <p class="lead">Either you haven't click on "Show new Code" button or No Codes available .
+                  <br>
+                  Please click on above button "Show New Codes" to get code.</p>
+            </div>
+        </div>
+    {{/each}}
     </div>
 </template>
 
-
 <template name="runningCode">
-    <tr class="{{#if done}} success{{/if}}">
-      <td>{{formatDate createdAt}}</td>
-        {{#if isInRole 'admin'}}
-            <td>
-                {{addedBy}}
-            </td>
-        {{/if}}
-        <td>{{count}} ride {{code}}</td>
-            <td>
-                <button class="removeWork btn btn-default">Remove</button>
-            </td>
-        <td>
-            {{#unless done}}
-                <button class="workDone btn btn-default">Done</button>
+  <div class="panel panel-default">
+      <div class="panel-heading">
+          <h3 class="panel-title">{{count}}
+              ride
+              {{code}} <small>{{#if isInRole 'admin'}}
+                  Adding:
+                  {{addedBy}} <br>
+              {{/if}}
+              </small> </h3>
+      </div>
+      <div class="panel-body">
+          Started At:
+          {{formatDate createdAt}}
+          <br>
+          <div class="btn-group" role="group" aria-label="...">
+              <button class="removeWork btn btn-default">Remove</button>
+              {{#unless done}}
+                  <button class="workDone btn btn-default">Done</button>
 
-            {{else}}
-                <button class="Added btn btn-default">Added</button>
-            {{/unless}}
-        </td>
+              {{else}}
+                  <button class="Added btn btn-default">Added</button>
+              {{/unless}}
+          </div>
 
-    </tr>
+      </div>
+  </div>
+
 </template>

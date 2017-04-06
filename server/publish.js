@@ -81,7 +81,7 @@ var yesterday = function() {
     yd.setHours(0);
     yd.setMinutes(0);
     yd.setSeconds(0);
-    yd.setDate(yd.getDate() - 2);
+    yd.setDate(yd.getDate() - 1);
     return yd;
 };
 
@@ -109,7 +109,6 @@ Meteor.publish("jobsCompletedRecently", function() {
 });
 
 Meteor.publish("jobsCompletedOld", function() {
-    var dt = new Date();
     //    console.log('server date time: ' + dt);
     var id = this.userId;
     if (Roles.userIsInRole(id, 'admin')) {

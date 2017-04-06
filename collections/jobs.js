@@ -79,6 +79,10 @@ Jobs.schema = new SimpleSchema({
         autoValue: function() {
             return this.userId
         }
+    },
+    notes: {
+        type: String,
+        optional: true
     }
 });
 
@@ -96,25 +100,28 @@ Meteor.methods({
     'jobs.insert': function(id, code, count, adderId) {
         //avoid repeatition of code to same seller
         if (Roles.userIsInRole(this.userId, ['admin', 'seller'])) {
-            //      console.log('really adding now');
+            // console.log('really adding now');
+            // console.log(code);
+            // console.log(id);
+            // console.log(Orders.findOne({
+            //     _id: id
+            // }).deleted);
             return Jobs.insert({
                 orderId: id,
                 code: code,
                 count: count,
                 adderId: adderId
-            }, function(error, result) {
-                if (error) return error;
-                if (result) return result;
             });
         }
     },
-    'jobDone': function(id) {
+    'jobDone': function(id, notes) {
         if (Roles.userIsInRole(this.userId, ['admin', 'seller'])) {
             Jobs.update({
                 _id: id
             }, {
                 $set: {
                     done: true,
+                    notes: notes,
                     updatedAt: new Date()
                 }
             });

@@ -61,16 +61,20 @@ var jobcount = function(ordr, count, adderId, dayStart) {
             $gte: ud
         }
     }).count();
-    //    console.log(countJ);
+    //  console.log(countJ);
     if (countJ === 0) {
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
-        Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error) => {
+        Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error, result) => {
             if (error) {
-                alert(error.error);
+                //        console.log(error);
+                jobcount = 0;
+            }
+            if (result) {
+                //          console.log("result " + result);
+                //          console.log(jobcount);
+                //return jobcount;
             }
         });
-    } else {
-        jobcount = 0;
     }
     return jobcount;
 }
@@ -135,20 +139,20 @@ var userDailyRunningRidesCount = function(adderId, dayStart) {
 
 Meteor.methods({
     "addJobOrder": function(adderId, count, dayStart) {
-        console.log('dayStart');
-        console.log(dayStart);
+        //    console.log('dayStart');
+        //    console.log(dayStart);
         if (!dayStart || !adderId) return; // return if undefined
         //    console.log('count: ' + count);
         if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
-        //      console.log('allowed ' + allowedRides(adderId));
-        //      console.log('userrun ' + userRunningRides(adderId));
-        //      console.log('limit ' + sellerDailyLimit(adderId));
-        //      console.log('userdailyrun ' + userDailyRunningRidesCount(adderId));
+        // console.log('allowed ' + allowedRides(adderId));
+        // console.log('userrun ' + userRunningRides(adderId));
+        // console.log('limit ' + sellerDailyLimit(adderId));
+        // console.log('userdailyrun ' + userDailyRunningRidesCount(adderId, dayStart));
         if (allowedRides(adderId) <= userRunningRides(adderId)) return;
         if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
         if (count < 1) return;
-        //        console.log('adding now');
-        //        console.log(idsFirstJob());
+        // console.log('adding now');
+        // console.log(idsFirstJob(dayStart));
         Orders.find({
             _id: {
                 $nin: idsFirstJob(dayStart)
@@ -157,6 +161,7 @@ Meteor.methods({
             pause: false,
             added: 0,
             premium: true,
+            deleted: false,
             $where: "this.rides - this.added > 1"
         }, {
             sort: {
@@ -164,7 +169,8 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId, dayStart);
+                var jc = jobcount(ordr, count, adderId, dayStart);
+                count = count - jc;
             }
         });
         //currentListPremium
@@ -175,6 +181,7 @@ Meteor.methods({
             },
             done: false,
             pause: false,
+            deleted: false,
             added: {
                 $gt: 0
             },
@@ -186,7 +193,8 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId, dayStart);
+                var jc = jobcount(ordr, count, adderId, dayStart);
+                count = count - jc;
             }
         });
         //    currentListNormalNew: function() {
@@ -199,6 +207,7 @@ Meteor.methods({
             pause: false,
             added: 0,
             premium: false,
+            deleted: false,
             $where: "this.rides - this.added > 1"
         }, {
             sort: {
@@ -206,7 +215,8 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId, dayStart);
+                var jc = jobcount(ordr, count, adderId, dayStart);
+                count = count - jc;
             }
         });
 
@@ -218,6 +228,7 @@ Meteor.methods({
             },
             done: false,
             pause: false,
+            deleted: false,
             added: {
                 $gt: 0
             },
@@ -229,7 +240,8 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId, dayStart);
+                var jc = jobcount(ordr, count, adderId, dayStart);
+                count = count - jc;
             }
         });
 
@@ -241,6 +253,7 @@ Meteor.methods({
             },
             done: false,
             pause: false,
+            deleted: false,
             $where: "this.rides - this.added === 1"
         }, {
             sort: {
@@ -248,7 +261,8 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId, dayStart);
+                var jc = jobcount(ordr, count, adderId, dayStart);
+                count = count - jc;
             }
         });
         //code repeat if all done for first round
@@ -262,6 +276,7 @@ Meteor.methods({
             pause: false,
             premium: true,
             runStatus: false,
+            deleted: false,
             $where: "this.rides - this.added -2 > 1"
         }, {
             sort: {
@@ -269,7 +284,8 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId, dayStart);
+                var jc = jobcount(ordr, count, adderId, dayStart);
+                count = count - jc;
             }
         });
 
@@ -283,6 +299,7 @@ Meteor.methods({
             pause: false,
             premium: false,
             runStatus: false,
+            deleted: false,
             $where: "this.rides - this.added - 2 > 1"
         }, {
             sort: {
@@ -290,7 +307,8 @@ Meteor.methods({
             }
         }).map(function(ordr) {
             if (count > 0) {
-                count = count - jobcount(ordr, count, adderId, dayStart);
+                var jc = jobcount(ordr, count, adderId, dayStart);
+                count = count - jc;
             }
         });
     }

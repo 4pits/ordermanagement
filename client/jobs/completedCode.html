@@ -1,40 +1,37 @@
 <template name="completedCode">
-    <tr class="{{#if done}} success{{/if}}">
-      <td>{{formatDate createdAt}}</td>
-      <td>{{formatDate updatedAt}}</td>
-<td>{{timeTaken}}</td>
-        {{#if isInRole 'admin'}}
-            <td>
-                {{addedBy}}
-            </td>
-        {{/if}}
+    <div class="panel {{#if paid}} panel-success {{else}} panel-primary{{/if}}">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{count}}
+                ride
+                {{code}} <small>{{#if paid}}
+                  Paid
+                {{/if}}
+                {{#if isInRole 'admin'}}
+                  to >>  {{addedBy}}
+                {{/if}}
+              </small> </h3>
 
-        <td>{{count}} ride {{code}}</td>
-        {{#if isInRole 'admin'}}
-            <td>
-                <button class="removeWork btn btn-default">Remove</button>
-            </td>
-            {{/if}}
-        <td>
-            {{#unless done}}
-                <button class="workDone btn btn-default">Done</button>
-
-            {{else}}
-                <p>Added</p>
-            {{/unless}}
-        </td>
-        <td>
+        </div>
+        <div class="panel-body">
           {{#if paid}}
-              <p>Paid</p>
+          <b>Paid At:</b>
+          {{formatDate updatedAt}}
           {{else}}
-          {{#if isInRole 'admin'}}
-            <button class="pay-now btn btn-default">Pay</button>
-          {{else}}
-            <p class="lead">____</p>
+          <b>Done At:</b>
+          {{formatDate updatedAt}}
           {{/if}}
+          <br>
+          <b>Notes :</b>{{notes}} <br>
+            {{#if isInRole 'admin'}}
+                <div class="btn-group" role="group" aria-label="...">
+                    {{#unless paid}}
+                        <button class="removeWork btn btn-default">Remove</button>
+                        <button class="pay-now btn btn-default">Pay</button>
+                    {{/unless}}
+                </div>
+            {{/if}}
 
-          {{/if}}
-        </td>
+        </div>
+    </div>
 
-    </tr>
 </template>

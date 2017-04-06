@@ -114,11 +114,12 @@ Template.runningCode.events({
         }
     },
     "click .workDone": function() {
+        console.log('clicked');
         var mins = parseInt((new Date() - this.createdAt) / (1000 * 60));
         if (mins > 10) {
-            var result = confirm("Ride add ho gaya? update de diya? Jab ho jaye tab OK pe click karna, nahi to Cancel.");
-            if (result) {
-                Meteor.call('jobDone', this._id);
+            var notes = prompt("Naam bata do naye account ka, jisme code use kiya hai, kabhi kabhi ride add nahi ho raha, usko track karna hai.");
+            if (notes) {
+                Meteor.call('jobDone', this._id, notes);
                 Meteor.call('updateRide', this.orderId, this.count, (error) => {
                     if (error) {
                         alert(error.error);
