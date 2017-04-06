@@ -20,7 +20,6 @@ var idsFirstJob = function(dayStart) {
 var idsSecondJob = function(dayStart) {
     ids = [];
     var dt = dayStart;
-    dt.setHours(dt.getHours() - 6);
     Jobs.find({
         deleted: false,
         $or: [{
@@ -53,7 +52,6 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     //  console.log('J1 ' + countJ);
     //don't allow to get it added by any person in within 6 hours.
     var ud = dayStart;
-    ud.setHours(ud.getHours() - 4);
     countJ += Jobs.find({
         orderId: ordr._id,
         done: true,
