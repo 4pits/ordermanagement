@@ -39,7 +39,7 @@ var idsSecondJob = function(dayStart) {
 };
 
 var jobcount = function(ordr, count, adderId, dayStart) {
-    var jobcount = 1;
+    var jobcount = 0;
     //don't allow to get added by same person in same day
     var countJ = Jobs.find({
         adderId: adderId,
@@ -67,6 +67,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     });
     console.log(countJ);
     if (countJ === 0) {
+        jobcount = 1;
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
         Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error, result) => {
             if (error) {
