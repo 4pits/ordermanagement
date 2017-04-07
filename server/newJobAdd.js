@@ -49,19 +49,21 @@ var jobcount = function(ordr, count, adderId, dayStart) {
             $gte: dayStart
         }
     }).count();
-    //  console.log('J1 ' + countJ);
-    //don't allow to get it added by any person in within 6 hours.
-    var ud = dayStart;
-    countJ += Jobs.find({
+    //    console.log('J1 ' + countJ);
+    //don't allow to get it added by any person in within 4 hours.
+    Jobs.find({
         orderId: ordr._id,
         done: true,
         deleted: false,
         paid: false,
         updatedAt: {
-            $gte: ud
+            $gte: dayStart
         }
-    }).count();
-    //  console.log(countJ);
+    }).map(function(jb) {
+        var ud = new Date() - jb.updatedAt;
+        if (ud < 1000 * 60 * 60 * 4) countJ++;
+    });
+    //    console.log(countJ);
     if (countJ === 0) {
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
         Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error, result) => {
