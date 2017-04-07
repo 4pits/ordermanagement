@@ -60,25 +60,7 @@ Template.addingList.helpers({
     runningCountNotZero: function() {
         //    console.log(myride());
         return runningRideCount() > 0;
-    },
-    allowedRides: function() {
-        var id = Meteor.userId();
-
-        if (Roles.userIsInRole(id, 'two-ride-seller')) {
-            return 2;
-        } else if (Roles.userIsInRole(id, 'ten-ride-seller')) {
-            return 10;
-        } else if (Roles.userIsInRole(id, 'twenty-ride-seller')) {
-            return 20;
-        } else if (Roles.userIsInRole(id, 'premium-seller')) {
-            return 100;
-        } else if (Roles.userIsInRole(id, 'admin')) {
-            return 1000;
-        }
-        return 0;
     }
-
-
 });
 
 
