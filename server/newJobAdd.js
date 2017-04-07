@@ -62,6 +62,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     }).map(function(jb) {
         var ud = new Date() - jb.updatedAt;
         if (ud < 1000 * 60 * 60 * 4) countJ++;
+        console.log(ud);
     });
     //    console.log(countJ);
     if (countJ === 0) {
