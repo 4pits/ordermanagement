@@ -81,7 +81,7 @@ var yesterday = function() {
     yd.setHours(0);
     yd.setMinutes(0);
     yd.setSeconds(0);
-    yd.setDate(yd.getDate() - 1);
+    yd.setDate(yd.getDate() - 2);
     return yd;
 };
 
