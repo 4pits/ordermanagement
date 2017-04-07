@@ -51,7 +51,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     }).count();
     //    console.log('J1 ' + countJ);
     //don't allow to get it added by any person in within 4 hours.
-    console.log(ordr);
+    console.log(ordr.code);
     Jobs.find({
         orderId: ordr._id,
         done: true,
