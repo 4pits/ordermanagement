@@ -65,7 +65,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
         if (ud < 1000 * 60 * 60 * 4) countJ++;
         console.log(ud);
     });
-    //    console.log(countJ);
+    console.log(countJ);
     if (countJ === 0) {
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
         Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error, result) => {
