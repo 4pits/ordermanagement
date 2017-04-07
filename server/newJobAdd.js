@@ -70,12 +70,12 @@ var jobcount = function(ordr, count, adderId, dayStart) {
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
         Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error, result) => {
             if (error) {
-                //        console.log(error);
+                console.log(error);
                 jobcount = 0;
             }
             if (result) {
-                //          console.log("result " + result);
-                //          console.log(jobcount);
+                console.log("result " + result);
+                console.log(jobcount);
                 //return jobcount;
             }
         });
