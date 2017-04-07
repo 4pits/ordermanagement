@@ -87,7 +87,7 @@ var allowedRides = function(id) {
     } else if (Roles.userIsInRole(id, 'twenty-ride-seller')) {
         return 20;
     } else if (Roles.userIsInRole(id, 'premium-seller')) {
-        return 100;
+        return 50;
     } else if (Roles.userIsInRole(id, 'admin')) {
         return 1000;
     }
@@ -95,7 +95,7 @@ var allowedRides = function(id) {
 };
 var sellerDailyLimit = function(id) {
     if (Roles.userIsInRole(id, 'two-ride-seller')) {
-        return 20;
+        return 10;
     } else if (Roles.userIsInRole(id, 'ten-ride-seller')) {
         return 30;
     } else if (Roles.userIsInRole(id, 'twenty-ride-seller')) {
