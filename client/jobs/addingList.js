@@ -117,7 +117,7 @@ Template.runningCode.events({
         console.log('clicked');
         var mins = parseInt((new Date() - this.createdAt) / (1000 * 60));
         if (mins > 10) {
-            var notes = prompt("Naam bata do naye account ka, jisme code use kiya hai, kabhi kabhi ride add nahi ho raha, usko track karna hai.");
+            var notes = prompt("jiske account me mera code use kiye ho uska naam likhna hai ek ya do jitne bhi add kiye ho.");
             if (notes) {
                 Meteor.call('jobDone', this._id, notes);
                 Meteor.call('updateRide', this.orderId, this.count, (error) => {
@@ -140,4 +140,4 @@ Template.runningCode.helpers({
             _id: this.adderId
         }).emails[0].address;
     }
-});
+});;
