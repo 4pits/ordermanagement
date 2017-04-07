@@ -51,7 +51,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     }).count();
     //    console.log('J1 ' + countJ);
     //don't allow to get it added by any person in within 4 hours.
-    console.log(ordr.code);
+    //  console.log(ordr.code);
     Jobs.find({
         orderId: ordr._id,
         done: true,
@@ -63,20 +63,20 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     }).map(function(jb) {
         var ud = new Date() - jb.updatedAt;
         if (ud < 1000 * 60 * 60 * 4) countJ++;
-        console.log(ud);
+        //    console.log(ud);
     });
-    console.log(countJ);
+    //  console.log(countJ);
     if (countJ === 0) {
         jobcount = 1;
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
         Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error, result) => {
             if (error) {
-                console.log(error);
+                //    console.log(error);
                 jobcount = 0;
             }
             if (result) {
-                console.log("result " + result);
-                console.log(jobcount);
+                //    console.log("result " + result);
+                //    console.log(jobcount);
                 //return jobcount;
             }
         });
