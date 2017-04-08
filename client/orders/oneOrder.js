@@ -34,6 +34,10 @@ Template.oneOrder.helpers({
     buyers: function() {
         return Meteor.users.find({
             roles: 'buyer'
+        }, {
+            sort: {
+                createdAt: -1
+            }
         });
     },
     email() {
