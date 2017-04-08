@@ -12,49 +12,26 @@ Template.addingList.onRendered(function() {
 });
 
 var runningRideCount = function() {
-    var id = Meteor.userId();
     var total = 0;
-    if (Roles.userIsInRole(id, 'admin')) {
-        Jobs.find({
-            done: false
-        }).map(function(doc) {
-            total += doc.count;
-        });
-    } else if (Roles.userIsInRole(id, 'seller')) {
-        Jobs.find({
-            done: false,
-            adderId: id
-        }).map(function(doc) {
-            total += doc.count;
-        });
-    }
+
+    Jobs.find({
+        done: false
+    }).map(function(doc) {
+        total += doc.count;
+    });
     return total;
 };
 
 Template.addingList.helpers({
 
     runningList: function() {
-        //    console.log(Meteor.userId());
-        var id = Meteor.userId();
-        if (Roles.userIsInRole(id, 'admin')) {
-            return Jobs.find({
-                done: false
-            }, {
-                sort: {
-                    createdAt: 1
-                }
-            });
-        } else if (Roles.userIsInRole(id, 'seller')) {
-            return Jobs.find({
-                adderId: id,
-                done: false
-            }, {
-                sort: {
-                    createdAt: 1
-                }
-            });
-        }
-
+        return Jobs.find({
+            done: false
+        }, {
+            sort: {
+                createdAt: 1
+            }
+        });
     },
 
     runningRides: runningRideCount,

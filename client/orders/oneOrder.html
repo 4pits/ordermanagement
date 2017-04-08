@@ -5,6 +5,12 @@
             {{order.name}}</p>
         <table class="table">
             <tbody>
+              {{#if order.done}}
+              <tr class="success">
+                <td>Completed Date:</td>
+                <td>{{formatDate order.updatedAt}}</td>
+              </tr>
+              {{/if}}
                 <tr>
                     <td>Uber Code :</td>
                     <td>{{order.code}}</td>
@@ -80,8 +86,7 @@
                 {{#each jobsList}}
                     <tr class="{{#if done}} success {{/if}}">
                         <td>
-                            {{#if updatedAt}}{{formatDate updatedAt}}
-                            {{else}}{{formatDate createdAt}}{{/if}}
+                            {{formatDate createdAt}}
                         </td>
                         <td>{{count}}</td>
                         {{#if isInRole 'admin'}}

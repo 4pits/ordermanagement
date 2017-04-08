@@ -1,13 +1,36 @@
-Seller = new Mongo.Collection("seller");
+UserDetails = new Mongo.Collection("userDetails");
 
-Seller.schema = new SimpleSchema({
+UserDetails.schema = new SimpleSchema({
     userId: {
         type: String
     },
-    rate: {
+    role: {
         type: Number
     }
-
 });
 
-Seller.attachSchema(Seller.schema);
+UserDetails.attachSchema(UserDetails.schema);
+
+UserDetails.allow({
+    insert: function() {
+        return false;
+    },
+    update: function() {
+        return false;
+    },
+    remove: function() {
+        return false;
+    }
+});
+
+UserDetails.deny({
+    insert: function() {
+        return true;
+    },
+    update: function() {
+        return true;
+    },
+    remove: function() {
+        return true;
+    }
+});

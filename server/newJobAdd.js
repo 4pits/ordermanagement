@@ -55,7 +55,6 @@ var jobcount = function(ordr, count, adderId, dayStart) {
         orderId: ordr._id,
         done: true,
         deleted: false,
-        paid: false,
         updatedAt: {
             $gte: dayStart
         }
@@ -91,7 +90,7 @@ var allowedRides = function(id) {
     } else if (Roles.userIsInRole(id, 'twenty-ride-seller')) {
         return 20;
     } else if (Roles.userIsInRole(id, 'premium-seller')) {
-        return 50;
+        return 100;
     } else if (Roles.userIsInRole(id, 'admin')) {
         return 1000;
     }

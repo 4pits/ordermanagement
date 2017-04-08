@@ -65,5 +65,8 @@ Template.dashboard.events({
     },
     'click .updateDB': function() {
         Meteor.call('updateDB');
+    },
+    'click .gitpull': function() {
+        Meteor.call('gitPull');
     }
 });

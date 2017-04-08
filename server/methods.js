@@ -83,6 +83,17 @@ Meteor.methods({
                 multi: true
             });
         }
+    },
+    gitPull: function() {
+        var child_process = Npm.require('child_process');
+        //    console.log(child_process);
+        var ls = child_process.spawn("ls");
+        ls.stdout.setEncoding("utf8");
+        ls.stdout.on("data", function(data) {
+            process.stdout.write(data);
+            console.log(data);
+        });
+        //console.log(ls);
     }
 
 });
