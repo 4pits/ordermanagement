@@ -19,12 +19,11 @@ var idsFirstJob = function(dayStart) {
 // second job will be assigned after 16 hours of ending last first/second job.
 var idsSecondJob = function(dayStart) {
     ids = [];
-    var dt = dayStart;
     Jobs.find({
         deleted: false,
         $or: [{
             createdAt: {
-                $gt: dt
+                $gt: dayStart
             }
         }, {
             done: false
@@ -49,10 +48,11 @@ var jobcount = function(ordr, count, adderId, dayStart) {
             $gte: dayStart
         }
     }).count();
-    //    console.log('J1 ' + countJ);
+    //console.log('J1 ' + countJ);
     //don't allow to get it added by any person in within 4 hours.
     //  console.log(ordr.code);
     Jobs.find({
+        adderId: adderId,
         orderId: ordr._id,
         done: true,
         deleted: false,
@@ -65,7 +65,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
         if (ud < 1000 * 60 * 60 * 4) countJ++;
         //    console.log(ud);
     });
-    //  console.log(countJ);
+    //  console.log('j2 ' + countJ);
     if (countJ === 0) {
         jobcount = 1;
         if (ordr.rides - ordr.added > 1 && count > 1) jobcount = 2;
@@ -149,15 +149,15 @@ Meteor.methods({
         if (!dayStart || !adderId) return; // return if undefined
         //    console.log('count: ' + count);
         if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
-        console.log('allowed ' + allowedRides(adderId));
-        console.log('userrun ' + userRunningRides(adderId));
-        console.log('limit ' + sellerDailyLimit(adderId));
-        console.log('userdailyrun ' + userDailyRunningRidesCount(adderId, dayStart));
+        //    console.log('allowed ' + allowedRides(adderId));
+        //    console.log('userrun ' + userRunningRides(adderId));
+        //    console.log('limit ' + sellerDailyLimit(adderId));
+        //    console.log('userdailyrun ' + userDailyRunningRidesCount(adderId, dayStart));
         if (allowedRides(adderId) <= userRunningRides(adderId)) return;
         if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
         if (count < 1) return;
-        console.log('adding now');
-        console.log(idsFirstJob(dayStart));
+        //    console.log('adding now');
+        //    console.log(idsFirstJob(dayStart));
         Orders.find({
             _id: {
                 $nin: idsFirstJob(dayStart)
@@ -317,4 +317,4 @@ Meteor.methods({
             }
         });
     }
-});
+});;
