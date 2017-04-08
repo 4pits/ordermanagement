@@ -52,7 +52,6 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     //don't allow to get it added by any person in within 4 hours.
     //  console.log(ordr.code);
     Jobs.find({
-        adderId: adderId,
         orderId: ordr._id,
         done: true,
         deleted: false,
@@ -62,7 +61,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
         }
     }).map(function(jb) {
         var ud = new Date() - jb.updatedAt;
-        if (ud < 1000 * 60 * 60 * 4) countJ++;
+        if (ud < 1000 * 60 * 60 * 2) countJ++;
         //    console.log(ud);
     });
     //  console.log('j2 ' + countJ);
