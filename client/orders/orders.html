@@ -2,7 +2,7 @@
 <div class="container">
   <h3>Orders</h3>
   <div class="alert alert-info" role="alert">Wanna add new order. Click "New Order" button. Please make sure you have already paid for the number of rides.</div>
-    <div id="order-insert">  
+    <div id="order-insert">
         {{#if insertMode}}
             <button id="showHide" class="btn btn-default">Close Order Form</button>
         {{else}}
@@ -40,7 +40,7 @@
         {{#if isInRole 'admin'}}
           <h4>New Orders #{{newOrderCount}}</h4>
           <h4>Running Orders #{{runningOrderCount}}</h4>
-        <h4>All added #{{allAddedCount}}</h4>
+        <a href="#all-added-orders"><h4>All added #{{allAddedCount}}</h4></a>
         {{/if}}
         <table class="table table-hover table-condensed">
             <thead><th>Status</th>
@@ -77,6 +77,9 @@
                     </tr>
 
                 {{/each}}
+                <tr id='all-added-orders'>
+
+                </tr>
                 {{#each allAddedOrders}}
                     {{> order}}
                 {{else}}
