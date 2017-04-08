@@ -1,3 +1,11 @@
+Template.orders.onCreated(function() {
+    this.autorun(() => {
+        var id = FlowRouter.getParam('id');
+        if (!id) id = Meteor.userId();
+        this.subscribe("orders", id);
+    });
+});
+
 Template.orders.helpers({
     newOrders: function() {
         return Orders.find({
@@ -93,11 +101,6 @@ Template.orders.helpers({
 
 });
 
-Template.orders.onCreated(function() {
-    this.autorun(() => {
-        this.subscribe("orders");
-    });
-});
 
 
 Template.orders.events({

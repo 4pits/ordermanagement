@@ -7,13 +7,38 @@ FlowRouter.route('/', {
     }
 });
 
-// Home Page
+// Dashboard Page
 FlowRouter.route('/dashboard', {
     name: 'dashboard',
     action() {
         BlazeLayout.render("AppLayout", {
             main: "Dashboard"
         });
+    }
+});
+//user profile
+FlowRouter.route('/profile/:id', {
+    name: 'profile',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "profile"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+    }
+});
+FlowRouter.route('/orders/:id', {
+    name: 'orders-users',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "Orders"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
     }
 });
 
@@ -54,10 +79,35 @@ FlowRouter.route('/completed-orders', {
         }
     }
 });
+FlowRouter.route('/completed-orders/:id', {
+    name: 'completd-orders-users',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "CompletedOrders"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+    }
+});
 
 
-FlowRouter.route('/jobs', {
+FlowRouter.route('/jobs/:id', {
     name: 'jobs',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "Jobs"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+
+    }
+});
+FlowRouter.route('/jobs', {
+    name: 'jobs-user',
     action() {
         if (Meteor.userId()) {
             BlazeLayout.render("AppLayout", {
@@ -72,6 +122,19 @@ FlowRouter.route('/jobs', {
 
 FlowRouter.route('/completed-jobs', {
     name: 'completed-jobs',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "CompletedJobs"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+
+    }
+});
+FlowRouter.route('/completed-jobs/:id', {
+    name: 'completed-jobs-users',
     action() {
         if (Meteor.userId()) {
             BlazeLayout.render("AppLayout", {

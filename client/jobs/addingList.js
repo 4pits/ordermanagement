@@ -1,6 +1,8 @@
 Template.addingList.onCreated(function() {
     this.autorun(() => {
-        this.subscribe("jobsRunning");
+        var id = FlowRouter.getParam('id');
+        if (!id) id = Meteor.userId();
+        this.subscribe("jobsRunning", id);
     });
 
 });

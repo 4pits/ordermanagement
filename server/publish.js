@@ -1,5 +1,4 @@
-Meteor.publish("orders", function(argument) {
-    var id = this.userId;
+Meteor.publish("orders", function(id) {
     if (Roles.userIsInRole(id, 'admin'))
         return Orders.find({
             done: false,
@@ -28,8 +27,7 @@ Meteor.publish("orders", function(argument) {
 
 });
 
-Meteor.publish("completedOrders", function(argument) {
-    var id = this.userId;
+Meteor.publish("completedOrders", function(id) {
     if (Roles.userIsInRole(id, 'admin'))
         return Orders.find({
             deleted: false,
@@ -58,19 +56,18 @@ Meteor.publish("completedOrders", function(argument) {
 
 });
 
-Meteor.publish("jobsRunning", function() {
+Meteor.publish("jobsRunning", function(userId) {
     var d = new Date();
     d.setHours(d.getHours() - 20);
-    var id = this.userId;
-    if (Roles.userIsInRole(id, 'admin')) {
+    if (Roles.userIsInRole(userId, 'admin')) {
         return Jobs.find({
             done: false,
             deleted: false,
         });
-    } else if (Roles.userIsInRole(id, 'seller')) {
+    } else if (Roles.userIsInRole(userId, 'seller')) {
         return Jobs.find({
             done: false,
-            adderId: id,
+            adderId: userId,
             deleted: false
         });
     }
@@ -85,8 +82,7 @@ var yesterday = function() {
     return yd;
 };
 
-Meteor.publish("jobsCompletedRecently", function() {
-    var id = this.userId;
+Meteor.publish("jobsCompletedRecently", function(id) {
     if (Roles.userIsInRole(id, 'admin')) {
         return Jobs.find({
             done: true,
@@ -108,9 +104,8 @@ Meteor.publish("jobsCompletedRecently", function() {
 
 });
 
-Meteor.publish("jobsCompletedOld", function() {
+Meteor.publish("jobsCompletedOld", function(id) {
     //    console.log('server date time: ' + dt);
-    var id = this.userId;
     if (Roles.userIsInRole(id, 'admin')) {
         return Jobs.find({
             done: true,
@@ -155,6 +150,14 @@ Meteor.publish('allSellers', function() {
         }, options);
     }
 });
+
+Meteor.publish('profile', function(id) {
+    return Meteor.users.find({
+        _id: id
+    });
+
+});
+
 
 
 Meteor.publish('oneOrder', function(id) {

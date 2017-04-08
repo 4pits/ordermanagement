@@ -1,6 +1,8 @@
 Template.oldJobs.onCreated(function() {
     this.autorun(() => {
-        this.subscribe("jobsCompletedOld");
+        var id = FlowRouter.getParam('id');
+        if (!id) id = Meteor.userId();
+        this.subscribe("jobsCompletedOld", id);
     });
 
 });

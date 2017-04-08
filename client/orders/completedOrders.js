@@ -1,6 +1,8 @@
 Template.completedOrders.onCreated(function() {
     this.autorun(() => {
-        this.subscribe("completedOrders");
+        var id = FlowRouter.getParam('id');
+        if (!id) id = Meteor.userId();
+        this.subscribe("completedOrders", id);
     });
 
 });

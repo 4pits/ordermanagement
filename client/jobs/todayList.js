@@ -1,6 +1,8 @@
 Template.todayList.onCreated(function() {
     this.autorun(() => {
-        this.subscribe("jobsCompletedRecently");
+        var id = FlowRouter.getParam('id');
+        if (!id) id = Meteor.userId();
+        this.subscribe("jobsCompletedRecently", id);
     });
 
 });

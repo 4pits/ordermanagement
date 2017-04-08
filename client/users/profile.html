@@ -1,0 +1,13 @@
+<template name="profile">
+  <h1>Profile</h1> {{id}} <br>
+  {{#if isBuyer}}
+  <h1>Buyer</h1>
+  {{/if}}
+  {{#if isSeller}}
+    <h1>Seller</h1>
+    Running jobCount: {{jobCount}}
+  {{/if}}
+  {{#if isAdmin }}
+    <h1>admin</h1>
+  {{/if}}
+</template>

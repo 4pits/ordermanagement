@@ -19,8 +19,8 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Name <br>Email </th>
-                        <th>Created At</th>
+                        <th>Name</th>
+
                         <th>Roles</th>
                         <th>Details</th>
                     </tr>
@@ -54,8 +54,8 @@
 </template>
 <template name="user">
     <tr>
-        <td>{{profile.firstName}} <br> {{userEmail}} </td>
-        <td>{{dateFormat createdAt}}</td>
+        <td><a href="/profile/{{_id}}">{{profile.firstName}} <br> {{userEmail}} <br> </a>
+        {{dateFormat createdAt}} </td>
         <td>
             <p>{{roles}}</p>
             <div class="user-edit">
@@ -69,13 +69,15 @@
                 </div>
             </div>
         </td>
-        <td>
-            {{#if isBuyer}}
-                <a href="/orders">User Order</a>
-            {{/if}}
-            {{#if isSeller}}
-                <a href="/jobs">User Jobs</a>
-            {{/if}}
+        <td> {{#if isSeller}}
+            <a href="/jobs/{{_id}}">Jobs</a> <br>
+            <a href="/completed-jobs/{{_id}}">Completed Jobs</a>
+        {{/if}}
+        {{#if isBuyer}}
+          <a href="/orders/{{_id}}">Orders</a> <br>
+          <a href="/completed-orders/{{_id}}">Completed Orders</a>
+        {{/if}}
+
         </td>
     </tr>
 </template>
