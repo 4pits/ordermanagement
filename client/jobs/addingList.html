@@ -22,12 +22,7 @@
             <button class="btn btn-primary btn-lg btn-copy-link" name="button" data-clipboard-text="{{#each runningList}}{{count}} ride {{code}}
 {{/each}}"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy all code</button>
         {{/if}}
-
-        {{#if showmorecodebutton runningRides}}
             <button type="button" class="addCode btn btn-primary btn-lg" name="showCode">Show New Codes</button><br>
-        {{else}}
-            <h4>Complete running job to get more code.</h4>
-        {{/if}}
 <br>
 
     {{#each runningList}}
