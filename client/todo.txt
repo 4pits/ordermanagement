@@ -5,3 +5,6 @@ todo list
 3. create dashboard/summary page
 5. optimize for mobile, login page and sing up page.
 6. add reset/forgot pass link
+
+1. track for each seller, how much paid, how much yet to pay for added/pending till now, how much running
+2. overall summary, cost for each ride addition

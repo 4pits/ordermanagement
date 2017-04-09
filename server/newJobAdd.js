@@ -30,8 +30,18 @@ var idsSecondJob = function(dayStart) {
         }]
     }).map(function(o) {
         var assignedcount = Jobs.find({
-            orderId: o.orderId
+            orderId: o.orderId,
+            deleted: false,
+            $or: [{
+                createdAt: {
+                    $gt: dayStart
+                }
+            }, {
+                done: false
+            }]
         }).count();
+        //    console.log('assignedcount: ' + assignedcount);
+        //    console.log(o.code);
         if (assignedcount > 1) ids.push(o.orderId);
     });
     return ids;
@@ -155,7 +165,11 @@ Meteor.methods({
         if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
         if (count < 1) return;
         //    console.log('adding now');
+        // console.log('ids1');
         //    console.log(idsFirstJob(dayStart));
+        // console.log('ids2');
+        // console.log(idsSecondJob(dayStart));
+        //    console.log('1: ' + count);
         Orders.find({
             _id: {
                 $nin: idsFirstJob(dayStart)
@@ -177,6 +191,7 @@ Meteor.methods({
             }
         });
         //currentListPremium
+        //    console.log('2: ' + count);
         if (count < 1) return;
         Orders.find({
             _id: {
@@ -201,6 +216,7 @@ Meteor.methods({
             }
         });
         //    currentListNormalNew: function() {
+        //      console.log('3: ' + count);
         if (count < 1) return;
         Orders.find({
             _id: {
@@ -224,6 +240,7 @@ Meteor.methods({
         });
 
         //  currentListNormal
+        //    console.log('4: ' + count);
         if (count < 1) return;
         Orders.find({
             _id: {
@@ -249,6 +266,7 @@ Meteor.methods({
         });
 
         //      currentListOneRide
+        //    console.log('5: ' + count);
         if (count < 1) return;
         Orders.find({
             _id: {
@@ -270,6 +288,7 @@ Meteor.methods({
         });
         //code repeat if all done for first round
         //currentListPremium
+        //      console.log('6: ' + count);
         if (count < 1) return;
         Orders.find({
             _id: {
@@ -293,6 +312,7 @@ Meteor.methods({
         });
 
         //  currentListNormal
+        //      console.log('7: ' + count);
         if (count < 1) return;
         Orders.find({
             _id: {
@@ -315,4 +335,4 @@ Meteor.methods({
             }
         });
     }
-});;
+});
