@@ -82,7 +82,8 @@ Meteor.publish('jobsCount', function(id) {
         Counts.publish(this, 'jobsUnpaid', Jobs.find({
             done: true,
             deleted: false,
-            paid: false
+            paid: false,
+            adderId: id
         }), {
             countFromField: 'count'
         });
