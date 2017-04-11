@@ -9,5 +9,25 @@
   {{/if}}
   {{#if isAdmin }}
     <h1>admin</h1>
+    <h3>Seller Details add/update</h3>
+    
+    <form class="form-inline">
+      <div class="form-group">
+        <label for="Limit">Limit</label>
+        <input type="number" class="form-control" id="limit" placeholder="2">
+      </div>
+      <div class="form-group">
+        <label for="perdaylimit">Per Day Limit</label>
+        <input type="number" class="form-control" id="perdaylimit" placeholder="10">
+      </div>
+      <div class="form-group">
+        <label for="rate">Rate</label>
+        <input type="number" class="form-control" id="rate" placeholder="25">
+      </div>
+
+      <button type="submit" class="btn btn-default">Add/Update</button>
+    </form>
+
+
   {{/if}}
 </template>

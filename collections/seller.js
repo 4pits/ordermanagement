@@ -1,17 +1,23 @@
-UserDetails = new Mongo.Collection("userDetails");
+Sellers = new Mongo.Collection("sellers");
 
-UserDetails.schema = new SimpleSchema({
+Sellers.schema = new SimpleSchema({
     userId: {
         type: String
     },
-    role: {
+    limit: {
+        type: Number
+    },
+    perDayLimit: {
+        type: Number
+    },
+    ratePerRide: {
         type: Number
     }
 });
 
-UserDetails.attachSchema(UserDetails.schema);
+Sellers.attachSchema(Sellers.schema);
 
-UserDetails.allow({
+Sellers.allow({
     insert: function() {
         return false;
     },
@@ -23,7 +29,7 @@ UserDetails.allow({
     }
 });
 
-UserDetails.deny({
+Sellers.deny({
     insert: function() {
         return true;
     },
@@ -32,5 +38,32 @@ UserDetails.deny({
     },
     remove: function() {
         return true;
+    }
+});
+
+Meteor.methods({
+    "seller.insert.update": function(userId, limit, perDayLimit, rate) {
+        var seller = Sellers.findOne({
+            userId: userId
+        });
+        console.log(seller);
+        if (seller) {
+            Sellers.update({
+                userId: userId
+            }, {
+                $set: {
+                    limit: limit,
+                    perDayLimit: perDayLimit,
+                    rate: rate
+                }
+            })
+        } else {
+            Sellers.insert({
+                userId: userId,
+                limit: limit,
+                perDayLimit: perDayLimit,
+                rate: rate
+            });
+        }
     }
 });

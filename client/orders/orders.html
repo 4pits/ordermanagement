@@ -19,8 +19,9 @@
 
         {{#if isInRole 'admin'}}
             {{#if showEditOrder}}
-                <div >
-                    <i class="close-order-form fa fa-times" aria-hidden="true"></i>
+                <div ><br>
+                  <button type="button" class="close-order-form btn btn-primary btn-lg" name="button">Close Edit Form  <i class=" fa fa-times" aria-hidden="true"></i></button>
+
                     {{#autoForm id="afUpdateDemo" type=formType collection="Orders" doc=selectedOrderDoc autosave=autoSaveMode}}
                         {{> afQuickField name="name"}}
                         {{> afQuickField name="code"}}

@@ -3,7 +3,7 @@ Orders = new Mongo.Collection("orders");
 Orders.schema = new SimpleSchema({
     name: {
         type: String,
-        label: "Buyer Name",
+        label: "Buyer/Paypal Name",
         optional: true,
         max: 100
     },
@@ -16,19 +16,20 @@ Orders.schema = new SimpleSchema({
     },
     txnId: {
         type: String,
-        label: "Paypal Transaction Id",
+        label: "Paypal Transaction Id / Reciept No.",
         optional: true,
         max: 100
     },
     paidAmount: {
         type: Number,
-        label: "Paid Amount",
+        label: "Paid Amount in $(USD)",
+        decimal: true,
         min: 5,
         optional: true
     },
     code: {
         type: String,
-        label: "Uber Code",
+        label: "Your own invite code from Uber app",
         min: 4
     },
     source: {
@@ -70,7 +71,7 @@ Orders.schema = new SimpleSchema({
         type: String,
         label: "Comments",
         optional: true,
-        defaultValue: 'please write comments if any?',
+        defaultValue: 'Comments if any?',
         max: 1000,
         autoform: {
             rows: 3

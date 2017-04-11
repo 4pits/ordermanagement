@@ -11,11 +11,31 @@ FlowRouter.route('/', {
 FlowRouter.route('/dashboard', {
     name: 'dashboard',
     action() {
-        BlazeLayout.render("AppLayout", {
-            main: "Dashboard"
-        });
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "Dashboard"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+
     }
 });
+// Dashboard Page
+FlowRouter.route('/dashboard/:id', {
+    name: 'user-dashboard',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "Dashboard"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+
+    }
+});
+
 //user profile
 FlowRouter.route('/profile/:id', {
     name: 'profile',

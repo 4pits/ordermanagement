@@ -1,35 +1,120 @@
-Meteor.publish('jobsCount', function() {
-    Counts.publish(this, 'jobsC', Jobs.find({
-        deleted: false
-    }), {
-        countFromField: 'count'
-    });
-    Counts.publish(this, 'jobsDone', Jobs.find({
-        done: true,
-        deleted: false
-    }), {
-        countFromField: 'count'
-    });
-    Counts.publish(this, 'jobsRunning', Jobs.find({
-        deleted: false,
-        done: false
-    }), {
-        countFromField: 'count'
-    });
-    Counts.publish(this, 'jobsPaid', Jobs.find({
-        deleted: false,
-        paid: true
-    }), {
-        countFromField: 'count'
-    });
-    Counts.publish(this, 'jobsUnpaid', Jobs.find({
-        deleted: false,
-        paid: false
-    }), {
-        countFromField: 'count'
-    });
+Meteor.publish('jobsCount', function(id) {
+    if (Roles.userIsInRole(id, 'admin')) {
+        Counts.publish(this, 'jobsC', Jobs.find({
+            deleted: false
+        }), {
+            countFromField: 'count'
+        });
+
+    } else {
+        Counts.publish(this, 'jobsC', Jobs.find({
+            deleted: false,
+            adderId: id
+        }), {
+            countFromField: 'count'
+        });
+
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+        Counts.publish(this, 'jobsDone', Jobs.find({
+            done: true,
+            deleted: false
+        }), {
+            countFromField: 'count'
+        });
+
+    } else {
+        Counts.publish(this, 'jobsDone', Jobs.find({
+            done: true,
+            deleted: false,
+            adderId: id
+        }), {
+            countFromField: 'count'
+        });
+
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+        Counts.publish(this, 'jobsRunning', Jobs.find({
+            deleted: false,
+            done: false
+        }), {
+            countFromField: 'count'
+        });
+
+    } else {
+        Counts.publish(this, 'jobsRunning', Jobs.find({
+            deleted: false,
+            done: false,
+            adderId: id
+        }), {
+            countFromField: 'count'
+        });
+
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+        Counts.publish(this, 'jobsPaid', Jobs.find({
+            deleted: false,
+            done: true,
+            paid: true
+        }), {
+            countFromField: 'count'
+        });
+
+    } else {
+        Counts.publish(this, 'jobsPaid', Jobs.find({
+            deleted: false,
+            done: true,
+            paid: true,
+            adderId: id
+        }), {
+            countFromField: 'count'
+        });
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+        Counts.publish(this, 'jobsUnpaid', Jobs.find({
+            deleted: false,
+            done: true,
+            paid: false
+        }), {
+            countFromField: 'count'
+        });
+    } else {
+        Counts.publish(this, 'jobsUnpaid', Jobs.find({
+            done: true,
+            deleted: false,
+            paid: false
+        }), {
+            countFromField: 'count'
+        });
+    }
+
 });
-Meteor.publish('ordersCount', function() {
+Meteor.publish('ordersCount', function(id) {
+    if (Roles.userIsInRole(id, 'admin')) {
+
+    } else {
+
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+
+    } else {
+
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+
+    } else {
+
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+
+    } else {
+
+    }
+    if (Roles.userIsInRole(id, 'admin')) {
+
+    } else {
+
+    }
     Counts.publish(this, 'ordersC', Orders.find({
         deleted: false
     }));
@@ -74,7 +159,7 @@ Meteor.publish('ordersCount', function() {
 
 });
 
-Meteor.publish('userCount', function() {
+Meteor.publish('userCount', function(id) {
     Counts.publish(this, 'buyersCount', Meteor.users.find({
         roles: 'buyer'
     }));

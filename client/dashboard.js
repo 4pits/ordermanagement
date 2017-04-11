@@ -1,13 +1,38 @@
 Template.dashboard.onCreated(function() {
     this.autorun(() => {
-        this.subscribe("jobsCount");
-        this.subscribe("ordersCount");
-        this.subscribe("userCount");
+        var id = FlowRouter.getParam('id');
+        if (!id) id = Meteor.userId();
+        this.subscribe("jobsCount", id);
+        this.subscribe("ordersCount", id);
+        this.subscribe("userCount", id);
+        this.subscribe("profile", id);
     });
 
 });
 
 Template.dashboard.helpers({
+    isOnlyAdmin: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        return Roles.userIsInRole(userId, 'admin');
+    },
+    isAdminOrSeller: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        return Roles.userIsInRole(userId, ['seller', 'admin']);
+    },
+    isAdminOrBuyer: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        return Roles.userIsInRole(userId, 'buyer');
+    },
+
+    id: function() {
+        var id = FlowRouter.getParam('id');
+        if (!id) id = Meteor.userId();
+
+        return id;
+    },
     jobs: function() {
         return Counts.get('jobsC');
     },

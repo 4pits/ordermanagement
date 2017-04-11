@@ -1,15 +1,14 @@
 <template name="dashboard">
   <div class="container">
 
-  <h1>Dashboard</h1>
+  <h1>Dashboard</h1> {{id}}
+
+  {{#if isOnlyAdmin}}
+  <h1>Admin</h1>
   newRidesCount: {{newRidesCount}} <br>
   yesterdayRidesCount : {{yesterdayRidesCount}} <br>
   JOB: {{jobs}} <br>
   Orders: {{orders}} <br>
-  Job done: {{jobsDone}} <br>
-  Job running: {{jobsRunning}} <br>
-  jobsPaid : {{jobsPaid}} <br>
-  jobsUnpaid: {{jobsUnpaid}} <br>
   allRidesCount: {{allRidesCount}} <br>
   allAddedCount : {{allAddedCount}} <br>
   pendingRidesAll : {{pendingRidesAll}} <br>
@@ -18,6 +17,18 @@
   usersCount : {{usersCount}} <br>
   new users count : {{newUsersCount}} <br>
 
-  <button type="button" class="gitpull btn btn-default" name="button">Email test</button>
+  {{/if}}
+  {{#if isAdminOrSeller}}
+  <h1>Jobs</h1>
+  Job done: {{jobsDone}} <br>
+  Job running: {{jobsRunning}} <br>
+  jobsPaid : {{jobsPaid}} <br>
+  jobsUnpaid: {{jobsUnpaid}} <br>
+
+  {{/if}}
+  {{#if isAdminOrBuyer}}
+  <h1>Orders</h1>
+
+  {{/if}}
 </div>
 </template>
