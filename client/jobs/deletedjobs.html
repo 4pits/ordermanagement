@@ -17,25 +17,6 @@
       <div class="panel-body">
         <b>Started At:</b>
         {{formatDate createdAt}}
-        <br>
-        {{#if paid}}
-        <b>Paid At:</b>
-        {{formatDate updatedAt}}
-        {{else}}
-        <b>Done At:</b>
-        {{formatDate updatedAt}}
-        {{/if}}
-        <br>
-        <b>Notes :</b>{{notes}} <br>
-          {{#if isInRole 'admin'}}
-              <div class="btn-group" role="group" aria-label="...">
-                  {{#unless paid}}
-                      <button class="removeWork btn btn-danger">Remove</button>
-                      <button class="pay-now btn btn-default">Pay</button>
-                  {{/unless}}
-              </div>
-          {{/if}}
-
       </div>
   </div>
 {{else}}
