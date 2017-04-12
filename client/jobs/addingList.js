@@ -100,5 +100,14 @@ Template.runningCode.helpers({
         return Meteor.users.findOne({
             _id: this.adderId
         }).emails[0].address;
+    },
+    tooOld: function() {
+        var dt = new Date();
+        var createdAt = this.createdAt;
+        if (createdAt.getDate() < dt.getDate()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 });;

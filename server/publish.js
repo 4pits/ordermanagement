@@ -72,7 +72,6 @@ Meteor.publish("jobsRunning", function(userId) {
 
 });
 Meteor.publish("jobsDeleted", function(userId) {
-    console.log('server ' + userId);
     if (Roles.userIsInRole(userId, 'admin')) {
         return Jobs.find({
             deleted: true

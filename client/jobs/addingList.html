@@ -9,8 +9,6 @@
         <div class="alert alert-info" role="alert">
             <b>Change:</b>
             Ab se jab bhi done pe click karoge, uska detail dena hoga, uber account ka naam jisme referral code use kiye ho , jisse baad me verify kar sake.
-            <b>apna naam nahi likhna hai "done" wale popup me,</b> <br>
-            jiske account me mera code use kiye ho uska naam likhna hai.
         </div>
         {{#if isInRole 'admin'}}
             <select id="adder" class="form-control">
@@ -43,16 +41,19 @@
 </template>
 
 <template name="runningCode">
-  <div class="panel panel-default">
+  <div class="panel {{#if tooOld}}panel-danger{{else}}panel-default{{/if}}">
       <div class="panel-heading">
           <h3 class="panel-title">{{count}}
               ride
               {{code}} <small>{{#if isInRole 'admin'}}
                   Adding: <a href="/jobs/{{adderId}}">{{addedBy}}</a>
               {{/if}}
-              </small> </h3>
+            </small> </h3>
       </div>
       <div class="panel-body">
+        {{#if tooOld}}
+          <p class="lead">Please add this asap or remove it.</p>
+        {{/if}}
           Started At:
           {{formatDate createdAt}}
           <br>

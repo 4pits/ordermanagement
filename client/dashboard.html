@@ -1,10 +1,10 @@
 <template name="dashboard">
   <div class="container">
 
-  <h1>Dashboard</h1> {{id}}
+  <h3>Dashboard</h3>
 
   {{#if isOnlyAdmin}}
-  <h1>Admin</h1>
+  <h4>Admin</h4>
   newRidesCount: {{newRidesCount}} <br>
   yesterdayRidesCount : {{yesterdayRidesCount}} <br>
   JOB: {{jobs}} <br>
@@ -19,7 +19,7 @@
 
   {{/if}}
   {{#if isAdminOrSeller}}
-  <h1>Jobs</h1>
+  <h4>Jobs</h4>
   Job done: {{jobsDone}} <br>
   Job running: {{jobsRunning}} <br>
   jobsPaid : {{jobsPaid}} <br>
@@ -27,7 +27,7 @@
 
   {{/if}}
   {{#if isAdminOrBuyer}}
-  <h1>Orders</h1>
+  <h4>Orders</h4>
 
   {{/if}}
 </div>
