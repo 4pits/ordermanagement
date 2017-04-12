@@ -6,6 +6,32 @@ FlowRouter.route('/', {
         });
     }
 });
+FlowRouter.route('/deletedjobs', {
+    name: 'deletedjobs',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "DeletedJobs"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+
+    }
+});
+FlowRouter.route('/deletedjobs/:id', {
+    name: 'deletedjobs-user',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "DeletedJobs"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
+
+    }
+});
 
 // Dashboard Page
 FlowRouter.route('/dashboard', {

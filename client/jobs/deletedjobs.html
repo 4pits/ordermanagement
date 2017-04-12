@@ -1,0 +1,44 @@
+<template name="DeletedJobs">
+  <h1>Deleted Jobs <small># {{deletedCount}}</small> </h1>
+  {{#each deletedJobs}}
+  <div class="panel {{#if paid}} panel-success {{else}} panel-primary{{/if}}">
+      <div class="panel-heading">
+          <h3 class="panel-title">{{count}}
+              ride
+              {{code}} <small>{{#if paid}}
+                Paid
+              {{/if}}
+              {{#if isInRole 'admin'}}
+                to >> <a href="/deletedjobs/{{adderId}}">{{addedBy}}</a>
+              {{/if}}
+            </small> </h3>
+
+      </div>
+      <div class="panel-body">
+        <b>Started At:</b>
+        {{formatDate createdAt}}
+        <br>
+        {{#if paid}}
+        <b>Paid At:</b>
+        {{formatDate updatedAt}}
+        {{else}}
+        <b>Done At:</b>
+        {{formatDate updatedAt}}
+        {{/if}}
+        <br>
+        <b>Notes :</b>{{notes}} <br>
+          {{#if isInRole 'admin'}}
+              <div class="btn-group" role="group" aria-label="...">
+                  {{#unless paid}}
+                      <button class="removeWork btn btn-danger">Remove</button>
+                      <button class="pay-now btn btn-default">Pay</button>
+                  {{/unless}}
+              </div>
+          {{/if}}
+
+      </div>
+  </div>
+{{else}}
+<p class="lead">No jobs deleted yet</p>
+  {{/each}}
+</template>

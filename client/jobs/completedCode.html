@@ -7,7 +7,7 @@
                   Paid
                 {{/if}}
                 {{#if isInRole 'admin'}}
-                  to >>  {{addedBy}}
+                  to >> <a href="/completed-jobs/{{adderId}}">{{addedBy}}</a>
                 {{/if}}
               </small> </h3>
 

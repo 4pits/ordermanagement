@@ -57,8 +57,6 @@ Meteor.publish("completedOrders", function(id) {
 });
 
 Meteor.publish("jobsRunning", function(userId) {
-    var d = new Date();
-    d.setHours(d.getHours() - 20);
     if (Roles.userIsInRole(userId, 'admin')) {
         return Jobs.find({
             done: false,
@@ -73,6 +71,22 @@ Meteor.publish("jobsRunning", function(userId) {
     }
 
 });
+Meteor.publish("jobsDeleted", function(userId) {
+    console.log('server ' + userId);
+    if (Roles.userIsInRole(userId, 'admin')) {
+        return Jobs.find({
+            deleted: true
+        });
+    } else if (Roles.userIsInRole(userId, 'seller')) {
+        return Jobs.find({
+            adderId: userId,
+            deleted: true
+        });
+    }
+
+});
+
+
 var yesterday = function() {
     var yd = new Date();
     yd.setHours(0);

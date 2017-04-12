@@ -54,7 +54,7 @@ Meteor.methods({
                 $set: {
                     limit: limit,
                     perDayLimit: perDayLimit,
-                    rate: rate
+                    ratePerRide: rate
                 }
             })
         } else {
@@ -62,7 +62,7 @@ Meteor.methods({
                 userId: userId,
                 limit: limit,
                 perDayLimit: perDayLimit,
-                rate: rate
+                ratePerRide: rate
             });
         }
     }

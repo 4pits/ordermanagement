@@ -9,7 +9,7 @@ Template.profile.onCreated(function() {
 
 Template.profile.helpers({
     isAdmin: function() {
-        var userId = FlowRouter.getParam('id');
+        var userId = Meteor.userId();
         console.log(userId);
         return Roles.userIsInRole(userId, 'admin');
     },
@@ -34,4 +34,28 @@ Template.profile.helpers({
         return total;
     }
 
+});
+
+Template.profile.events({
+    'submit .form-inline-seller-details' (event) {
+        event.preventDefault();
+        const target = event.target;
+        const limit = target.limit.value;
+        const perdaylimit = target.perdaylimit.value;
+        const rate = target.rate.value;
+        console.log(limit);
+        console.log(perdaylimit);
+        console.log(rate);
+        const id = FlowRouter.getParam('id');
+        console.log(id);
+        if (limit > 1 && perdaylimit > 5 && rate > 20 && rate < 60) {
+            Meteor.call('seller.insert.update', id, limit, perdaylimit, rate, (error, result) => {
+                //  if (error) console.error(error);
+                //  if (result) console.log(result);
+            });
+        } else {
+            console.warn("Input incorrect");
+        }
+
+    },
 });
