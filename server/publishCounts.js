@@ -90,7 +90,7 @@ Meteor.publish('jobsCount', function(id) {
     }
 
 });
-Meteor.publish('ordersCount', function(id) {
+Meteor.publish('ordersCount', function(id, d, yd) {
     if (Roles.userIsInRole(id, 'admin')) {
 
     } else {
@@ -129,10 +129,6 @@ Meteor.publish('ordersCount', function(id) {
     }), {
         countFromField: 'added'
     });
-    var d = new Date();
-    d.setHours(0);
-    d.setMinutes(0);
-    d.setSeconds(0);
     Counts.publish(this, 'todayRidesCount', Orders.find({
         deleted: false,
         pause: false,
@@ -142,11 +138,6 @@ Meteor.publish('ordersCount', function(id) {
     }), {
         countFromField: 'rides'
     });
-    var yd = new Date();
-    yd.setHours(0);
-    yd.setMinutes(0);
-    yd.setSeconds(0);
-    yd.setDate(yd.getDate() - 1);
     Counts.publish(this, 'yesterdayRidesCount', Orders.find({
         deleted: false,
         pause: false,

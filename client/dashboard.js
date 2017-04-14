@@ -1,9 +1,20 @@
 Template.dashboard.onCreated(function() {
     this.autorun(() => {
+        var d = new Date();
+        d.setHours(0);
+        d.setMinutes(0);
+        d.setSeconds(0);
+
+        var yd = new Date();
+        yd.setHours(0);
+        yd.setMinutes(0);
+        yd.setSeconds(0);
+        yd.setDate(yd.getDate() - 1);
+
         var id = FlowRouter.getParam('id');
         if (!id) id = Meteor.userId();
         this.subscribe("jobsCount", id);
-        this.subscribe("ordersCount", id);
+        this.subscribe("ordersCount", id, d, yd);
         this.subscribe("userCount", id);
         this.subscribe("profile", id);
     });
