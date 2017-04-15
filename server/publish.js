@@ -189,7 +189,18 @@ Meteor.publish('oneOrder', function(id) {
         });
     }
 });
+// display counts for each user 
+Meteor.publish('jobsUnpaid', function() {
+    var user = this.userId;
+    if (Roles.userIsInRole(user, 'admin')) {
+        return Jobs.find({
+            paid: false,
+            deleted: false
+        });
+    }
+});
 
+//jobs related to only one order
 Meteor.publish('orderJobs', function(id) {
     //    console.log(id + ' orderjobs');
     return Jobs.find({

@@ -1,6 +1,7 @@
 Template.Users.onCreated(function() {
     this.autorun(() => {
         this.subscribe("allUsers");
+        this.subscribe("jobsUnpaid");
     });
     Session.set('newUserOnly', true);
     Session.set('allUsers', false);
@@ -110,6 +111,19 @@ Template.Users.events({
 });
 
 Template.user.helpers({
+    runningJobCount: function() {
+        return Jobs.find({
+            adderId: this._id,
+            done: false
+        }).count();
+    },
+    allAddedJobCount: function() {
+        return Jobs.find({
+            adderId: this._id,
+            done: true
+        }).count();
+    },
+
     userEmail: function() {
         return this.emails[0].address;
     },
