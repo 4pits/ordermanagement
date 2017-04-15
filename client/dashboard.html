@@ -5,8 +5,8 @@
 
   {{#if isOnlyAdmin}}
   <h4>Admin</h4>
-  newRidesCount: {{newRidesCount}} <br>
-  yesterdayRidesCount : {{yesterdayRidesCount}} <br>
+  Today's order: {{newRidesCount}} <br>
+  Yesterday's Order : {{yesterdayRidesCount}} <br>
   JOB: {{jobs}} <br>
   Orders: {{orders}} <br>
   allRidesCount: {{allRidesCount}} <br>
@@ -20,6 +20,10 @@
   {{/if}}
   {{#if isAdminOrSeller}}
   <h4>Jobs</h4>
+  Rate Per Ride : <br>
+  Total Earning : <br>
+  Upcoming earning : <br>
+
   Job done: {{jobsDone}} <br>
   Job running: {{jobsRunning}} <br>
   jobsPaid : {{jobsPaid}} <br>
