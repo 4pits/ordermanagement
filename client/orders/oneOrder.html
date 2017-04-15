@@ -3,16 +3,26 @@
         <h1>Order details</h1>
         <div class="alert alert-info" role="alert">
             You will receive promotions worth same as what it shows in your app. I don't control the promotion worth.
-            </div>
+        </div>
         <p class="lead">Buyer Name:
-            {{order.name}} <br>
-            {{#if order.premium}}
-              Your first promotion ride is coming in 6-12 hours.
+            {{order.name}}
+            <br>
+            {{#if order.pause}}
+                Your order is under review, such as payment verification. <br> If you have already paid and see delay , let us know via email or facbook page message.
             {{else}}
-              Your first promotion ride is coming in 12-48 hours.
-            {{/if}}
 
-            </p>
+                {{#if rideAdded}}
+                    Your first ride has been added. See the details below, or you can open app, go to payments, you will see promotions below payment methods. Click there for more details.
+                {{else}}
+                    {{#if order.premium}}
+                        Your first promotion ride is coming in 6-12 hours.
+                    {{else}}
+                        Your first promotion ride is coming in 12-48 hours.
+                    {{/if}}
+
+                {{/if}}
+            {{/if}}
+        </p>
         <table class="table">
             <tbody>
                 {{#if order.done}}

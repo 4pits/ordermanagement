@@ -15,6 +15,9 @@ Template.oneOrder.helpers({
     jobs: function() {
         return Jobs.find({}).count();
     },
+    rideAdded: function() {
+        return Orders.findOne({}).added > 0;
+    },
     id: function() {
         return FlowRouter.getParam('id');
     },
