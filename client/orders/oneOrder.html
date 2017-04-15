@@ -1,18 +1,26 @@
 <template name="oneOrder">
     {{#if order}}
         <h1>Order details</h1>
-        <div class="alert alert-info" role="alert"> You will receive promotions worth same as what it shows in your app. I don't control the promotion worth.
-        </div>
+        <div class="alert alert-info" role="alert">
+            You will receive promotions worth same as what it shows in your app. I don't control the promotion worth.
+            </div>
         <p class="lead">Buyer Name:
-            {{order.name}}</p>
+            {{order.name}} <br>
+            {{#if order.premium}}
+              Your first promotion ride is coming in 6-12 hours.
+            {{else}}
+              Your first promotion ride is coming in 12-48 hours.
+            {{/if}}
+
+            </p>
         <table class="table">
             <tbody>
-              {{#if order.done}}
-              <tr class="success">
-                <td>Completed Date:</td>
-                <td>{{formatDate order.updatedAt}}</td>
-              </tr>
-              {{/if}}
+                {{#if order.done}}
+                    <tr class="success">
+                        <td>Completed Date:</td>
+                        <td>{{formatDate order.updatedAt}}</td>
+                    </tr>
+                {{/if}}
                 <tr>
                     <td>Uber Code :</td>
                     <td>{{order.code}}</td>
@@ -32,7 +40,8 @@
                 </tr>
                 <tr>
                     <td>Paid Amount :</td>
-                    <td>USD$ {{order.paidAmount}}</td>
+                    <td>USD$
+                        {{order.paidAmount}}</td>
                 </tr>
                 <tr>
                     <td>Comment :</td>
@@ -45,11 +54,11 @@
             <h1>Admin Area</h1>
             {{#unless order.done}}
                 <button type="button" class="mark-completed btn btn-default" name="button">Mark Completed</button>
-                {{/unless}}
+            {{/unless}}
             {{#if order.deleted}}
-              <button type="button" class="delete-toggle btn btn-danger" name="button">Restore</button>
+                <button type="button" class="delete-toggle btn btn-danger" name="button">Restore</button>
             {{else}}
-              <button type="button" class="delete-toggle btn btn-danger" name="button">Delete</button>
+                <button type="button" class="delete-toggle btn btn-danger" name="button">Delete</button>
             {{/if}}
             <button type="button" class="btn btn-default add-ride" name="button">Add 1 Ride</button>
             {{#if order.pause}}
@@ -73,8 +82,9 @@
             </select>
             <button type="button" class="assign-buyer btn btn-default" name="button">Assign Buyer</button>
         {{/if}}
-<h3>Promotions adding details. </h3>
-<p class="lead">Few rides will be added per day depending upon your order type. Premium will get faster delivery(at least 2 per day), other order may be less then that.</p>
+        <h3>Promotions adding details.
+        </h3>
+        <p class="lead">Few rides will be added per day depending upon your order type. Premium will get faster delivery(at least 2 per day), other order may be less then that.</p>
         <table class="table">
             <thead>
                 <th>Added Date</th>

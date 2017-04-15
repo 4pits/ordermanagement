@@ -94,6 +94,36 @@ Meteor.methods({
             console.log(data);
         });
         //console.log(ls);
+    },
+    deleteUser: function(userId) {
+        if (Roles.userIsInRole(userId, ['admin', 'seller', 'buyer'])) {
+            console.log('Either admin, seller or buyer, can\'t be deleted.');
+            return
+        };
+        var count = 0;
+        count = Jobs.find({
+            adderId: userId
+        }).count();
+        console.log('Jobs assigned to this user' + count);
+        if (count > 0) return;
+        count = Jobs.find({
+            userId: userId
+        }).count();
+        console.log('Jobs assigned and created by this user' + count);
+        if (count > 0) return;
+        count = Orders.find({
+            userId: userId
+        }).count();
+        console.log('Orders assigned to this user' + count);
+        if (count > 0) return;
+        count = Sellers.find({
+            userId: userId
+        }).count();
+        console.log('Seller details set to this user' + count);
+        if (count > 0) return;
+        Meteor.users.remove({
+            _id: userId
+        });
     }
 
 });

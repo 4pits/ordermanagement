@@ -18,7 +18,7 @@
             </div>
             <table class="table">
                 <thead>
-                    <tr>
+                    <tr><th>X</th>
                         <th>Name</th>
 <th>DashBoard</th>
                         <th>Roles</th>
@@ -53,7 +53,8 @@
     </div>
 </template>
 <template name="user">
-    <tr>
+    <tr> <td>{{#if isNewUser}} <button type="button" class="btn btn-default delete-user" name="button"> <i class="fa fa-times" aria-hidden="true"></i> </button>
+     {{/if}}</td>
         <td><a href="/profile/{{_id}}">{{profile.firstName}} <br> {{userEmail}} <br> </a>
         {{dateFormat createdAt}} </td>
         <td> <a href="/dashboard/{{_id}}">DashBoard</a> </td>

@@ -113,6 +113,9 @@ Template.user.helpers({
     userEmail: function() {
         return this.emails[0].address;
     },
+    isNewUser: function() {
+        return !Roles.userIsInRole(this._id, ['admin', 'seller', 'buyer']);
+    },
     isAdmin: function() {
         return Roles.userIsInRole(this._id, 'admin');
     },
@@ -161,5 +164,9 @@ Template.user.events({
     },
     'click .toggle-buyer': function() {
         Meteor.call('toggleBuyer', this._id);
+    },
+    'click .delete-user': function() {
+        console.log('delete user');
+        Meteor.call('deleteUser', this._id);
     }
 });
