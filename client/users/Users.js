@@ -112,16 +112,24 @@ Template.Users.events({
 
 Template.user.helpers({
     runningJobCount: function() {
-        return Jobs.find({
+        var count = 0;
+        Jobs.find({
             adderId: this._id,
             done: false
-        }).count();
+        }).map(function(jb) {
+            count = count + jb.count;
+        });
+        return count;
     },
     allAddedJobCount: function() {
-        return Jobs.find({
+        var count = 0;
+        Jobs.find({
             adderId: this._id,
             done: true
-        }).count();
+        }).map(function(jb) {
+            count = count + jb.count;
+        });
+        return count;
     },
 
     userEmail: function() {
