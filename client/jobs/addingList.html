@@ -17,7 +17,7 @@
         {{/if}}
         <br>
         {{#if runningCountNotZero}}
-            <button class="btn btn-primary btn-lg btn-copy-link" name="button" data-clipboard-text="{{#each runningList}}{{count}} ride {{code}}
+            <button class="btn btn-primary btn-lg btn-copy-link" name="button" data-clipboard-text="{{#each runningList}}{{count}} ride {{code}} {{#if premium}} URGENT{{/if}}
 {{/each}}"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy all code</button>
         {{/if}} <br> <br>
             <button type="button" class="addCode btn btn-primary btn-lg" name="showCode">Show New Codes</button><br>
@@ -53,6 +53,9 @@
       <div class="panel-body">
         {{#if tooOld}}
           <p class="lead">Please add this asap or remove it.</p>
+        {{/if}}
+        {{#if premium}}
+        <p class="lead" style="color:red">URGENT, add next ride/refer to this code.</p>
         {{/if}}
           Started At:
           {{formatDate createdAt}}

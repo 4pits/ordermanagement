@@ -83,6 +83,11 @@ Jobs.schema = new SimpleSchema({
     notes: {
         type: String,
         optional: true
+    },
+    premium: {
+        type: Boolean,
+        defaultValue: false,
+        label: "Premium Delivery"
     }
 });
 
@@ -97,7 +102,7 @@ var today = function() {
 
 
 Meteor.methods({
-    'jobs.insert': function(id, code, count, adderId) {
+    'jobs.insert': function(id, code, premium, count, adderId) {
         //avoid repeatition of code to same seller
         if (Roles.userIsInRole(this.userId, ['admin', 'seller'])) {
             // console.log('really adding now');
@@ -110,7 +115,8 @@ Meteor.methods({
                 orderId: id,
                 code: code,
                 count: count,
-                adderId: adderId
+                adderId: adderId,
+                premium: premium
             });
         }
     },

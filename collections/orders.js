@@ -4,7 +4,6 @@ Orders.schema = new SimpleSchema({
     name: {
         type: String,
         label: "Buyer/Paypal Name",
-        optional: true,
         max: 100
     },
     paypalemail: {

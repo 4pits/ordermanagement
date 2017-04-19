@@ -89,7 +89,7 @@ Template.oneOrder.events({
         var userId = Meteor.userId();
         //    console.log(userId);
         if (order.added < order.rides)
-            Meteor.call('jobs.insert', order._id, order.code, 1, userId, (error, result) => {
+            Meteor.call('jobs.insert', order._id, order.code, order.premium, 1, userId, (error, result) => {
                 if (error) {
                     console.log('e ' + error);
                 }

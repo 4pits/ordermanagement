@@ -92,7 +92,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
         //    console.log('addedForCode ' + addedForCode);
         //    console.log('jobcount ' + jobcount);
         if (jobcount > 0) {
-            Meteor.call('jobs.insert', ordr._id, ordr.code, jobcount, adderId, (error, result) => {
+            Meteor.call('jobs.insert', ordr._id, ordr.code, ordr.premium, jobcount, adderId, (error, result) => {
                 if (error) {
                     //    console.log(error);
                     jobcount = 0;
