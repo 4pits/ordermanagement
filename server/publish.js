@@ -72,14 +72,22 @@ Meteor.publish("jobsRunning", function(userId) {
 
 });
 Meteor.publish("jobsDeleted", function(userId) {
+    var dt = new Date();
+    dt.setDate(dt.getDate() - 2);
     if (Roles.userIsInRole(userId, 'admin')) {
         return Jobs.find({
-            deleted: true
+            deleted: true,
+            createdAt: {
+                $gte: dt
+            }
         });
     } else if (Roles.userIsInRole(userId, 'seller')) {
         return Jobs.find({
             adderId: userId,
-            deleted: true
+            deleted: true,
+            createdAt: {
+                $gte: dt
+            }
         });
     }
 
@@ -189,7 +197,7 @@ Meteor.publish('oneOrder', function(id) {
         });
     }
 });
-// display counts for each user 
+// display counts for each user
 Meteor.publish('jobsUnpaid', function() {
     var user = this.userId;
     if (Roles.userIsInRole(user, 'admin')) {
