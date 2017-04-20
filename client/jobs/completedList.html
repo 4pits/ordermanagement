@@ -1,11 +1,9 @@
 <template name="completedList">
-  <div class="container">
-      <h3>Total Added List</h3>
+<p class="lead">Total Added List</p>
 {{> todayList}}
 {{> yesterdayList}}
 <button type="button" class="showOldJob btn btn-default" name="button">Show Old Jobs</button>
 {{#if showOldJob}}
 {{> oldJobs}}
 {{/if}}
-  </div>
 </template>
