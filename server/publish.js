@@ -147,9 +147,25 @@ Meteor.publish("jobsCompletedOld", function(id) {
     }
 });
 
-Meteor.publish('allUsers', function() {
+Meteor.publish('allUsers', function(search) {
+    check(search, Match.OneOf(String, null, undefined));
+    let query = {};
+    console.log(search);
+    if (search) {
+        let regex = new RegExp(search, 'i');
+
+        query = {
+            $or: [{
+                    "emails.address": regex
+                },
+                {
+                    "profile.firstName": regex
+                }
+            ]
+        };
+    }
     if (Roles.userIsInRole(this.userId, 'admin'))
-        return Meteor.users.find({}, {
+        return Meteor.users.find(query, {
             fields: {
                 emails: 1,
                 roles: 1,

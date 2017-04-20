@@ -1,9 +1,10 @@
 <template name="Users">
     <div class="container">
-       <h1>Users</h1>
-        <div><button type="button" class="btn {{#if newUsersOnly}} btn-primary{{else}}btn-default {{/if}} new-user" name="button">New
-            <span class="badge">{{newUsersCount}}</span>
-        </button>
+        <h1>Users</h1>
+        <div>
+            <button type="button" class="btn {{#if newUsersOnly}} btn-primary{{else}}btn-default {{/if}} new-user" name="button">New
+                <span class="badge">{{newUsersCount}}</span>
+            </button>
 
             <div class="btn-group" role="group" aria-label="...">
                 <button type="button" class="btn {{#if allUsers}} btn-primary{{else}}btn-default {{/if}} all-user" name="button">All
@@ -15,37 +16,46 @@
                 <button type="button" class="btn {{#if onlyBuyer}} btn-primary{{else}}btn-default {{/if}} only-buyer" name="button">Buyers
                     <span class="badge">{{buyersCount}}</span>
                 </button>
+
+            </div>
+            <div class="pull-right">
+                <input type="text" name="search" class="form-control" width="250px" placeholder="Find a user...">
             </div>
             <table class="table">
                 <thead>
-                    <tr><th>X</th>
+                    <tr>
+                        <th>X</th>
                         <th>Name</th>
-<th>DashBoard</th>
+                        <th>DashBoard</th>
                         <th>Roles</th>
                         <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{#if newUsersOnly}}
-                        {{#each newUsers}}
-                            {{> user}}
-                        {{/each}}
+                    {{#if searching}}
+                        {{> loading}}
+                    {{else}}
+                        {{#if newUsersOnly}}
+                            {{#each newUsers}}
+                                {{> user}}
+                            {{/each}}
 
-                    {{/if}}
-                    {{#if allUsers}}
-                        {{#each users}}
-                            {{> user}}
-                        {{/each}}
-                    {{/if}}
-                    {{#if onlySeller}}
-                        {{#each sellers}}
-                            {{> user}}
-                        {{/each}}
-                    {{/if}}
-                    {{#if onlyBuyer}}
-                        {{#each buyers}}
-                            {{> user}}
-                        {{/each}}
+                        {{/if}}
+                        {{#if allUsers}}
+                            {{#each users}}
+                                {{> user}}
+                            {{/each}}
+                        {{/if}}
+                        {{#if onlySeller}}
+                            {{#each sellers}}
+                                {{> user}}
+                            {{/each}}
+                        {{/if}}
+                        {{#if onlyBuyer}}
+                            {{#each buyers}}
+                                {{> user}}
+                            {{/each}}
+                        {{/if}}
                     {{/if}}
                 </tbody>
             </table>
@@ -53,11 +63,25 @@
     </div>
 </template>
 <template name="user">
-    <tr> <td>{{#if isNewUser}} <button type="button" class="btn btn-default delete-user" name="button"> <i class="fa fa-times" aria-hidden="true"></i> </button>
-     {{/if}}</td>
-        <td><a href="/profile/{{_id}}">{{profile.firstName}} <br> {{userEmail}} <br> </a>
-        {{dateFormat createdAt}} </td>
-        <td> <a href="/dashboard/{{_id}}">DashBoard</a> </td>
+    <tr>
+        <td>
+            {{#if isNewUser}}
+                <button type="button" class="btn btn-default delete-user" name="button">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            {{/if}}
+        </td>
+        <td>
+            <a href="/profile/{{_id}}">{{profile.firstName}}
+                <br>
+                {{userEmail}}
+                <br>
+            </a>
+            {{dateFormat createdAt}}
+        </td>
+        <td>
+            <a href="/dashboard/{{_id}}">DashBoard</a>
+        </td>
         <td>
             <p>{{roles}}</p>
             <div class="user-edit">
@@ -71,15 +95,19 @@
                 </div>
             </div>
         </td>
-        <td> {{#if isSeller}}
-            <a href="/jobs/{{_id}}" target="_blank">Jobs ({{runningJobCount}})</a> <br>
-            <a href="/completed-jobs/{{_id}}" target="_blank">Completed Jobs ({{allAddedJobCount}})</a> <br>
-            <a href="/deletedjobs/{{_id}}" target="_blank">Deleted Jobs</a>
-        {{/if}}
-        {{#if isBuyer}}
-          <a href="/orders/{{_id}}" target="_blank">Orders</a> <br>
-          <a href="/completed-orders/{{_id}}" target="_blank">Completed Orders</a>
-        {{/if}}
+        <td>
+            {{#if isSeller}}
+                <a href="/jobs/{{_id}}" target="_blank">Jobs ({{runningJobCount}})</a>
+                <br>
+                <a href="/completed-jobs/{{_id}}" target="_blank">Completed Jobs ({{allAddedJobCount}})</a>
+                <br>
+                <a href="/deletedjobs/{{_id}}" target="_blank">Deleted Jobs</a>
+            {{/if}}
+            {{#if isBuyer}}
+                <a href="/orders/{{_id}}" target="_blank">Orders</a>
+                <br>
+                <a href="/completed-orders/{{_id}}" target="_blank">Completed Orders</a>
+            {{/if}}
 
         </td>
     </tr>

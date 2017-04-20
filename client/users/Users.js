@@ -1,6 +1,12 @@
 Template.Users.onCreated(function() {
+    this.searchQuery = new ReactiveVar();
+    this.searching = new ReactiveVar(false);
     this.autorun(() => {
-        this.subscribe("allUsers");
+        this.subscribe("allUsers", this.searchQuery.get(), () => {
+            setTimeout(() => {
+                this.searching.set(false);
+            }, 300);
+        });
         this.subscribe("jobsUnpaid");
     });
     Session.set('newUserOnly', true);
@@ -11,6 +17,12 @@ Template.Users.onCreated(function() {
 });
 
 Template.Users.helpers({
+    searching: function() {
+        this.searching.get();
+    },
+    query: function() {
+        this.searchQuery.get();
+    },
     users: function() {
         return Meteor.users.find({}, {
             sort: {
@@ -107,6 +119,18 @@ Template.Users.events({
         Session.set('sellers', false);
         Session.set('buyers', false);
     },
+    'keyup [name="search"]' (event, template) {
+        let value = event.target.value.trim();
+
+        if (value !== '' && event.keyCode === 13) {
+            template.searchQuery.set(value);
+            template.searching.set(true);
+        }
+
+        if (value === '') {
+            template.searchQuery.set(value);
+        }
+    }
 
 });
 
