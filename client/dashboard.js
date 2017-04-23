@@ -35,7 +35,7 @@ Template.dashboard.helpers({
     isAdminOrBuyer: function() {
         var userId = FlowRouter.getParam('id');
         if (!userId) userId = Meteor.userId();
-        return Roles.userIsInRole(userId, 'buyer');
+        return Roles.userIsInRole(userId, ['admin', 'buyer']);
     },
 
     id: function() {
@@ -88,6 +88,9 @@ Template.dashboard.helpers({
     },
     yesterdayRidesCount: function() {
         return Counts.get('yesterdayRidesCount');
+    },
+    random: function() {
+        return (Math.random() + 1).toString(36).substring(2, 7);
     }
 });
 
@@ -104,5 +107,8 @@ Template.dashboard.events({
     },
     'click .gitpull': function() {
         Meteor.call('gitPull');
+    },
+    'click .update_ref': function() {
+        Meteor.call('updateUsersRef');
     }
 });

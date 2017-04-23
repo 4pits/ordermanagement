@@ -66,24 +66,6 @@ Meteor.methods({
             text: text
         });
     },
-    updateDB: function() {
-        if (Roles.userIsInRole(this.userId, 'admin')) {
-            Jobs.update({}, {
-                $set: {
-                    deleted: false,
-                }
-            }, {
-                multi: true
-            });
-            Orders.update({}, {
-                $set: {
-                    deleted: false,
-                }
-            }, {
-                multi: true
-            });
-        }
-    },
     gitPull: function() {
         var child_process = Npm.require('child_process');
         //    console.log(child_process);

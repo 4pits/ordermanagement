@@ -23,18 +23,31 @@ var mySubmitFunc = function(error, state) {
 
 AccountsTemplates.configure({
     onLogoutHook: myLogoutFunc,
-    privacyUrl: 'privacy',
-    termsUrl: 'terms-of-use',
     homeRoutePath: '/',
-    onSubmitHook: mySubmitFunc
+    onSubmitHook: mySubmitFunc,
 });
 AccountsTemplates.addField({
     _id: 'firstName',
     type: 'text',
-    displayName: 'First Name',
+    displayName: 'Name',
     required: true,
     minLength: 4,
+    trim: true,
     placeholder: {
-        signUp: "First Name"
+        signUp: "Name"
+    }
+});
+AccountsTemplates.addField({
+    _id: 'refCodeBy',
+    type: 'text',
+    displayName: 'Referral Code',
+    minLength: 4,
+    maxLength: 8,
+    re: /^[a-z0-9]+$/,
+    trim: true,
+    lowercase: true,
+    placeholder: {
+        signUp: "Thanks to, who referred you.",
+        signIn: "Thanks to, who referred you."
     }
 });

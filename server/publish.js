@@ -169,7 +169,8 @@ Meteor.publish('allUsers', function(search) {
                 emails: 1,
                 roles: 1,
                 profile: 1,
-                createdAt: 1
+                createdAt: 1,
+                userCode: 1
             }
         });
 });
@@ -188,9 +189,24 @@ Meteor.publish('allSellers', function() {
 });
 
 Meteor.publish('profile', function(id) {
-    return Meteor.users.find({
-        _id: id
-    });
+    if (Roles.userIsInRole(id, 'buyer')) {
+        var code = Meteor.users.findOne({
+            _id: id
+        }).userCode;
+        return Meteor.users.find({
+            $or: [{
+                    _id: id
+                },
+                {
+                    "profile.refCodeBy": code
+                }
+            ]
+        });
+    } else {
+        return Meteor.users.find({
+            _id: id
+        });
+    }
 
 });
 

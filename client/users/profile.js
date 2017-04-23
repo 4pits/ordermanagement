@@ -8,21 +8,34 @@ Template.profile.onCreated(function() {
 });
 
 Template.profile.helpers({
-    isAdmin: function() {
+    loggedInUserIsAdmin: function() {
         var userId = Meteor.userId();
-        console.log(userId);
+        return Roles.userIsInRole(userId, 'admin');
+    },
+    isAdmin: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
         return Roles.userIsInRole(userId, 'admin');
     },
     isSeller: function() {
         var userId = FlowRouter.getParam('id');
-        return Roles.userIsInRole(userId, 'seller');
+        if (!userId) userId = Meteor.userId();
+        return Roles.userIsInRole(userId, ['admin', 'seller']);
     },
     isBuyer: function() {
         var userId = FlowRouter.getParam('id');
-        return Roles.userIsInRole(userId, 'buyer');
+        if (!userId) userId = Meteor.userId();
+        return Roles.userIsInRole(userId, ['admin', 'buyer']);
     },
     id: function() {
         return FlowRouter.getParam('id');
+    },
+    name: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        return Meteor.users.findOne({
+            _id: userId
+        }).profile.firstName;
     },
     jobCount: function() {
         var total = 0;
@@ -32,6 +45,25 @@ Template.profile.helpers({
             total += doc.count;
         });
         return total;
+    },
+    userCode: function() {
+        var userId = FlowRouter.getParam('id');
+        var user = Meteor.users.findOne({
+            _id: userId
+        });
+        return user.userCode;
+    },
+    users: function() {
+        var userId = FlowRouter.getParam('id');
+        return Meteor.users.find({
+            _id: {
+                $ne: userId
+            }
+        }, {
+            sort: {
+                createdAt: -1
+            }
+        });
     }
 
 });
@@ -57,5 +89,43 @@ Template.profile.events({
             console.warn("Input incorrect");
         }
 
+    }
+});
+
+Template.refUser.helpers({
+    userEmail: function() {
+        return this.emails[0].address;
     },
+    admin: function() {
+        return Roles.userIsInRole(this._id, 'admin');
+    },
+    firstOrderStatus: function() {
+        var user = Meteor.users.findOne({
+            _id: this._id
+        });
+        if (user.firstOrder === 0) {
+            return 'panel-default';
+        } else if (user.firstOrder === 1) {
+            return 'panel-primary';
+        } else if (user.firstOrder === 2) {
+            return 'panel-success';
+        } else {
+            return 'panel-danger';
+        }
+    },
+    firstOrderMsg: function() {
+        var user = Meteor.users.findOne({
+            _id: this._id
+        });
+        if (user.firstOrder === 0) {
+            return 'User signed - up, yet to place their first order. ';
+        } else if (user.firstOrder === 1) {
+            return 'User placed first order, as soon as its completed you will get your credits.';
+        } else if (user.firstOrder === 2) {
+            return 'First order completed, you got your credits.';
+        } else {
+            return 'This should not happen, report it to admin';
+        }
+    }
+
 });

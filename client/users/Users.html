@@ -25,6 +25,8 @@
                 <thead>
                     <tr>
                         <th>X</th>
+                        <th>UserCode</th>
+                        <th>Ref_CodeBy</th>
                         <th>Name</th>
                         <th>DashBoard</th>
                         <th>Roles</th>
@@ -71,6 +73,8 @@
                 </button>
             {{/if}}
         </td>
+        <td>{{userCode}}</td>
+        <td>{{profile.refCodeBy}}</td>
         <td>
             <a href="/profile/{{_id}}">{{profile.firstName}}
                 <br>

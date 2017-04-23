@@ -1,8 +1,5 @@
 <template name="dashboard">
-  <div class="container">
-
-  <h3>Dashboard</h3>
-
+  <p class="lead">Dashboard</p>
   {{#if isOnlyAdmin}}
   <h4>Admin</h4>
   Today's order: {{newRidesCount}} <br>
@@ -33,6 +30,10 @@
   {{#if isAdminOrBuyer}}
   <h4>Orders</h4>
 
-  {{/if}}
-</div>
+  {{/if}} <br>
+Random  {{random}} <br>
+  <button type="button" class="email-send-test" name="button">Email</button> <br>
+  <button type="button" class="btn btn-default update_ref">
+    update ref
+  </button>
 </template>

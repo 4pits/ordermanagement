@@ -1,33 +1,72 @@
 <template name="profile">
-  <h1>Profile</h1> {{id}} <br>
-  {{#if isBuyer}}
-  <h1>Buyer</h1>
-  {{/if}}
-  {{#if isSeller}}
-    <h1>Seller</h1>
-    Running jobCount: {{jobCount}}
-  {{/if}}
-  {{#if isAdmin}}
-    <h1>admin</h1>
-    <h3>Seller Details add/update</h3>
+    <h1>Profile</h1>
+    Name: {{name}}
+    <br>
+    {{#if isBuyer}}
+    {{#if loggedInUserIsAdmin}}
+        <h1>Buyer</h1>
+        {{/if}}
+        Your Referral Code:
+        {{userCode}}
+        <br>
 
-    <form class="form-inline-seller-details">
-      <div class="form-group">
-        <label for="Limit">Limit</label>
-        <input type="number" class="form-control" name="limit" placeholder="At the moment">
-      </div>
-      <div class="form-group">
-        <label for="perdaylimit">Per Day Limit</label>
-        <input type="number" class="form-control" name="perdaylimit" placeholder="Per day limit">
-      </div>
-      <div class="form-group">
-        <label for="rate">Rate</label>
-        <input type="number" class="form-control" name="rate" placeholder="Per ride rate">
-      </div>
+        {{#each users}}
+            {{> refUser}}
+        {{/each}}
+    {{/if}}
+    {{#if isSeller}}
+    {{#if loggedInUserIsAdmin}}
+        <h1>Seller</h1>
+        {{/if}}
+        Running jobCount:
+        {{jobCount}}
+    {{/if}}
+    {{#if isAdmin}}
+        <h1>admin</h1>
+        <h3>Seller Details add/update</h3>
 
-      <input type="submit" class="btn btn-default setSellerDetails" value="Add/Update">
-    </form>
+        <form class="form-inline-seller-details">
+            <div class="form-group">
+                <label for="Limit">Limit</label>
+                <input type="number" class="form-control" name="limit" placeholder="At the moment">
+            </div>
+            <div class="form-group">
+                <label for="perdaylimit">Per Day Limit</label>
+                <input type="number" class="form-control" name="perdaylimit" placeholder="Per day limit">
+            </div>
+            <div class="form-group">
+                <label for="rate">Rate</label>
+                <input type="number" class="form-control" name="rate" placeholder="Per ride rate">
+            </div>
 
+            <input type="submit" class="btn btn-default setSellerDetails" value="Add/Update">
+        </form>
 
-  {{/if}}
+    {{/if}}
+</template>
+
+<template name="refUser">
+    {{#unless admin}}
+        <div class="panel {{firstOrderStatus}}">
+            <div class="panel-heading">
+                <h3 class="panel-title">Email:
+                    {{userEmail}}
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                User personal code:
+                {{userCode}}
+                <br>
+                Uber is referred by:
+                {{profile.refCodeBy}}
+                <br>
+                <p class="lead">{{firstOrderMsg}}</p>
+                Sign up At:
+                {{formatDate createdAt}}
+                <br>
+
+            </div>
+        </div>
+    {{/unless}}
 </template>

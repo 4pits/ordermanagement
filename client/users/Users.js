@@ -183,7 +183,6 @@ Template.user.helpers({
     isTwentyRideSeller: function() {
         return Roles.userIsInRole(this._id, 'twenty-ride-seller');
     },
-
     dateFormat: function() {
         return moment(this.createdAt).format('MMMM D YYYY');
     }

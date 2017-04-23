@@ -167,6 +167,36 @@ Orders.schema = new SimpleSchema({
 
 Orders.attachSchema(Orders.schema);
 
+var firstOrderUpdate = function(orderId) {
+    var flag = 0;
+    var userId = Orders.findOne({
+        _id: orderId
+    }).userId;
+    var status = Meteor.users.findOne({
+        _id: userId
+    }).firstOrder;
+    if (!status) {
+        var count = Orders.find({
+            userId: userId,
+            pause: false
+        }).count();
+        flag = 1;
+        count = Orders.find({
+            userId: userId,
+            done: true
+        }).count();
+        flag = 2;
+        if (flag > 0) {
+            Meteor.users.update(userId, {
+                $set: {
+                    firstOrder: flag
+                }
+            });
+        }
+    }
+
+}
+
 Meteor.methods({
     'updateRide': function(id, count) {
         //    console.log(id);
@@ -175,7 +205,6 @@ Meteor.methods({
         });
         //      console.log(order);
         if (order) {
-
             if (order.added === order.rides && count > 0) return;
             if (order.added === 0 && count < 0) return;
             if (Roles.userIsInRole(this.userId, ['admin', 'seller'])) {
@@ -191,45 +220,48 @@ Meteor.methods({
     },
     'pauseOrderToggle': function(id, flag) {
         if (Roles.userIsInRole(this.userId, 'admin')) {
-            return Orders.update({
+            Orders.update({
                 _id: id
             }, {
                 $set: {
                     pause: flag
-
                 }
             });
+            console.log(id);
+            firstOrderUpdate(id);
         }
     },
     'resetOrder': function(id) {
         if (Roles.userIsInRole(this.userId, 'admin')) {
-            return Orders.update({
+            Orders.update({
                 _id: id
             }, {
                 $set: {
                     added: 0,
-                    pending: this.rides
-
-
+                    pending: this.rides,
+                    pause: true,
+                    done: false
                 }
             });
+            firstOrderUpdate(id);
         }
     },
     'deleteOrderToggle': function(id, flag) {
         if (Roles.userIsInRole(this.userId, 'admin')) {
             //    console.log('deleting');
-            return Orders.update({
+            Orders.update({
                 _id: id
             }, {
                 $set: {
                     deleted: flag
                 }
             });
+            firstOrderUpdate(id);
         }
     },
     'completeOrder': function(id) {
         if (Roles.userIsInRole(this.userId, 'admin')) {
-            return Orders.update({
+            Orders.update({
                 _id: id
             }, {
                 $set: {
@@ -237,6 +269,7 @@ Meteor.methods({
 
                 }
             });
+            firstOrderUpdate(id);
         }
     },
     'reassignOrderBuyer': function(buyerId, orderId) {
@@ -249,11 +282,7 @@ Meteor.methods({
                     userId: buyerId
                 }
             });
-
-            var us = Orders.findOne({
-                _id: orderId
-            }).userId;
-            //    console.log('new user ' + us);
+            firstOrderUpdate(id);
         }
     }
 
