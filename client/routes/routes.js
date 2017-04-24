@@ -9,9 +9,13 @@ FlowRouter.route('/', {
 FlowRouter.route('/sign-up', {
     name: 'sign-up',
     action() {
-        BlazeLayout.render("HomeLayout", {
-            main: "SignUp"
-        });
+        if (Meteor.userId()) {
+            FlowRouter.go('/');
+        } else {
+            BlazeLayout.render("HomeLayout", {
+                main: "SignUp"
+            });
+        }
     }
 });
 

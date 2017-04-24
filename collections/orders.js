@@ -175,7 +175,7 @@ var firstOrderUpdate = function(orderId) {
     var status = Meteor.users.findOne({
         _id: userId
     }).firstOrder;
-    if (!status) {
+    if (status !== 2) {
         var count = Orders.find({
             userId: userId,
             pause: false
@@ -282,7 +282,7 @@ Meteor.methods({
                     userId: buyerId
                 }
             });
-            firstOrderUpdate(id);
+            firstOrderUpdate(orderId);
         }
     }
 

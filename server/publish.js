@@ -193,6 +193,7 @@ Meteor.publish('profile', function(id) {
         var code = Meteor.users.findOne({
             _id: id
         }).userCode;
+        console.log('in buyer');
         return Meteor.users.find({
             $or: [{
                     _id: id
@@ -201,10 +202,26 @@ Meteor.publish('profile', function(id) {
                     "profile.refCodeBy": code
                 }
             ]
+        }, {
+            fields: {
+                emails: 1,
+                roles: 1,
+                profile: 1,
+                createdAt: 1,
+                userCode: 1
+            }
         });
     } else {
         return Meteor.users.find({
             _id: id
+        }, {
+            fields: {
+                emails: 1,
+                roles: 1,
+                profile: 1,
+                createdAt: 1,
+                userCode: 1
+            }
         });
     }
 

@@ -39,7 +39,7 @@ AccountsTemplates.addField({
 });
 AccountsTemplates.addField({
     _id: 'refCodeBy',
-    type: 'text',
+    type: 'hidden',
     displayName: 'Referral Code',
     minLength: 4,
     maxLength: 8,

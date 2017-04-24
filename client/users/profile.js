@@ -1,6 +1,7 @@
 Template.profile.onCreated(function() {
     this.autorun(() => {
         var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
         this.subscribe("profile", userId);
         this.subscribe("jobsRunning", userId);
     });
@@ -37,6 +38,13 @@ Template.profile.helpers({
             _id: userId
         }).profile.firstName;
     },
+    email: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        return Meteor.users.findOne({
+            _id: userId
+        }).emails[0].address;
+    },
     jobCount: function() {
         var total = 0;
         Jobs.find({
@@ -48,13 +56,17 @@ Template.profile.helpers({
     },
     userCode: function() {
         var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        console.log('id :' + userId);
         var user = Meteor.users.findOne({
             _id: userId
         });
+        console.log(user);
         return user.userCode;
     },
     users: function() {
         var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
         return Meteor.users.find({
             _id: {
                 $ne: userId
@@ -64,6 +76,30 @@ Template.profile.helpers({
                 createdAt: -1
             }
         });
+    },
+    availableCredits: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        var count = Meteor.users.find({
+            _id: {
+                $ne: userId
+            },
+            firstOrder: 2
+        }).count();
+        return count * 2;
+    },
+    upcomingCredits: function() {
+        var userId = FlowRouter.getParam('id');
+        if (!userId) userId = Meteor.userId();
+        var count = Meteor.users.find({
+            _id: {
+                $ne: userId
+            },
+            firstOrder: {
+                $lt: 2
+            }
+        }).count();
+        return count * 2;
     }
 
 });

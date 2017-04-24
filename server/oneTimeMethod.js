@@ -47,7 +47,7 @@ Meteor.methods({
                 console.log('code ' + code);
                 Meteor.users.update(user._id, {
                     $set: {
-                        userCode: code,
+                        //        userCode: code,
                         firstOrder: 0
                     }
                 });
