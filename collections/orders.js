@@ -175,26 +175,22 @@ var firstOrderUpdate = function(orderId) {
     var status = Meteor.users.findOne({
         _id: userId
     }).firstOrder;
-    if (status !== 2) {
-        var count = Orders.find({
-            userId: userId,
-            pause: false
-        }).count();
-        flag = 1;
-        count = Orders.find({
-            userId: userId,
-            done: true
-        }).count();
-        flag = 2;
-        if (flag > 0) {
-            Meteor.users.update(userId, {
-                $set: {
-                    firstOrder: flag
-                }
-            });
+    var count = Orders.find({
+        userId: userId,
+        pause: false
+    }).count();
+    if (count > 0) flag = 1;
+    count = Orders.find({
+        userId: userId,
+        done: true
+    }).count();
+    if (count > 0) flag = 2;
+    //  console.log('flag ' + flag);
+    Meteor.users.update(userId, {
+        $set: {
+            firstOrder: flag
         }
-    }
-
+    });
 }
 
 Meteor.methods({
@@ -227,7 +223,7 @@ Meteor.methods({
                     pause: flag
                 }
             });
-            console.log(id);
+            //        console.log(id);
             firstOrderUpdate(id);
         }
     },

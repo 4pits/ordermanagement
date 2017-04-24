@@ -1,7 +1,6 @@
 <template name="Home">
-    <div class="container">
         <div class="jumbotron">
-            <h1>Welcome</h1>
+            <p class="lead">Welcome, to uber order tracking page.</p>
             {{#if isInRole 'admin,buyer,seller'}}
 
                 {{#if isInRole 'admin,buyer'}}
@@ -43,5 +42,4 @@
             {{/if}}
 
         </div>
-    </div>
 </template>
