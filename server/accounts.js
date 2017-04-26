@@ -4,6 +4,7 @@ var postSignUp = function(userId, info) {
     Roles.addUsersToRoles(userId, ['normal-user']);
     var str = info.email;
     var name = info.profile.firstName;
+    var refCode = info.profile.refCodeBy;
     str = name.concat(str).replace(/[^a-zA-Z0-9]/g, '');
     var code = '';
     var usercount = 0;
@@ -25,6 +26,14 @@ var postSignUp = function(userId, info) {
             firstOrder: 0
         }
     });
+    //set user role to buyer if they are referred by a buyer
+    var user = Meteor.users.findOne({
+        userCode: refCode
+    });
+    //  console.log(user);
+    if (user) {
+        Roles.addUsersToRoles(userId, ['buyer']);
+    }
 
 }
 
