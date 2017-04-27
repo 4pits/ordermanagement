@@ -55,7 +55,7 @@ Template.addingList.events({
         }
         var dayStart = new Date();
         dayStart.setHours(0);
-        dayStart.setMinutes(0);
+        dayStart.setMinutes(10);
         dayStart.setSeconds(0);
         Meteor.call('addJobOrder', adderId, count, dayStart);
 

@@ -16,6 +16,9 @@ Meteor.publish('allUsers', function(search) {
     }
     if (Roles.userIsInRole(this.userId, 'admin'))
         return Meteor.users.find(query, {
+            sort: {
+                createdAt: -1
+            },
             fields: {
                 emails: 1,
                 roles: 1,
@@ -23,7 +26,8 @@ Meteor.publish('allUsers', function(search) {
                 createdAt: 1,
                 userCode: 1,
                 firstOrder: 1
-            }
+            },
+            limit: 5
         });
 });
 
@@ -45,7 +49,7 @@ Meteor.publish('profile', function(id) {
         var code = Meteor.users.findOne({
             _id: id
         }).userCode;
-        console.log('in buyer');
+        //    console.log('in buyer');
         return Meteor.users.find({
             $or: [{
                     _id: id

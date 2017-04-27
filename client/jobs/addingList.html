@@ -38,8 +38,12 @@
   <div class="panel {{#if tooOld}}panel-danger{{else}}panel-default{{/if}}">
       <div class="panel-heading">
           <h3 class="panel-title">{{count}}
-              ride
-              {{code}} <small>{{#if isInRole 'admin'}}
+              ride {{#if isInRole 'admin'}}
+                <a href="/order/{{orderId}}">{{code}}</a>
+              {{else}}
+                {{code}}
+              {{/if}}
+              <small>{{#if isInRole 'admin'}}
                   Adding: <a href="/jobs/{{adderId}}">{{addedBy}}</a>
               {{/if}}
             </small> </h3>

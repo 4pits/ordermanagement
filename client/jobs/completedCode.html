@@ -3,7 +3,11 @@
         <div class="panel-heading">
             <h3 class="panel-title">{{count}}
                 ride
-                {{code}} <small>{{#if paid}}
+                {{#if isInRole 'admin'}}
+                  <a href="/order/{{orderId}}">{{code}}</a>
+                {{else}}
+                  {{code}}
+                {{/if}} <small>{{#if paid}}
                   Paid
                 {{/if}}
                 {{#if isInRole 'admin'}}

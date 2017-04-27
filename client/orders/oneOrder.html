@@ -102,8 +102,10 @@
                 {{#if isInRole 'admin'}}
                     <th>Added By</th>
                     <th>Delete</th>
+                    <th>Notes</th>
                 {{/if}}
                 <th>Status</th>
+
             </thead>
             <tbody>
                 {{#each jobsList}}
@@ -117,12 +119,14 @@
                             <td>
                                 <button type="button" class="btn btn-danger remove-job" name="button">Remove</button>
                             </td>
+                            <td>{{notes}}</td>
                         {{/if}}
                         <td>
                             {{#if done}}
                                 Added{{else}}
                                 adding{{/if}}
                         </td>
+                        <td></td>
                     </tr>
                 {{else}}
                     <p class="lead">Not started yet.</p>
