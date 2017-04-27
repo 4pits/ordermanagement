@@ -31,6 +31,20 @@ Meteor.publish('allUsers', function(search) {
         });
 });
 
+Meteor.publish('orderUsers', function() {
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+        var options = {
+            fields: {
+                emails: 1,
+                profile: 1,
+                createdAt: 1,
+                roles: 1
+            }
+        };
+        return Meteor.users.find({}, options);
+    }
+});
+
 Meteor.publish('allSellers', function() {
     if (Roles.userIsInRole(this.userId, 'admin')) {
         var options = {

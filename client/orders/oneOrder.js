@@ -5,7 +5,7 @@ Template.oneOrder.onCreated(function() {
         var orderId = FlowRouter.getParam('id');
         self.subscribe("oneOrder", orderId);
         self.subscribe("orderJobs", orderId);
-        self.subscribe("allUsers");
+        self.subscribe("orderUsers");
     });
 });
 Template.oneOrder.helpers({
