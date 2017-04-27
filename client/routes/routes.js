@@ -19,7 +19,20 @@ FlowRouter.route('/sign-up', {
     }
 });
 
+// Dashboard Page
+FlowRouter.route('/cmt', {
+    name: 'comment',
+    action() {
+        if (Meteor.userId()) {
+            BlazeLayout.render("AppLayout", {
+                main: "Comments"
+            });
+        } else {
+            FlowRouter.go('/');
+        }
 
+    }
+});
 // Dashboard Page
 FlowRouter.route('/dashboard', {
     name: 'dashboard',

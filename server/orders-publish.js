@@ -72,3 +72,10 @@ Meteor.publish('oneOrder', function(id) {
         });
     }
 });
+
+Meteor.publish('allOrders', function() {
+    var user = this.userId;
+    if (Roles.userIsInRole(user, 'admin')) {
+        return Orders.find({});
+    }
+});

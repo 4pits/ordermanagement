@@ -1,0 +1,7 @@
+<template name="Comments">
+  <p class="lead">Comments from all orders in reverse order</p>
+
+  {{#each orders}}
+  <p class="lead">{{code}}: {{comment}}</p>
+  {{/each}}
+</template>
