@@ -59,7 +59,7 @@ Orders.schema = new SimpleSchema({
     },
     runStatus: {
         type: Boolean,
-        defaultValue: false,
+        defaultValue: true,
         label: "Running status on blog",
         autoform: {
             omit: true,
