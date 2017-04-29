@@ -77,7 +77,7 @@ Template.runningCode.events({
     "click .workDone": function() {
         console.log('clicked');
         var mins = parseInt((new Date() - this.createdAt) / (1000 * 60));
-        if (mins > 10) {
+        if (mins > 30) {
             var notes = prompt("jiske account me mera code use kiye ho uska naam likhna hai ek ya do jitne bhi add kiye ho.");
             if (notes) {
                 Meteor.call('jobDone', this._id, notes);

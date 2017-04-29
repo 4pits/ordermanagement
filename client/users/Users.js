@@ -18,10 +18,16 @@ Template.Users.onCreated(function() {
 
 Template.Users.helpers({
     searching: function() {
-        this.searching.get();
+        if (this.searching) {
+            return this.searching.get();
+        }
+        return false;
     },
     query: function() {
-        this.searchQuery.get();
+        if (this.searchQuery.get()) {
+
+        }
+        return '';
     },
     users: function() {
         return Meteor.users.find({}, {

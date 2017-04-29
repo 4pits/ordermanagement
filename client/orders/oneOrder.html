@@ -87,11 +87,16 @@
             <p>Current user:
                 {{user currentUser._id}}</p>
             <select id="buyer" class="form-control">
-                {{#each buyers}}
-                    <option value="{{_id}}">{{email}}
-                        /
-                        {{fname}}</option>
-                {{/each}}
+              {{#if searching}}
+                <option value="none-not-valid-id">Searching...</option>
+              {{else}}
+              {{#each buyers}}
+                  <option value="{{_id}}">{{email}}
+                      /
+                      {{fname}}</option>
+              {{/each}}
+              {{/if}}
+
             </select>
             <button type="button" class="assign-buyer btn btn-default" name="button">Assign Buyer</button>
         {{/if}}

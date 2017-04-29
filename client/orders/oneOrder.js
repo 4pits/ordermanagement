@@ -1,14 +1,33 @@
 Template.oneOrder.onCreated(function() {
-
     var self = this;
+    self.searchQuery = new ReactiveVar();
+    self.searching = new ReactiveVar(false);
     self.autorun(() => {
         var orderId = FlowRouter.getParam('id');
         self.subscribe("oneOrder", orderId);
         self.subscribe("orderJobs", orderId);
-        self.subscribe("orderUsers");
+        self.subscribe("jobAdders", orderId);
+        self.subscribe("allBuyers", self.searchQuery.get(), () => {
+            setTimeout(() => {
+                self.searching.set(false);
+            }, 300);
+        });
+
     });
 });
 Template.oneOrder.helpers({
+    searching: function() {
+        if (this.searching) {
+            return this.searching.get();
+        }
+        return false;
+    },
+    query: function() {
+        if (this.searchQuery.get()) {
+
+        }
+        return '';
+    },
     order: function() {
         return Orders.findOne({});
     },
@@ -47,7 +66,10 @@ Template.oneOrder.helpers({
         return this.emails[0].address;
     },
     fname() {
-        return this.profile.firstName;
+        if (this.profile) {
+            return this.profile.firstName;
+        }
+        return '';
     },
     user(id) {
         return Meteor.users.findOne({
@@ -114,5 +136,17 @@ Template.oneOrder.events({
         var order = Orders.findOne({});
         //  console.log(order.deleted);
         Meteor.call('deleteOrderToggle', order._id, !order.deleted);
+    },
+    'keyup [name="search"]' (event, template) {
+        let value = event.target.value.trim();
+
+        if (value !== '' && event.keyCode === 13) {
+            template.searchQuery.set(value);
+            template.searching.set(true);
+        }
+
+        if (value === '') {
+            template.searchQuery.set(value);
+        }
     }
 });

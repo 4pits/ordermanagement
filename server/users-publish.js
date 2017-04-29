@@ -31,8 +31,52 @@ Meteor.publish('allUsers', function(search) {
         });
 });
 
-Meteor.publish('orderUsers', function() {
+Meteor.publish('allBuyers', function(search) {
+    check(search, Match.OneOf(String, null, undefined));
+    let query = {};
+    if (search) {
+        let regex = new RegExp(search, 'i');
+
+        query = {
+            roles: 'buyer',
+            $or: [{
+                    "emails.address": regex
+                },
+                {
+                    "profile.firstName": regex
+                }
+            ]
+        };
+    }
     if (Roles.userIsInRole(this.userId, 'admin')) {
+        return Meteor.users.find(query, {
+            sort: {
+                createdAt: -1
+            },
+            fields: {
+                emails: 1,
+                roles: 1,
+                profile: 1,
+                createdAt: 1,
+                userCode: 1,
+                firstOrder: 1
+            },
+            limit: 5
+        });
+    }
+});
+Meteor.publish('jobAdders', function(orderId) {
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+        var ids = [];
+        Jobs.find({
+            orderId: orderId,
+            deleted: false
+        }).map(function(jb) {
+            ids.push(jb.adderId);
+        });
+        ids.push(Orders.findOne({
+            _id: orderId
+        }).userId);
         var options = {
             fields: {
                 emails: 1,
@@ -41,9 +85,14 @@ Meteor.publish('orderUsers', function() {
                 roles: 1
             }
         };
-        return Meteor.users.find({}, options);
+        return Meteor.users.find({
+            _id: {
+                $in: ids
+            }
+        }, options);
     }
 });
+
 
 Meteor.publish('allSellers', function() {
     if (Roles.userIsInRole(this.userId, 'admin')) {
