@@ -27,7 +27,7 @@ Meteor.publish('allUsers', function(search) {
                 userCode: 1,
                 firstOrder: 1
             },
-            limit: 5
+            limit: 10
         });
 });
 

@@ -11,6 +11,10 @@ Template.completedOrders.helpers({
     completOrders: function() {
         return Orders.find({
             done: true
+        }, {
+            sort: {
+                createdAt: -1
+            }
         });
     },
     markCompletedCount: function() {
