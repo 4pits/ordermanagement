@@ -40,7 +40,3 @@ var postSignUp = function(userId, info) {
 AccountsTemplates.configure({
     postSignUpHook: postSignUp,
 });
-
-AccountsTemplates.configure({
-    postSignUpHook: postSignUp,
-});

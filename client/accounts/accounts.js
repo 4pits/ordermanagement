@@ -34,7 +34,8 @@ AccountsTemplates.addField({
     minLength: 4,
     trim: true,
     placeholder: {
-        signUp: "Name"
+        signUp: "Name",
+        signIn: "Name"
     }
 });
 AccountsTemplates.addField({
@@ -47,7 +48,7 @@ AccountsTemplates.addField({
     trim: true,
     lowercase: true,
     placeholder: {
-        signUp: "Thanks to, who referred you.",
-        signIn: "Thanks to, who referred you."
+        signUp: "This is not your uber invite code. Leave blank if no idea about this.",
+        signIn: "This is not your uber invite code. Ask your friend about this who referred you to sign-up."
     }
 });
