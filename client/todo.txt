@@ -8,4 +8,6 @@ todo list
 
 dt 29/4
 1. add per seller details
-2. improve assign buyer Page
+
+dt 1 may
+improve users page

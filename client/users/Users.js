@@ -9,11 +9,6 @@ Template.Users.onCreated(function() {
         });
         this.subscribe("jobsUnpaid");
     });
-    Session.set('newUserOnly', true);
-    Session.set('allUsers', false);
-    Session.set('sellers', false);
-    Session.set('buyers', false);
-
 });
 
 Template.Users.helpers({
@@ -24,8 +19,8 @@ Template.Users.helpers({
         return false;
     },
     query: function() {
-        if (this.searchQuery.get()) {
-
+        if (this.searchQuery) {
+            return this.searchQuery.get();
         }
         return '';
     },
@@ -35,96 +30,10 @@ Template.Users.helpers({
                 createdAt: -1
             }
         });
-    },
-    usersCount: function() {
-        return Meteor.users.find().count();
-    },
-    newUsers: function() {
-        return Meteor.users.find({
-            roles: {
-                $nin: ['buyer', 'seller', 'admin']
-            }
-        }, {
-            sort: {
-                createdAt: -1
-            }
-        });
-    },
-    newUsersCount: function() {
-        return Meteor.users.find({
-            roles: {
-                $nin: ['buyer', 'seller', 'admin']
-            }
-        }).count();
-    },
-    sellers: function() {
-        return Meteor.users.find({
-            roles: 'seller'
-        }, {
-            sort: {
-                createdAt: -1
-            }
-        });
-    },
-    sellersCount: function() {
-        return Meteor.users.find({
-            roles: 'seller'
-        }).count();
-    },
-    buyers: function() {
-        return Meteor.users.find({
-            roles: 'buyer'
-        }, {
-            sort: {
-                createdAt: -1
-            }
-        });
-    },
-    buyersCount: function() {
-        return Meteor.users.find({
-            roles: 'buyer'
-        }).count();
-    },
-    allUsers: function() {
-        return Session.get('allUsers');
-    },
-    onlySeller: function() {
-        return Session.get('sellers');
-    },
-    onlyBuyer: function() {
-        return Session.get('buyers');
-    },
-    newUsersOnly: function() {
-        return Session.get('newUserOnly');
     }
-
 });
 
 Template.Users.events({
-    'click .all-user' () {
-        Session.set('newUserOnly', false);
-        Session.set('allUsers', true);
-        Session.set('sellers', false);
-        Session.set('buyers', false);
-    },
-    'click .only-seller' () {
-        Session.set('newUserOnly', false);
-        Session.set('allUsers', false);
-        Session.set('sellers', true);
-        Session.set('buyers', false);
-    },
-    'click .only-buyer' () {
-        Session.set('newUserOnly', false);
-        Session.set('allUsers', false);
-        Session.set('sellers', false);
-        Session.set('buyers', true);
-    },
-    'click .new-user' () {
-        Session.set('newUserOnly', true);
-        Session.set('allUsers', false);
-        Session.set('sellers', false);
-        Session.set('buyers', false);
-    },
     'keyup [name="search"]' (event, template) {
         let value = event.target.value.trim();
 

@@ -1,120 +1,55 @@
 <template name="Users">
-    <div class="container">
         <p class="lead">Users</p>
-        <div>
-            <button type="button" class="btn {{#if newUsersOnly}} btn-primary{{else}}btn-default {{/if}} new-user" name="button">New
-                <span class="badge">{{newUsersCount}}</span>
-            </button>
-
-            <div class="btn-group" role="group" aria-label="...">
-                <button type="button" class="btn {{#if allUsers}} btn-primary{{else}}btn-default {{/if}} all-user" name="button">All
-                    <span class="badge">{{usersCount}}</span>
-                </button>
-                <button type="button" class="btn {{#if onlySeller}} btn-primary{{else}}btn-default {{/if}} only-seller" name="button">Sellers
-                    <span class="badge">{{sellersCount}}</span>
-                </button>
-                <button type="button" class="btn {{#if onlyBuyer}} btn-primary{{else}}btn-default {{/if}} only-buyer" name="button">Buyers
-                    <span class="badge">{{buyersCount}}</span>
-                </button>
-
-            </div>
             <div class="pull-right">
                 <input type="text" name="search" class="form-control" width="250px" placeholder="Find a user...">
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>X</th>
-                        <th>UserCode</th>
-                        <th>Ref_CodeBy</th>
-                        <th>First Order</th>
-                        <th>Name</th>
-                        <th>DashBoard</th>
-                        <th>Roles</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
                     {{#if searching}}
                         {{> loading}}
                     {{else}}
-                        {{#if newUsersOnly}}
-                            {{#each newUsers}}
+            {{#each users}}
                                 {{> user}}
                             {{/each}}
-
-                        {{/if}}
-                        {{#if allUsers}}
-                            {{#each users}}
-                                {{> user}}
-                            {{/each}}
-                        {{/if}}
-                        {{#if onlySeller}}
-                            {{#each sellers}}
-                                {{> user}}
-                            {{/each}}
-                        {{/if}}
-                        {{#if onlyBuyer}}
-                            {{#each buyers}}
-                                {{> user}}
-                            {{/each}}
-                        {{/if}}
                     {{/if}}
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <p class="lead">sellers= all sellers, buyers= all buyers, users = all users</p>
 </template>
 <template name="user">
-    <tr>
-        <td>
-            {{#if isNewUser}}
-                <button type="button" class="btn btn-default delete-user" name="button">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-            {{/if}}
-        </td>
-        <td>{{userCode}}</td>
-        <td>{{profile.refCodeBy}}</td>
-        <td>{{firstOrder}}</td>
-        <td>
-            <a href="/profile/{{_id}}">{{profile.firstName}}
-                <br>
-                {{userEmail}}
-                <br>
-            </a>
-            {{dateFormat createdAt}}
-        </td>
-        <td>
-            <a href="/dashboard/{{_id}}">DashBoard</a>
-        </td>
-        <td>
-            <p>{{roles}}</p>
-            <div class="user-edit">
-                <button class="toggle-buyer btn {{#if isBuyer}} btn-primary {{else}} btn-success{{/if}}">Buyer</button>
-                <div class="btn-group" role="group" aria-label="...">
-                    <button class="toggle-seller btn {{#if isSeller}} btn-primary {{else}} btn-success{{/if}}">Seller</button>
-                    <button class="toggle-premium-seller btn {{#if isPremiumSeller}} btn-primary {{else}} btn-success{{/if}}">Premium</button>
-                    <button class="toggle-2ride-seller btn {{#if isTwoRideSeller}} btn-primary {{else}} btn-success{{/if}}">2 Ride</button>
-                    <button class="toggle-10ride-seller btn {{#if isTenRideSeller}} btn-primary {{else}} btn-success{{/if}}">10 Ride</button>
-                    <button class="toggle-20ride-seller btn {{#if isTwentyRideSeller}} btn-primary {{else}} btn-success{{/if}}">20 Ride</button>
-                </div>
-            </div>
-        </td>
-        <td>
-            {{#if isSeller}}
-                <a href="/jobs/{{_id}}" target="_blank">Jobs ({{runningJobCount}})</a>
-                <br>
-                <a href="/completed-jobs/{{_id}}" target="_blank">Completed Jobs ({{allAddedJobCount}})</a>
-                <br>
-                <a href="/deletedjobs/{{_id}}" target="_blank">Deleted Jobs</a>
-            {{/if}}
-            {{#if isBuyer}}
-                <a href="/orders/{{_id}}" target="_blank">Orders</a>
-                <br>
-                <a href="/completed-orders/{{_id}}" target="_blank">Completed Orders</a>
-            {{/if}}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><a href="/profile/{{_id}}">{{profile.firstName}} {{userEmail}} </a><small> {{dateFormat createdAt}}</small>
+    </h3>
+  </div>
+  <div class="panel-body">
+    {{#if isNewUser}}
+        <button type="button" class="btn btn-default delete-user" name="button">
+            <i class="fa fa-times" aria-hidden="true"></i> Delete this user
+        </button>
+    {{/if}}
+    <p>UserCode: {{userCode}} //{{profile.refCodeBy}}// {{firstOrder}}</p>
+    <a href="/dashboard/{{_id}}">DashBoard</a>
+    <div class="user-edit">
+        <button class="toggle-buyer btn {{#if isBuyer}} btn-primary {{else}} btn-success{{/if}}">Buyer</button>
+        <div class="btn-group" role="group" aria-label="...">
+            <button class="toggle-seller btn {{#if isSeller}} btn-primary {{else}} btn-success{{/if}}">Seller</button>
+            <button class="toggle-premium-seller btn {{#if isPremiumSeller}} btn-primary {{else}} btn-success{{/if}}">Premium</button>
+            <button class="toggle-2ride-seller btn {{#if isTwoRideSeller}} btn-primary {{else}} btn-success{{/if}}">2 Ride</button>
+            <button class="toggle-10ride-seller btn {{#if isTenRideSeller}} btn-primary {{else}} btn-success{{/if}}">10 Ride</button>
+            <button class="toggle-20ride-seller btn {{#if isTwentyRideSeller}} btn-primary {{else}} btn-success{{/if}}">20 Ride</button>
+        </div>
+    </div>
+    {{#if isSeller}}
+        <a href="/jobs/{{_id}}" target="_blank">Jobs ({{runningJobCount}})</a>
+        <br>
+        <a href="/completed-jobs/{{_id}}" target="_blank">Completed Jobs ({{allAddedJobCount}})</a>
+        <br>
+        <a href="/deletedjobs/{{_id}}" target="_blank">Deleted Jobs</a>
+    {{/if}}
+    {{#if isBuyer}}
+        <a href="/orders/{{_id}}" target="_blank">Orders</a>
+        <br>
+        <a href="/completed-orders/{{_id}}" target="_blank">Completed Orders</a>
+    {{/if}}
 
-        </td>
-    </tr>
+
+  </div>
+</div>
 </template>
