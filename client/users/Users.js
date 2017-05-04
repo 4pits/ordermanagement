@@ -70,7 +70,17 @@ Template.user.helpers({
         });
         return count;
     },
-
+    userPanel: function() {
+        if (Roles.userIsInRole(this._id, 'seller')) {
+            return 'panel-primary';
+        } else if (Roles.userIsInRole(this._id, 'buyer')) {
+            return 'panel-success';
+        } else if (Roles.userIsInRole(this._id, 'admin')) {
+            return 'panel-danger';
+        } {
+            return 'panel-default';
+        }
+    },
     userEmail: function() {
         return this.emails[0].address;
     },
