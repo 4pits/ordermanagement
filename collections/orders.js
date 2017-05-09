@@ -92,11 +92,8 @@ Orders.schema = new SimpleSchema({
   },
   pause: {
     type: Boolean,
-    optional: true,
     autoValue: function() {
-      if (this.isSet) {
-        return true;
-      } else {
+      if (this.isInsert) {
         return true;
       }
     },
