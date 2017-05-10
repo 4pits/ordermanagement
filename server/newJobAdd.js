@@ -1,15 +1,26 @@
 // first job will be assigned daily after midnight , if its not running.
-var idsFirstJob = function(dayStart) {
+var idsFirstJob = function(dayStart, adderId) {
   let ids = [];
+  let orFilter = [{
+    createdAt: {
+      $gt: dayStart
+    }
+  }, {
+    done: false
+  }];
   Jobs.find({
     deleted: false,
-    $or: [{
-      createdAt: {
-        $gt: dayStart
-      }
-    }, {
-      done: false
-    }]
+    $or: orFilter
+  }).map(function(o) {
+    ids.push(o.orderId);
+  });
+  //once removed don't show them again for the same day.
+  Jobs.find({
+    deleted: true,
+    adderId: adderId,
+    createdAt: {
+      $gt: dayStart
+    }
   }).map(function(o) {
     ids.push(o.orderId);
   });
@@ -17,32 +28,36 @@ var idsFirstJob = function(dayStart) {
   return ids;
 };
 // second job will be assigned after 16 hours of ending last first/second job.
-var idsSecondJob = function(dayStart) {
+var idsSecondJob = function(dayStart, adderId) {
   ids = [];
+  let orFilter = [{
+    createdAt: {
+      $gt: dayStart
+    }
+  }, {
+    done: false
+  }];
   Jobs.find({
     deleted: false,
-    $or: [{
-      createdAt: {
-        $gt: dayStart
-      }
-    }, {
-      done: false
-    }]
+    $or: orFilter
   }).map(function(o) {
     var assignedcount = Jobs.find({
       orderId: o.orderId,
       deleted: false,
-      $or: [{
-        createdAt: {
-          $gt: dayStart
-        }
-      }, {
-        done: false
-      }]
+      $or: orFilter
     }).count();
     //    console.log('assignedcount: ' + assignedcount);
     //    console.log(o.code);
     if (assignedcount > 1) ids.push(o.orderId);
+  });
+  Jobs.find({
+    deleted: true,
+    adderId: adderId,
+    createdAt: {
+      $gt: dayStart
+    }
+  }).map(function(o) {
+    ids.push(o.orderId);
   });
   return ids;
 };
@@ -168,27 +183,14 @@ var userDailyRunningRidesCount = function(adderId, dayStart) {
 
 Meteor.methods({
   "addJobOrder": function(adderId, count, dayStart) {
-    //    console.log('dayStart');
-    //    console.log(dayStart);
     if (!dayStart || !adderId) return; // return if undefined
-    //    console.log('count: ' + count);
     if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
-    //    console.log('allowed ' + allowedRides(adderId));
-    //    console.log('userrun ' + userRunningRides(adderId));
-    //    console.log('limit ' + sellerDailyLimit(adderId));
-    //    console.log('userdailyrun ' + userDailyRunningRidesCount(adderId, dayStart));
     if (allowedRides(adderId) <= userRunningRides(adderId)) return;
     if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
     if (count < 1) return;
-    //    console.log('adding now');
-    // console.log('ids1');
-    //    console.log(idsFirstJob(dayStart));
-    // console.log('ids2');
-    // console.log(idsSecondJob(dayStart));
-    //    console.log('1: ' + count);
     Orders.find({
       _id: {
-        $nin: idsFirstJob(dayStart)
+        $nin: idsFirstJob(dayStart, adderId)
       },
       done: false,
       pause: false,
@@ -211,7 +213,7 @@ Meteor.methods({
     if (count < 1) return;
     Orders.find({
       _id: {
-        $nin: idsFirstJob(dayStart)
+        $nin: idsFirstJob(dayStart, adderId)
       },
       done: false,
       pause: false,
@@ -236,7 +238,7 @@ Meteor.methods({
     if (count < 1) return;
     Orders.find({
       _id: {
-        $nin: idsFirstJob(dayStart)
+        $nin: idsFirstJob(dayStart, adderId)
       },
       done: false,
       pause: false,
@@ -260,7 +262,7 @@ Meteor.methods({
     if (count < 1) return;
     Orders.find({
       _id: {
-        $nin: idsFirstJob(dayStart)
+        $nin: idsFirstJob(dayStart, adderId)
       },
       done: false,
       pause: false,
@@ -286,7 +288,7 @@ Meteor.methods({
     if (count < 1) return;
     Orders.find({
       _id: {
-        $nin: idsFirstJob(dayStart)
+        $nin: idsFirstJob(dayStart, adderId)
       },
       done: false,
       pause: false,
@@ -308,7 +310,7 @@ Meteor.methods({
     if (count < 1) return;
     Orders.find({
       _id: {
-        $nin: idsSecondJob(dayStart)
+        $nin: idsSecondJob(dayStart, adderId)
       },
       done: false,
       pause: false,
@@ -332,7 +334,7 @@ Meteor.methods({
     if (count < 1) return;
     Orders.find({
       _id: {
-        $nin: idsSecondJob(dayStart)
+        $nin: idsSecondJob(dayStart, adderId)
       },
       done: false,
       pause: false,
