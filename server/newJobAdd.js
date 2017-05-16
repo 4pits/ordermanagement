@@ -122,34 +122,53 @@ var jobcount = function(ordr, count, adderId, dayStart) {
   }
   return jobcount;
 }
+var deletedCount = function(userId) {
+  var dt = new Date();
+  dt.setDate(dt.getDate() - 2);
+  let count = 0;
+  Jobs.find({
+    adderId: userId,
+    deleted: true,
+    createdAt: {
+      $gte: dt
+    }
+  }).map(function(jb) {
+    count = count + jb.count;
+  });
+  return count;
+}
 
 var allowedRides = function(id) {
+  let count = 0;
   if (Roles.userIsInRole(id, 'two-ride-seller')) {
-    return 2;
+    count = 2;
   } else if (Roles.userIsInRole(id, 'ten-ride-seller')) {
-    return 10;
+    count = 10;
   } else if (Roles.userIsInRole(id, 'twenty-ride-seller')) {
-    return 20;
+    count = 20;
   } else if (Roles.userIsInRole(id, 'premium-seller')) {
-    return 100;
+    count = 100;
   } else if (Roles.userIsInRole(id, 'admin')) {
-    return 1000;
+    count = 1000;
   }
-  return 0;
+  console.log(deletedCount(id) + ' ad c');
+  return count - deletedCount(id);
 };
 var sellerDailyLimit = function(id) {
+  let count = 0;
   if (Roles.userIsInRole(id, 'two-ride-seller')) {
-    return 10;
+    count = 10;
   } else if (Roles.userIsInRole(id, 'ten-ride-seller')) {
-    return 30;
+    count = 30;
   } else if (Roles.userIsInRole(id, 'twenty-ride-seller')) {
-    return 100;
+    count = 50;
   } else if (Roles.userIsInRole(id, 'premium-seller')) {
-    return 200;
+    count = 200;
   } else if (Roles.userIsInRole(id, 'admin')) {
-    return 1000;
+    count = 1000;
   }
-  return 0;
+  console.log(deletedCount(id) + ' sd c');
+  return count - deletedCount(id);
 };
 
 
