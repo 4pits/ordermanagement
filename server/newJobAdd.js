@@ -151,7 +151,7 @@ var allowedRides = function(id) {
   } else if (Roles.userIsInRole(id, 'admin')) {
     count = 1000;
   }
-  console.log(deletedCount(id) + ' ad c');
+  //  console.log(deletedCount(id) + ' ad c');
   return count - deletedCount(id);
 };
 var sellerDailyLimit = function(id) {
@@ -167,7 +167,7 @@ var sellerDailyLimit = function(id) {
   } else if (Roles.userIsInRole(id, 'admin')) {
     count = 1000;
   }
-  console.log(deletedCount(id) + ' sd c');
+  //  console.log(deletedCount(id) + ' sd c');
   return count - deletedCount(id);
 };
 
@@ -200,6 +200,19 @@ var userDailyRunningRidesCount = function(adderId, dayStart) {
   return total;
 }
 
+var recentlyAdded = function(adderId) {
+  let job = Jobs.findOne({
+    adderId: adderId
+  }, {
+    sort: {
+      createdAt: -1,
+      limit: 1
+    }
+  });
+  let diff = Math.abs(job.createdAt.getTime() - (new Date()).getTime());
+  //  console.log(diff);
+  return diff > 10000 ? false : true;
+}
 Meteor.methods({
   "addJobOrder": function(adderId, count, dayStart) {
     if (!dayStart || !adderId) return; // return if undefined
@@ -207,6 +220,7 @@ Meteor.methods({
     if (allowedRides(adderId) <= userRunningRides(adderId)) return;
     if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
     if (count < 1) return;
+    if (recentlyAdded(adderId)) return;
     Orders.find({
       _id: {
         $nin: idsFirstJob(dayStart, adderId)
