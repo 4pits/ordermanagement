@@ -211,7 +211,7 @@ var recentlyAdded = function(adderId) {
   });
   let diff = Math.abs(job.createdAt.getTime() - (new Date()).getTime());
   //  console.log(diff);
-  return diff > 10000 ? false : true;
+  return diff > 2000 ? false : true;
 }
 Meteor.methods({
   "addJobOrder": function(adderId, count, dayStart) {
