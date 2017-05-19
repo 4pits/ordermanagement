@@ -3,7 +3,7 @@ var idsFirstJob = function(dayStart, adderId) {
   let ids = [];
   let orFilter = [{
     createdAt: {
-      $gt: dayStart
+      $gte: dayStart
     }
   }, {
     done: false
@@ -19,7 +19,7 @@ var idsFirstJob = function(dayStart, adderId) {
     deleted: true,
     adderId: adderId,
     createdAt: {
-      $gt: dayStart
+      $gte: dayStart
     }
   }).map(function(o) {
     ids.push(o.orderId);
@@ -32,7 +32,7 @@ var idsSecondJob = function(dayStart, adderId) {
   ids = [];
   let orFilter = [{
     createdAt: {
-      $gt: dayStart
+      $gte: dayStart
     }
   }, {
     done: false
@@ -54,7 +54,7 @@ var idsSecondJob = function(dayStart, adderId) {
     deleted: true,
     adderId: adderId,
     createdAt: {
-      $gt: dayStart
+      $gte: dayStart
     }
   }).map(function(o) {
     ids.push(o.orderId);
@@ -192,7 +192,7 @@ var userDailyRunningRidesCount = function(adderId, dayStart) {
     adderId: adderId,
     deleted: false,
     createdAt: {
-      $gt: dayStart
+      $gte: dayStart
     }
   }).map(function(job) {
     total = total + job.count;
