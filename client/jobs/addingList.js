@@ -55,7 +55,7 @@ Template.addingList.events({
     }
     var dayStart = new Date();
     dayStart.setHours(0);
-    dayStart.setMinutes(10);
+    dayStart.setMinutes(0);
     dayStart.setSeconds(0);
     Meteor.call('addJobOrder', adderId, count, dayStart);
 
@@ -75,10 +75,9 @@ Template.runningCode.events({
     }
   },
   "click .workDone": function() {
-    console.log('clicked');
     var mins = parseInt((new Date() - this.createdAt) / (1000 * 60));
     if (mins > 30) {
-      var notes = prompt("jiske account me mera code use kiye ho uska naam likhna hai ek ya do jitne bhi add kiye ho.");
+      var notes = prompt("Ride account me aa gaya hai? Booking names?");
       if (notes) {
         Meteor.call('jobDone', this._id, notes);
         Meteor.call('updateRide', this.orderId, this.count, (error) => {
@@ -87,10 +86,10 @@ Template.runningCode.events({
           }
         });
       } else {
-        alert('Add karne ke baad update dena hai,  uske baad hi done pe click karna hai.');
+        alert('Ride account me aane ke baad "Done" karna hai.');
       }
     } else {
-      alert("Too early to complete this job. Please do it properly.");
+      alert("Ride account me aa gaya hai?? Try agian after some time.");
     }
   }
 });
