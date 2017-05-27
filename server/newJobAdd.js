@@ -375,6 +375,13 @@ Meteor.methods({
     //currentListPremium
     //      console.log('6: ' + count);
     if (count < 1) return;
+    //allow second job in morning
+    //  console.log(dayStart);
+    var now = new Date();
+    var diff = now.getTime() - dayStart.getTime();
+    //    console.log(diff);
+    if (diff < 8 * 60 * 60 * 1000) return; // 8 hours delay for second job
+    //    console.log('can add second');
     //  console.log('secondjob');
     //  console.log(idsSecondJob(dayStart, adderId));
     Orders.find({
