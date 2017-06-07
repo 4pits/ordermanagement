@@ -248,7 +248,13 @@ Meteor.methods({
     console.log('client time');
     console.log(dayStart);
     console.log('server time');
-    console.log(new Date());
+    var dt = new Date();
+    console.log(dt);
+    dt.setHours(12);
+    dt.setMinutes(31);
+    st.setSeconds(1);
+    console.log(dt);
+
     return;
     if (!dayStart || !adderId) return; // return if undefined
     if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
