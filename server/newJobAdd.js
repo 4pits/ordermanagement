@@ -256,7 +256,7 @@ Meteor.methods({
     dtStart.setSeconds(0);
     console.log('dtstart2 ' + dtStart);
     if (dtStart.getTime() > dtnow.getTime()) {
-      dtStart.setDate(dtStart.getDate() - 1);
+      dtStart = new Date(dtStart.getTime() - (24 * 60 * 60 * 1000));
     }
     console.log('dtstart3 ' + dtStart);
     var diff = dtStart.getTime() - dtnow.getTime();
