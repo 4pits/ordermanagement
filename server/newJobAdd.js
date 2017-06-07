@@ -259,7 +259,7 @@ Meteor.methods({
       dtStart.setDate(dtStart.getDate() - 1);
     }
     console.log('dtstart3 ' + dtStart);
-    var diff = dt.getTime() - dt2.getTime();
+    var diff = dtStart.getTime() - dtnow.getTime();
     console.log(diff / (1000 * 60 * 60));
 
     return;
