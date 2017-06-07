@@ -246,7 +246,7 @@ Meteor.methods({
     //  console.log(count);
     //  console.log(dayStart);
     console.log('client time');
-    console.log(daystart);
+    console.log(dayStart);
     console.log('server time');
     console.log(new Date());
     return;
