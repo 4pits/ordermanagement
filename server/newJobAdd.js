@@ -248,12 +248,19 @@ Meteor.methods({
     console.log('client time');
     console.log(dayStart);
     console.log('server time');
-    var dt = new Date();
-    console.log(dt);
-    dt.setHours(12);
-    dt.setMinutes(31);
-    dt.setSeconds(1);
-    console.log(dt);
+    var dtnow = new Date();
+    var dtStart = new Date();
+    console.log('dtstart1 ' + dtStart);
+    dtStart.setHours(12);
+    dtStart.setMinutes(1);
+    dtStart.setSeconds(0);
+    console.log('dtstart2 ' + dtStart);
+    if (dtStart.getTime() > dtnow.getTime()) {
+      dtStart.setDate(dtStart.getDate() - 1);
+    }
+    console.log('dtstart3 ' + dtStart);
+    var diff = dt.getTime() - dt2.getTime();
+    console.log(diff / (1000 * 60 * 60));
 
     return;
     if (!dayStart || !adderId) return; // return if undefined
