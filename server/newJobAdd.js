@@ -252,7 +252,7 @@ Meteor.methods({
     console.log(dt);
     dt.setHours(12);
     dt.setMinutes(31);
-    st.setSeconds(1);
+    dt.setSeconds(1);
     console.log(dt);
 
     return;
