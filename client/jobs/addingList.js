@@ -53,11 +53,7 @@ Template.addingList.events({
     else {
       adderId = f.options[f.selectedIndex].value;
     }
-    var dayStart = new Date();
-    dayStart.setHours(0);
-    dayStart.setMinutes(30);
-    dayStart.setSeconds(0);
-    Meteor.call('addJobOrder', adderId, count, dayStart);
+    Meteor.call('addJobOrder', adderId, count);
 
   }
 });

@@ -241,37 +241,23 @@ var recentlyAdded = function(adderId) {
   return diff > 2000 ? false : true;
 }
 Meteor.methods({
-  "addJobOrder": function(adderId, count, dayStart) {
-    //  console.log(adderId);
-    //  console.log(count);
-    //  console.log(dayStart);
-    console.log('client time');
-    console.log(dayStart);
-    console.log('server time');
+  "addJobOrder": function(adderId, count) {
     var dtnow = new Date();
     var dtStart = new Date();
-    console.log('dtstart1 ' + dtStart);
     dtStart.setHours(12);
     dtStart.setMinutes(1);
     dtStart.setSeconds(0);
-    console.log('dtstart2 ' + dtStart);
     if (dtStart.getTime() > dtnow.getTime()) {
       dtStart = new Date(dtStart.getTime() - (24 * 60 * 60 * 1000));
     }
-    console.log('dtstart3 ' + dtStart);
-    var diff = dtStart.getTime() - dtnow.getTime();
-    console.log(diff / (1000 * 60 * 60));
-
-    return;
+    dayStart = dtStart;
+    //  return;
     if (!dayStart || !adderId) return; // return if undefined
     if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
     if (allowedRides(adderId) <= userRunningRides(adderId)) return;
     if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
     if (count < 1) return;
     if (recentlyAdded(adderId)) return;
-    //    console.log('firstjob');
-    //    console.log(idsFirstJob(dayStart, adderId));
-    //    return;
     Orders.find({
       _id: {
         $nin: idsFirstJob(dayStart, adderId)
