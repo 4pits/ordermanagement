@@ -92,6 +92,10 @@ var idsSecondJob = function(dayStart, adderId) {
 
 var jobcount = function(ordr, count, adderId, dayStart) {
   var jobcount = 0;
+  console.log('client time');
+  console.log(daystart);
+  console.log('server time');
+  console.log(new Date());
   //don't allow to get added by same person in same day
   var countJ = Jobs.find({
     adderId: adderId,
