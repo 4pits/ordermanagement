@@ -1,0 +1,8 @@
+<template name="paidJobs">
+  <h4>Paid Jobs ( {{paidListCount}} ) <small>All paid Jobs will appear here.</small> </h4>
+          {{#each paidList}}
+              {{> completedCode}}
+              {{else}}
+              <p class="lead">No paid jobs yet.</p>
+          {{/each}}
+</template>

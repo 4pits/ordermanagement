@@ -1,9 +1,9 @@
 <template name="todayList">
-  <h4> Jobs Started Today ( {{todayCount}} )  <small>{{formatDay today}}</small> </h4>
+  <h4>Unpaid Jobs Started Today ( {{todayCount}} )  <small>{{formatDay today}}</small> </h4>
                 {{#each todayList}}
                     {{> completedCode}}
                     {{else}}
-                    <p class="lead">No jobs completed today.</p>
+                    <p class="lead">No jobs completed today. To see paid jobs click on show paid jobs button.</p>
                 {{/each}}
 
 </template>
