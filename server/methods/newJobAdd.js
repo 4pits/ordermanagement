@@ -115,7 +115,7 @@ var jobcount = function(ordr, count, adderId, dayStart) {
       }
     }]
   }).count();
-  console.log('J1 ' + countJ);
+  //console.log('J1 ' + countJ);
   if (countJ > 0) return jobcount;
   //don't allow to get it added by any person in within 4 hours.
   // to avoid adding extra rides then ordered
@@ -131,9 +131,9 @@ var jobcount = function(ordr, count, adderId, dayStart) {
   } else if (ordr.rides - addedForCode > 1 && count > 1) {
     jobcount = 2;
   }
-  console.log('ordr.added ' + ordr.added);
-  console.log('addedForCode ' + addedForCode);
-  console.log('jobcount ' + jobcount);
+  // console.log('ordr.added ' + ordr.added);
+  // console.log('addedForCode ' + addedForCode);
+  // console.log('jobcount ' + jobcount);
   if (jobcount > 0) {
     Meteor.call('jobs.insert', ordr._id, ordr.code, ordr.premium, jobcount, adderId, (error, result) => {
       if (error) {
@@ -141,8 +141,8 @@ var jobcount = function(ordr, count, adderId, dayStart) {
         jobcount = 0;
       }
       if (result) {
-        console.log("result " + result);
-        console.log(jobcount);
+        //  console.log("result " + result);
+        //  console.log(jobcount);
         //return jobcount;
       }
     });
@@ -252,7 +252,7 @@ Meteor.methods({
       dtStart = new Date(dtStart.getTime() - (24 * 60 * 60 * 1000));
     }
     var dayStart = dtStart;
-    console.log(dayStart);
+    //console.log(dayStart);
     //  return;
     if (!dayStart || !adderId) return; // return if undefined
     if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
