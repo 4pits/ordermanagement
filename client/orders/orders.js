@@ -1,8 +1,10 @@
 Template.orders.onCreated(function() {
+  // 1= pause, 2= pause+ new running, 3= pause+ all added, 4 = all new
+  Session.set('orderStatus', 1);
   this.autorun(() => {
     var id = FlowRouter.getParam('id');
     if (!id) id = Meteor.userId();
-    this.subscribe("orders", id);
+    this.subscribe("orders", id, Session.get('orderStatus'));
   });
 });
 
@@ -117,7 +119,17 @@ Template.orders.events({
   'click .close-order-details': function() {
     Session.set('showOrderDetails', false);
     Session.set('orderDetailsId', null);
+  },
+  'click .setStatus2': function() {
+    Session.set('orderStatus', 2);
+  },
+  'click .setStatus3': function() {
+    Session.set('orderStatus', 3);
+  },
+  'click .setStatus4': function() {
+    Session.set('orderStatus', 4);
   }
+
 
 });
 Template.order.events({

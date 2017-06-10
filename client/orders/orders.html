@@ -72,6 +72,15 @@
                 {{else}}
                     <tr>
                         <td colspan=15>
+                          {{#if isInRole 'admin'}}
+                          <button type="button" class="btn btn-default setStatus2">
+                            Show Running
+                          </button>
+                          <button type="button" class="btn btn-default setStatus4">
+                            Show All Active
+                          </button>
+
+                          {{/if}}
                             <p class="lead">No order running yet. If order added, make sure you have already paid and added details to order.</p>
                         </td>
                     </tr>
@@ -85,6 +94,16 @@
                 {{else}}
                     <tr>
                         <td colspan=15>
+                          {{#if isInRole 'admin'}}
+                          <button type="button" class="btn btn-default setStatus3">
+                            Show All Added
+                          </button>
+                          <button type="button" class="btn btn-default setStatus4">
+                            Show All Active
+                          </button>
+
+                          {{/if}}
+
                             <p class="lead">Check <a href="/completed-orders">completed orders</a> here, if any.</p>
                         </td>
                     </tr>

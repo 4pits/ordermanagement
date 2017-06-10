@@ -1,17 +1,67 @@
-Meteor.publish("orders", function(id) {
-  if (Roles.userIsInRole(id, 'admin'))
-    return Orders.find({
-      done: false,
-      deleted: false
-    }, {
-      fields: {
-        paypalemail: 0,
-        txnId: 0,
-        paidAmount: 0,
-        comment: 0
-      }
-    });
-  else if (Roles.userIsInRole(id, 'buyer'))
+Meteor.publish("orders", function(id, orderStatus) {
+  // orderStatus 1= pause, 2= pause+ new running, 3= pause+ all added, 4 = all new
+  if (Roles.userIsInRole(id, 'admin')) {
+    if (orderStatus == 1) {
+      return Orders.find({
+        done: false,
+        deleted: false,
+        pause: true
+      }, {
+        fields: {
+          paypalemail: 0,
+          txnId: 0,
+          paidAmount: 0,
+          comment: 0
+        }
+      });
+    } else if (orderStatus == 2) {
+      return Orders.find({
+        done: false,
+        deleted: false,
+        $or: [{
+          pause: true
+        }, {
+          $where: "this.rides != this.added"
+        }]
+      }, {
+        fields: {
+          paypalemail: 0,
+          txnId: 0,
+          paidAmount: 0,
+          comment: 0
+        }
+      });
+    } else if (orderStatus == 3) {
+      return Orders.find({
+        done: false,
+        deleted: false,
+        $or: [{
+          pause: true
+        }, {
+          $where: "this.rides === this.added"
+        }]
+      }, {
+        fields: {
+          paypalemail: 0,
+          txnId: 0,
+          paidAmount: 0,
+          comment: 0
+        }
+      });
+    } else if (orderStatus == 4) {
+      return Orders.find({
+        done: false,
+        deleted: false
+      }, {
+        fields: {
+          paypalemail: 0,
+          txnId: 0,
+          paidAmount: 0,
+          comment: 0
+        }
+      });
+    }
+  } else if (Roles.userIsInRole(id, 'buyer')) {
     return Orders.find({
       userId: id,
       done: false,
@@ -24,6 +74,7 @@ Meteor.publish("orders", function(id) {
         comment: 0
       }
     });
+  }
 
 });
 
