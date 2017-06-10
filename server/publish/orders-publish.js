@@ -51,18 +51,18 @@ Meteor.publish("completedOrders", function(id, count) {
       deleted: false,
       done: true
     }, {
+      sort: {
+        createdAt: -1
+      }
+    }, {
+      limit: count
+    }, {
       fields: {
         paypalemail: 0,
         txnId: 0,
         paidAmount: 0,
         comment: 0
       }
-    }, {
-      sort: {
-        createdAt: -1
-      }
-    }, {
-      limit: count
     });
   }
 });
