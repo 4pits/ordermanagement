@@ -1,10 +1,13 @@
 <template name="completedOrders">
         <p class="lead">Completed Orders</p>
         <p class="lead"> This page is for reference for your old orders. This shows only completed orders where all rides have been added.</p>
+{{#if showButton}}
 
-      <h4>Mark Completed
-            {{#if isInRole 'admin'}}#{{markCompletedCount}}{{/if}}
-        </h4>
+<button type="button" class="btn btn-default showMore">
+  Show More Orders
+</button>
+{{/if}}
+      <h4>Mark Completed {{markCompletedCount}}/{{markCompletedCount2}} <br> <small>Shown count / All Completed Orders Count</small> </h4>
         <table class="table table-hover">
             <thead>
                 <th>Order Date</th>
