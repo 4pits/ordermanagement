@@ -46,6 +46,7 @@ Meteor.publish("completedOrders", function(id, count) {
       }
     });
   } else if (Roles.userIsInRole(id, 'buyer')) {
+    console.log('elif' + count);
     return Orders.find({
       userId: id,
       deleted: false,
@@ -53,8 +54,7 @@ Meteor.publish("completedOrders", function(id, count) {
     }, {
       sort: {
         createdAt: -1
-      }
-    }, {
+      },
       limit: count
     }, {
       fields: {
