@@ -42,24 +42,18 @@
     <div class="panel-footer"><div class="user-edit">
       {{#if isNewUser}}
         <button class="toggle-buyer btn {{#if isBuyer}} btn-primary {{else}} btn-success{{/if}}">Buyer</button>
-<div class="btn-group" role="group" aria-label="...">
         <button class="toggle-seller btn {{#if isSeller}} btn-primary {{else}} btn-success{{/if}}">Seller</button>
-        <button class="toggle-premium-seller btn {{#if isPremiumSeller}} btn-primary {{else}} btn-success{{/if}}">Premium</button>
-        <button class="toggle-2ride-seller btn {{#if isTwoRideSeller}} btn-primary {{else}} btn-success{{/if}}">2 Ride</button>
-        <button class="toggle-10ride-seller btn {{#if isTenRideSeller}} btn-primary {{else}} btn-success{{/if}}">10 Ride</button>
-        <button class="toggle-20ride-seller btn {{#if isTwentyRideSeller}} btn-primary {{else}} btn-success{{/if}}">20 Ride</button>
-        </div>
       {{else}}
       {{#if isBuyer}}
         <button class="toggle-buyer btn {{#if isBuyer}} btn-primary {{else}} btn-success{{/if}}">Buyer</button>
       {{/if}}
       {{#if isSeller}}
+      <button class="toggle-seller btn {{#if isSeller}} btn-primary {{else}} btn-success{{/if}}">Seller</button>
       <div class="btn-group" role="group" aria-label="...">
-        <button class="toggle-seller btn {{#if isSeller}} btn-primary {{else}} btn-success{{/if}}">Seller</button>
-        <button class="toggle-premium-seller btn {{#if isPremiumSeller}} btn-primary {{else}} btn-success{{/if}}">Premium</button>
-        <button class="toggle-2ride-seller btn {{#if isTwoRideSeller}} btn-primary {{else}} btn-success{{/if}}">2 Ride</button>
-        <button class="toggle-10ride-seller btn {{#if isTenRideSeller}} btn-primary {{else}} btn-success{{/if}}">10 Ride</button>
-        <button class="toggle-20ride-seller btn {{#if isTwentyRideSeller}} btn-primary {{else}} btn-success{{/if}}">20 Ride</button>
+        <button class="toggle-premium-seller btn {{#if isPremiumSeller}} btn-primary {{else}} btn-success{{/if}}">Pro</button>
+        <button class="toggle-2ride-seller btn {{#if isTwoRideSeller}} btn-primary {{else}} btn-success{{/if}}">2X</button>
+        <button class="toggle-10ride-seller btn {{#if isTenRideSeller}} btn-primary {{else}} btn-success{{/if}}">10X</button>
+        <button class="toggle-20ride-seller btn {{#if isTwentyRideSeller}} btn-primary {{else}} btn-success{{/if}}">20X</button>
       </div>
       {{/if}}
       {{/if}}
