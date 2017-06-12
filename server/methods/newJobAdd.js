@@ -34,6 +34,9 @@ var idsFirstJob = function(dayStart, adderId) {
     ids.push(o.orderId);
   });
   //  console.log(ids);
+  Processing.find({}).map(function(p) {
+    ids.push(p.orderId);
+  });
   return ids;
 };
 // second job will be assigned once all orders are assigned once
@@ -86,14 +89,28 @@ var idsSecondJob = function(dayStart, adderId) {
   });
   //  console.log('secondround');
   //  console.log(ids);
-
+  Processing.find({}).map(function(p) {
+    ids.push(p.orderId);
+  });
   return ids;
 };
 
 var jobcount = function(ordr, count, adderId, dayStart) {
-  console.log(ordr);
+  var processing = Processing.find({
+    $or: [{
+      userId: adderId
+    }, {
+      orderId: ordr._id
+    }]
+  }).count();
+
   var jobcount = 0;
-  //don't allow to get added by same person in same day
+  if (processing > 0) return jobcount;
+  var processingId = Meteor.call('processing.insert', adderId, ordr._id);
+  var processing = Processing.find({
+    _id: processingId
+  }).count();
+  if (processing < 1) return jobcount;
   var countJ = Jobs.find({
     adderId: adderId,
     //  deleted: false,
@@ -116,9 +133,10 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     }]
   }).count();
   //console.log('J1 ' + countJ);
-  if (countJ > 0) return jobcount;
-  //don't allow to get it added by any person in within 4 hours.
-  // to avoid adding extra rides then ordered
+  if (countJ > 0) {
+    Meteor.call('processing.delete', processingId);
+    return jobcount;
+  }
   var addedForCode = 0;
   Jobs.find({
     orderId: ordr._id,
@@ -131,22 +149,11 @@ var jobcount = function(ordr, count, adderId, dayStart) {
   } else if (ordr.rides - addedForCode > 1 && count > 1) {
     jobcount = 2;
   }
-  // console.log('ordr.added ' + ordr.added);
-  // console.log('addedForCode ' + addedForCode);
-  // console.log('jobcount ' + jobcount);
   if (jobcount > 0) {
-    Meteor.call('jobs.insert', ordr._id, ordr.code, ordr.premium, jobcount, adderId, (error, result) => {
-      if (error) {
-        console.log(error);
-        jobcount = 0;
-      }
-      if (result) {
-        //  console.log("result " + result);
-        //  console.log(jobcount);
-        //return jobcount;
-      }
-    });
+    Meteor.call('jobs.insert', ordr._id, ordr.code, ordr.premium, jobcount, adderId);
+
   }
+  Meteor.call('processing.delete', processingId);
   return jobcount;
 }
 var deletedCount = function(userId) {
