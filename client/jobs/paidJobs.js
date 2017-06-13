@@ -11,7 +11,7 @@ Template.paidJobs.helpers({
   paidList: function() {
     var dt = new Date();
     //    console.log('console time' + dt);
-    return Jobs.find({
+    return PaidJobs.find({
       paid: true
     }, {
       sort: {
@@ -21,7 +21,7 @@ Template.paidJobs.helpers({
   },
   paidListCount: function() {
     var total = 0;
-    Jobs.find({
+    PaidJobs.find({
       paid: true
     }).map(function(j) {
       total += j.count;

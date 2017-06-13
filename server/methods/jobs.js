@@ -43,7 +43,7 @@ Meteor.methods({
     });
     if (j.done) {
       if (Roles.userIsInRole(this.userId, 'admin')) {
-        return Jobs.update({
+        Jobs.update({
           adderId: j.adderId,
           done: true,
           createdAt: {
@@ -56,6 +56,28 @@ Meteor.methods({
         }, {
           multi: true
         });
+        // archive paid jobs to paidjobs collection
+        Jobs.find({
+          paid: true
+        }).map(function(job) {
+          PaidJobs.insert({
+            orderId: job.orderId,
+            code: job.code,
+            count: job.count,
+            done: job.done,
+            paid: job.paid,
+            deleted: job.deleted,
+            adderId: job.adderId,
+            createdAt: job.createdAt,
+            updatedAt: job.updatedAt,
+            userId: job.userId,
+            notes: job.notes,
+            premium: job.premium
+          });
+          Jobs.remove(job._id);
+        });
+
+
       }
     }
 

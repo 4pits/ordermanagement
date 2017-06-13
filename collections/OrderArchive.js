@@ -1,6 +1,9 @@
-Orders = new Mongo.Collection("orders");
+OrdersArchive = new Mongo.Collection("ordersarchive");
 
-Orders.schema = new SimpleSchema({
+OrdersArchive.schema = new SimpleSchema({
+  orderId: {
+    type: String
+  },
   name: {
     type: String,
     label: "Buyer/Paypal Name",
@@ -92,11 +95,6 @@ Orders.schema = new SimpleSchema({
   },
   pause: {
     type: Boolean,
-    autoValue: function() {
-      if (this.isInsert) {
-        return true;
-      }
-    },
     autoform: {
       omit: true,
       label: false
@@ -111,6 +109,29 @@ Orders.schema = new SimpleSchema({
     }
   },
   createdAt: {
+    type: Date,
+    autoform: {
+      omit: true,
+      label: false
+    }
+  },
+  updatedAt: {
+    type: Date,
+    denyInsert: true,
+    optional: true,
+    autoform: {
+      omit: true,
+      label: false
+    }
+  },
+  userId: {
+    type: String,
+    autoform: {
+      omit: true,
+      label: false
+    }
+  },
+  archAt: {
     type: Date,
     autoValue: function() {
       if (this.isInsert) {
@@ -128,44 +149,7 @@ Orders.schema = new SimpleSchema({
       label: false
     }
   },
-  updatedAt: {
-    type: Date,
-    autoValue: function() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-    autoform: {
-      omit: true,
-      label: false
-    }
-  },
-  userId: {
-    type: String,
-    autoValue: function() {
-      if (this.isInsert) {
-        return this.userId;
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: this.userId
-        };
-      } else {
-        if (Roles.userIsInRole(this.userId, 'admin')) {
-          // allowing edit of user id
-        } else {
-          this.unset(); // Prevent user from supplying their own value
-        }
-
-      }
-    },
-    autoform: {
-      omit: true,
-      label: false
-    }
-  }
 
 });
 
-Orders.attachSchema(Orders.schema);
+OrdersArchive.attachSchema(OrdersArchive.schema);

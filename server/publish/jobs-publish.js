@@ -95,11 +95,11 @@ Meteor.publish("jobsCompletedOld", function(id) {
 Meteor.publish("jobsPaid", function(id) {
   //    console.log('server date time: ' + dt);
   if (Roles.userIsInRole(id, 'admin')) {
-    return Jobs.find({
+    return PaidJobs.find({
       paid: true
     });
   } else if (Roles.userIsInRole(id, 'seller')) {
-    return Jobs.find({
+    return PaidJobs.find({
       adderId: id,
       paid: true
     });

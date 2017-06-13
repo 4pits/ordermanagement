@@ -24,7 +24,6 @@ Jobs.deny({
 });
 
 Jobs.schema = new SimpleSchema({
-
   orderId: {
     type: String
   },
@@ -92,10 +91,3 @@ Jobs.schema = new SimpleSchema({
 });
 
 Jobs.attachSchema(Jobs.schema);
-var today = function() {
-  var d = new Date();
-  d.setDate(d.getDate() - 1);
-  d.setMinutes(0);
-  d.setSeconds(0);
-  return d;
-};
