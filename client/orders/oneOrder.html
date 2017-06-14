@@ -137,8 +137,27 @@
                         </td>
                         <td></td>
                     </tr>
-                {{else}}
-                    <p class="lead">Not started yet.</p>
+                {{/each}}
+                {{#each jobsPaidList}}
+                    <tr class="{{#if done}} success {{/if}}">
+                        <td>
+                            {{formatDate createdAt}}
+                        </td>
+                        <td>{{count}}</td>
+                        {{#if isInRole 'admin'}}
+                            <td>{{addedBy}}</td>
+                            <td>
+                                Paid Jobs
+                            </td>
+                            <td>{{notes}}</td>
+                        {{/if}}
+                        <td>
+                            {{#if done}}
+                                Added{{else}}
+                                adding{{/if}}
+                        </td>
+                        <td></td>
+                    </tr>
                 {{/each}}
             </tbody>
         </table>

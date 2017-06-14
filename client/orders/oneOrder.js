@@ -6,6 +6,7 @@ Template.oneOrder.onCreated(function() {
     var orderId = FlowRouter.getParam('id');
     self.subscribe("oneOrder", orderId);
     self.subscribe("orderJobs", orderId);
+    self.subscribe("orderPaidJobs", orderId);
     self.subscribe("jobAdders", orderId);
     self.subscribe("allBuyers", self.searchQuery.get(), () => {
       setTimeout(() => {
@@ -32,7 +33,7 @@ Template.oneOrder.helpers({
     return Orders.findOne({});
   },
   jobs: function() {
-    return Jobs.find({}).count();
+    return Jobs.find({}).count() + PaidJobs.find({}).count();
   },
   rideAdded: function() {
     return Orders.findOne({}).added > 0;
@@ -42,6 +43,13 @@ Template.oneOrder.helpers({
   },
   jobsList: function() {
     return Jobs.find({}, {
+      sort: {
+        createdAt: 1
+      }
+    });
+  },
+  jobsPaidList: function() {
+    return PaidJobs.find({}, {
       sort: {
         createdAt: 1
       }

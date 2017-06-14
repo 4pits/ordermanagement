@@ -125,3 +125,12 @@ Meteor.publish('orderJobs', function(id) {
     deleted: false
   });
 });
+
+//jobs related to only one order
+Meteor.publish('orderPaidJobs', function(id) {
+  //    console.log(id + ' orderjobs');
+  return PaidJobs.find({
+    orderId: id,
+    deleted: false
+  });
+});

@@ -7,14 +7,12 @@ OrdersArchive.schema = new SimpleSchema({
   name: {
     type: String,
     label: "Buyer/Paypal Name",
+    optional: true,
     max: 100
   },
   paypalemail: {
     type: String,
-    label: "Paypal Email",
-    regEx: SimpleSchema.RegEx.Email,
-    optional: true,
-    max: 100
+    optional: true
   },
   txnId: {
     type: String,
@@ -52,13 +50,7 @@ OrdersArchive.schema = new SimpleSchema({
   },
   added: {
     type: Number,
-    defaultValue: 0,
-    label: "# rides added",
-    optional: true,
-    autoform: {
-      omit: true,
-      label: false
-    }
+    defaultValue: 0
   },
   runStatus: {
     type: Boolean,
@@ -73,11 +65,6 @@ OrdersArchive.schema = new SimpleSchema({
     type: String,
     label: "Comments",
     optional: true,
-    defaultValue: 'Comments if any?',
-    max: 1000,
-    autoform: {
-      rows: 3
-    }
   },
   premium: {
     type: Boolean,
@@ -86,50 +73,23 @@ OrdersArchive.schema = new SimpleSchema({
   },
   done: {
     type: Boolean,
-    defaultValue: false,
-    optional: true,
-    autoform: {
-      omit: true,
-      label: false
-    }
+    defaultValue: false
   },
   pause: {
-    type: Boolean,
-    autoform: {
-      omit: true,
-      label: false
-    }
+    type: Boolean
   },
   deleted: {
-    type: Boolean,
-    defaultValue: false,
-    autoform: {
-      omit: true,
-      label: false
-    }
+    type: Boolean
   },
   createdAt: {
-    type: Date,
-    autoform: {
-      omit: true,
-      label: false
-    }
+    type: Date
   },
   updatedAt: {
     type: Date,
-    denyInsert: true,
-    optional: true,
-    autoform: {
-      omit: true,
-      label: false
-    }
+    optional: true
   },
   userId: {
-    type: String,
-    autoform: {
-      omit: true,
-      label: false
-    }
+    type: String
   },
   archAt: {
     type: Date,
@@ -143,12 +103,8 @@ OrdersArchive.schema = new SimpleSchema({
       } else {
         this.unset(); // Prevent user from supplying their own value
       }
-    },
-    autoform: {
-      omit: true,
-      label: false
     }
-  },
+  }
 
 });
 
