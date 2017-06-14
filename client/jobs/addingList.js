@@ -68,7 +68,6 @@ Template.addingList.events({
     }
     var res = Meteor.call('addJobOrder', adderId, count, (error, result) => {
       if (result) {
-        console.log('res: ' + result);
         Session.set('addJobResult', result);
       }
     });
