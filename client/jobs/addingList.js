@@ -1,4 +1,5 @@
 Template.addingList.onCreated(function() {
+  Session.set('addJobResult', -2);
   this.autorun(() => {
     var id = FlowRouter.getParam('id');
     if (!id) id = Meteor.userId();
@@ -39,6 +40,18 @@ Template.addingList.helpers({
   runningCountNotZero: function() {
     //    console.log(myride());
     return runningRideCount() > 0;
+  },
+  codeStatus: function() {
+    var stat = Session.get('addJobResult');
+    var status = 'Get new code by pressing above button';
+    if (stat === 2) {
+      status = 'No code available, try after an hour.';
+    } else if (stat === 0) {
+      status = 'One new code assigned to you.';
+    } else if (stat === -1) {
+      status = 'Try again after 10 sec.';
+    }
+    return status;
   }
 });
 
@@ -53,7 +66,13 @@ Template.addingList.events({
     else {
       adderId = f.options[f.selectedIndex].value;
     }
-    Meteor.call('addJobOrder', adderId, count);
+    var res = Meteor.call('addJobOrder', adderId, count, (error, result) => {
+      if (result) {
+        console.log('res: ' + result);
+        Session.set('addJobResult', result);
+      }
+    });
+
 
   }
 });

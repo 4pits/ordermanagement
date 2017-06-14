@@ -96,21 +96,7 @@ var idsSecondJob = function(dayStart, adderId) {
 };
 
 var jobcount = function(ordr, count, adderId, dayStart) {
-  var processing = Processing.find({
-    $or: [{
-      userId: adderId
-    }, {
-      orderId: ordr._id
-    }]
-  }).count();
-
   var jobcount = 0;
-  if (processing > 0) return jobcount;
-  var processingId = Meteor.call('processing.insert', adderId, ordr._id);
-  var processing = Processing.find({
-    _id: processingId
-  }).count();
-  if (processing < 1) return jobcount;
   var countJ = Jobs.find({
     adderId: adderId,
     //  deleted: false,
@@ -134,7 +120,6 @@ var jobcount = function(ordr, count, adderId, dayStart) {
   }).count();
   //console.log('J1 ' + countJ);
   if (countJ > 0) {
-    Meteor.call('processing.delete', processingId);
     return jobcount;
   }
   var addedForCode = 0;
@@ -153,7 +138,6 @@ var jobcount = function(ordr, count, adderId, dayStart) {
     Meteor.call('jobs.insert', ordr._id, ordr.code, ordr.premium, jobcount, adderId);
 
   }
-  Meteor.call('processing.delete', processingId);
   return jobcount;
 }
 var deletedCount = function(userId) {
@@ -260,189 +244,226 @@ Meteor.methods({
     }
     var dayStart = dtStart;
     //console.log(dayStart);
-    //  return;
-    if (!dayStart || !adderId) return; // return if undefined
-    if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return;
-    if (allowedRides(adderId) <= userRunningRides(adderId)) return;
-    if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return;
-    if (count < 1) return;
-    if (recentlyAdded(adderId)) return;
-    Orders.find({
-      _id: {
-        $nin: idsFirstJob(dayStart, adderId)
-      },
-      done: false,
-      pause: false,
-      added: 0,
-      premium: true,
-      deleted: false,
-      $where: "this.rides - this.added > 1"
-    }, {
-      sort: {
-        createdAt: 1
-      }
-    }).map(function(ordr) {
-      if (count > 0) {
-        var jc = jobcount(ordr, count, adderId, dayStart);
+    //return -1;
+    if (!dayStart || !adderId) return -1; // return if undefined
+    if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return -1;
+    if (allowedRides(adderId) <= userRunningRides(adderId)) return count;
+    if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return -1;
+    if (count < 1) return count;
+    if (recentlyAdded(adderId)) return -1;
+    var codeAvailable = true;
+    while (codeAvailable && count > 0) {
+      var order = Orders.findOne({
+        _id: {
+          $nin: idsFirstJob(dayStart, adderId)
+        },
+        done: false,
+        pause: false,
+        added: 0,
+        premium: true,
+        deleted: false,
+        $where: "this.rides - this.added > 1"
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      });
+      if (order) {
+        //  console.log('processing1: ' + order);
+        Meteor.call('processing.insert', adderId, order._id);
+        var jc = jobcount(order, count, adderId, dayStart);
         count = count - jc;
+      } else {
+        codeAvailable = false;
       }
-    });
+    }
     //currentListPremium
-    //    console.log('2: ' + count);
-    if (count < 1) return;
-    Orders.find({
-      _id: {
-        $nin: idsFirstJob(dayStart, adderId)
-      },
-      done: false,
-      pause: false,
-      deleted: false,
-      added: {
-        $gt: 0
-      },
-      premium: true,
-      $where: "this.rides - this.added > 1"
-    }, {
-      sort: {
-        createdAt: 1
-      }
-    }).map(function(ordr) {
-      if (count > 0) {
-        var jc = jobcount(ordr, count, adderId, dayStart);
+    //  console.log('2: ' + count);
+    codeAvailable = true;
+    while (codeAvailable && count > 0) {
+      var order = Orders.findOne({
+        _id: {
+          $nin: idsFirstJob(dayStart, adderId)
+        },
+        done: false,
+        pause: false,
+        deleted: false,
+        added: {
+          $gt: 0
+        },
+        premium: true,
+        $where: "this.rides - this.added > 1"
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      });
+      if (order) {
+        //  console.log('processing2: ' + order);
+        Meteor.call('processing.insert', adderId, order._id);
+        var jc = jobcount(order, count, adderId, dayStart);
         count = count - jc;
+      } else {
+        codeAvailable = false;
       }
-    });
+    }
     //    currentListNormalNew: function() {
-    //      console.log('3: ' + count);
-    if (count < 1) return;
-    Orders.find({
-      _id: {
-        $nin: idsFirstJob(dayStart, adderId)
-      },
-      done: false,
-      pause: false,
-      added: 0,
-      premium: false,
-      deleted: false,
-      $where: "this.rides - this.added > 1"
-    }, {
-      sort: {
-        createdAt: 1
-      }
-    }).map(function(ordr) {
-      if (count > 0) {
-        var jc = jobcount(ordr, count, adderId, dayStart);
+    //  console.log('3: ' + count);
+    codeAvailable = true;
+    while (codeAvailable && count > 0) {
+      var order = Orders.findOne({
+        _id: {
+          $nin: idsFirstJob(dayStart, adderId)
+        },
+        done: false,
+        pause: false,
+        added: 0,
+        premium: false,
+        deleted: false,
+        $where: "this.rides - this.added > 1"
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      });
+      if (order) {
+        //    console.log('processing3: ' + order);
+        Meteor.call('processing.insert', adderId, order._id);
+        var jc = jobcount(order, count, adderId, dayStart);
         count = count - jc;
+      } else {
+        codeAvailable = false;
       }
-    });
+    }
 
     //  currentListNormal
-    //    console.log('4: ' + count);
-    if (count < 1) return;
-    Orders.find({
-      _id: {
-        $nin: idsFirstJob(dayStart, adderId)
-      },
-      done: false,
-      pause: false,
-      deleted: false,
-      added: {
-        $gt: 0
-      },
-      premium: false,
-      $where: "this.rides - this.added > 1"
-    }, {
-      sort: {
-        createdAt: 1
-      }
-    }).map(function(ordr) {
-      if (count > 0) {
-        var jc = jobcount(ordr, count, adderId, dayStart);
+    //  console.log('4: ' + count);
+    codeAvailable = true;
+    while (codeAvailable && count > 0) {
+      var order = Orders.findOne({
+        _id: {
+          $nin: idsFirstJob(dayStart, adderId)
+        },
+        done: false,
+        pause: false,
+        deleted: false,
+        added: {
+          $gt: 0
+        },
+        premium: false,
+        $where: "this.rides - this.added > 1"
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      });
+      if (order) {
+        //  console.log('processing4: ' + order);
+        Meteor.call('processing.insert', adderId, order._id);
+        var jc = jobcount(order, count, adderId, dayStart);
         count = count - jc;
+      } else {
+        codeAvailable = false;
       }
-    });
+    }
 
     //      currentListOneRide
-    //    console.log('5: ' + count);
-    if (count < 1) return;
-    Orders.find({
-      _id: {
-        $nin: idsFirstJob(dayStart, adderId)
-      },
-      done: false,
-      pause: false,
-      deleted: false,
-      $where: "this.rides - this.added === 1"
-    }, {
-      sort: {
-        createdAt: 1
-      }
-    }).map(function(ordr) {
-      if (count > 0) {
-        var jc = jobcount(ordr, count, adderId, dayStart);
+    //  console.log('5: ' + count);
+    codeAvailable = true;
+    while (codeAvailable && count > 0) {
+      var order = Orders.findOne({
+        _id: {
+          $nin: idsFirstJob(dayStart, adderId)
+        },
+        done: false,
+        pause: false,
+        deleted: false,
+        $where: "this.rides - this.added === 1"
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      });
+      if (order) {
+        //    console.log('processing5: ' + order);
+        Meteor.call('processing.insert', adderId, order._id);
+        var jc = jobcount(order, count, adderId, dayStart);
         count = count - jc;
+      } else {
+        codeAvailable = false;
       }
-    });
+    }
+
     //code repeat if all done for first round
     //currentListPremium
-    //      console.log('6: ' + count);
-    if (count < 1) return;
+    Meteor.call('processing.delete', adderId);
+    //  console.log('6: ' + count);
     //allow second job in morning
     //  console.log(dayStart);
     var now = new Date();
     var diff = now.getTime() - dayStart.getTime();
     //    console.log(diff);
-    if (diff < 8 * 60 * 60 * 1000) return; // 8 hours delay for second job
+    if (diff < 8 * 60 * 60 * 1000) return count; // 8 hours delay for second job
     //    console.log('can add second');
     //  console.log('secondjob');
     //  console.log(idsSecondJob(dayStart, adderId));
-    Orders.find({
-      _id: {
-        $nin: idsSecondJob(dayStart, adderId)
-      },
-      done: false,
-      pause: false,
-      premium: true,
-      runStatus: false,
-      deleted: false,
-      $where: "this.rides - this.added -2 > 1"
-    }, {
-      sort: {
-        createdAt: 1
-      }
-    }).map(function(ordr) {
-      //    console.log(ordr);
-      if (count > 0) {
-        var jc = jobcount(ordr, count, adderId, dayStart);
+    codeAvailable = true;
+    while (codeAvailable && count > 0) {
+      var order = Orders.findOne({
+        _id: {
+          $nin: idsSecondJob(dayStart, adderId)
+        },
+        done: false,
+        pause: false,
+        premium: true,
+        runStatus: false,
+        deleted: false,
+        $where: "this.rides - this.added -2 > 1"
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      });
+      if (order) {
+        //  console.log('processing6: ' + order.code);
+        Meteor.call('processing.insert', adderId, order._id);
+        var jc = jobcount(order, count, adderId, dayStart);
         count = count - jc;
+      } else {
+        codeAvailable = false;
       }
-    });
+    }
 
     //  currentListNormal
     //  console.log('7: ' + count);
-    if (count < 1) return;
-    //    console.log('last');
-    Orders.find({
-      _id: {
-        $nin: idsSecondJob(dayStart, adderId)
-      },
-      done: false,
-      pause: false,
-      premium: false,
-      runStatus: false,
-      deleted: false,
-      $where: "this.rides - this.added - 2 > 1"
-    }, {
-      sort: {
-        createdAt: 1
-      }
-    }).map(function(ordr) {
-      //    console.log(ordr);
-      if (count > 0) {
-        var jc = jobcount(ordr, count, adderId, dayStart);
+    codeAvailable = true;
+    while (codeAvailable && count > 0) {
+      var order = Orders.findOne({
+        _id: {
+          $nin: idsSecondJob(dayStart, adderId)
+        },
+        done: false,
+        pause: false,
+        premium: false,
+        runStatus: false,
+        deleted: false,
+        $where: "this.rides - this.added - 2 > 1"
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      });
+      if (order) {
+        //    console.log('processing7: ' + order.code);
+        Meteor.call('processing.insert', adderId, order._id);
+        var jc = jobcount(order, count, adderId, dayStart);
+        console.log(jc);
         count = count - jc;
+      } else {
+        codeAvailable = false;
       }
-    });
-    //    console.log('nothing');
+    }
+    Meteor.call('processing.delete', adderId);
+    return count;
   }
 });

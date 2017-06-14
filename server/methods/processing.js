@@ -5,7 +5,11 @@ Meteor.methods({
       orderId: orderId
     });
   },
-  "processing.delete": function(id) {
-    return Processing.remove(id);
+  "processing.delete": function(adderId) {
+    Processing.find({
+      userId: adderId
+    }).map(function(row) {
+      Processing.remove(row._id);
+    });
   }
 });
