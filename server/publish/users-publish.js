@@ -97,6 +97,12 @@ Meteor.publish('jobAdders', function(orderId) {
     }).map(function(jb) {
       ids.push(jb.adderId);
     });
+    PaidJobs.find({
+      orderId: orderId,
+      deleted: false
+    }).map(function(jb) {
+      ids.push(jb.adderId);
+    });
     ids.push(Orders.findOne({
       _id: orderId
     }).userId);
