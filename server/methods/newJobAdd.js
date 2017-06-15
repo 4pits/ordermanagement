@@ -230,10 +230,15 @@ var recentlyAdded = function(adderId) {
   if (!job) return false;
   let diff = Math.abs(job.createdAt.getTime() - (new Date()).getTime());
   //  console.log(diff);
-  return diff > 2000 ? false : true;
+  return diff > 5000 ? false : true;
 }
 Meteor.methods({
   "addJobOrder": function(adderId, count) {
+    if (recentlyAdded(adderId)) return -1;
+    var userCodeInProcess = Processing.find({
+      userId: adderId
+    }).count();
+    if (userCodeInProcess > 0) return -1;
     var dtnow = new Date();
     var dtStart = new Date();
     dtStart.setHours(11);
@@ -250,7 +255,6 @@ Meteor.methods({
     if (allowedRides(adderId) <= userRunningRides(adderId)) return count;
     if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return -1;
     if (count < 1) return count;
-    if (recentlyAdded(adderId)) return -1;
     var codeAvailable = true;
     while (codeAvailable && count > 0) {
       var order = Orders.findOne({
