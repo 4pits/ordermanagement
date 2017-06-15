@@ -1,6 +1,5 @@
 todo list
 
-5. optimize for mobile, login page and sing up page.
 6. add reset/forgot pass link
 
 1. track for each seller, how much paid, how much yet to pay for added/pending till now, how much running
@@ -11,3 +10,6 @@ dt 29/4
 
 dt 1 may
 improve users page
+
+0. Auto payment to adders, on a button click without BHIM app.
+1. Add paypal payment button in app and auto order entry in site.
