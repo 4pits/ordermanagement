@@ -117,6 +117,27 @@
 
             </thead>
             <tbody>
+              {{#each jobsPaidList}}
+                  <tr class="{{#if done}} success {{/if}}">
+                      <td>
+                          {{formatDate createdAt}}
+                      </td>
+                      <td>{{count}}</td>
+                      {{#if isInRole 'admin'}}
+                          <td>{{addedBy}}</td>
+                          <td>
+                              Paid Jobs
+                          </td>
+                          <td>{{notes}}</td>
+                      {{/if}}
+                      <td>
+                          {{#if done}}
+                              Added{{else}}
+                              adding{{/if}}
+                      </td>
+                      <td></td>
+                  </tr>
+              {{/each}}
                 {{#each jobsList}}
                     <tr class="{{#if done}} success {{/if}}">
                         <td>
@@ -127,27 +148,6 @@
                             <td>{{addedBy}}</td>
                             <td>
                                 <button type="button" class="btn btn-danger remove-job" name="button">Remove</button>
-                            </td>
-                            <td>{{notes}}</td>
-                        {{/if}}
-                        <td>
-                            {{#if done}}
-                                Added{{else}}
-                                adding{{/if}}
-                        </td>
-                        <td></td>
-                    </tr>
-                {{/each}}
-                {{#each jobsPaidList}}
-                    <tr class="{{#if done}} success {{/if}}">
-                        <td>
-                            {{formatDate createdAt}}
-                        </td>
-                        <td>{{count}}</td>
-                        {{#if isInRole 'admin'}}
-                            <td>{{addedBy}}</td>
-                            <td>
-                                Paid Jobs
                             </td>
                             <td>{{notes}}</td>
                         {{/if}}
