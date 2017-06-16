@@ -173,7 +173,7 @@ Meteor.publish('orderSearch', function(search) {
         paidAmount: 0,
         comment: 0
       },
-      limit: 5
+      limit: 10
     });
   }
 });

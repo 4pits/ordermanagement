@@ -149,7 +149,7 @@ Template.oneOrder.events({
   'keyup [name="search"]' (event, template) {
     let value = event.target.value.trim();
 
-    if (value !== '' && event.keyCode === 13) {
+    if (value !== '' && value.length > 2) {
       template.searchQuery.set(value);
       template.searching.set(true);
     }
