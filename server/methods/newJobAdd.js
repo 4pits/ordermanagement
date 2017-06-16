@@ -134,9 +134,13 @@ var jobcount = function(ordr, count, adderId, dayStart) {
   } else if (ordr.rides - addedForCode > 1 && count > 1) {
     jobcount = 2;
   }
+  var countProcessing = Processing.find({
+    orderId: ordr._id
+  }).count();
+  if (countProcessing != 1) return 0; // not adding
+
   if (jobcount > 0) {
     Meteor.call('jobs.insert', ordr._id, ordr.code, ordr.premium, jobcount, adderId);
-
   }
   return jobcount;
 }

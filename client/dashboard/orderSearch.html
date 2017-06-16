@@ -1,0 +1,12 @@
+<template name="orderSearch">
+  <div class="pull-right">
+      <input type="text" name="search" class="form-control" width="250px" placeholder="Find order...">
+  </div>
+  <div class="pull-left">
+    <ol>
+        {{#each orders}}
+            <li>Order: {{name}}, {{code}}, {{formatDate createdAt}} , {{added}}/{{rides}} </li>
+        {{/each}}
+    </ol>
+      </div>
+</template>

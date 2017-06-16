@@ -141,3 +141,35 @@ Meteor.publish('allOrders', function() {
     return Orders.find({});
   }
 });
+
+Meteor.publish('orderSearch', function(search) {
+  check(search, Match.OneOf(String, null, undefined));
+  let query = {};
+  if (search) {
+    let regex = new RegExp(search, 'i');
+
+    query = {
+      $or: [{
+          name: regex
+        },
+        {
+          code: regex
+        }
+      ]
+    };
+  }
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return Orders.find(query, {
+      sort: {
+        createdAt: -1
+      },
+      fields: {
+        paypalemail: 0,
+        txnId: 0,
+        paidAmount: 0,
+        comment: 0
+      },
+      limit: 5
+    });
+  }
+});
