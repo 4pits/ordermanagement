@@ -145,6 +145,7 @@ Meteor.publish('allOrders', function() {
 Meteor.publish('orderSearch', function(search) {
   check(search, Match.OneOf(String, null, undefined));
   let query = {};
+  if (!search || search.length < 4) return;
   if (search) {
     let regex = new RegExp(search, 'i');
 
@@ -154,6 +155,9 @@ Meteor.publish('orderSearch', function(search) {
         },
         {
           code: regex
+        },
+        {
+          paypalemail: regex
         }
       ]
     };

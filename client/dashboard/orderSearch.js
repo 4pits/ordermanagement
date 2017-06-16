@@ -41,13 +41,12 @@ Template.orderSearch.onCreated(function() {
 Template.orderSearch.events({
   'keyup [name="search"]' (event, template) {
     let value = event.target.value.trim();
+    // if (value !== '' && event.keyCode === 13) {
+    //   template.searchQuery.set(value);
+    //   template.searching.set(true);
+    // }
 
-    if (value !== '' && event.keyCode === 13) {
-      template.searchQuery.set(value);
-      template.searching.set(true);
-    }
-
-    if (value === '') {
+    if (value.length > 3) {
       template.searchQuery.set(value);
     }
   }
