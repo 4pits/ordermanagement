@@ -239,10 +239,6 @@ var recentlyAdded = function(adderId) {
 Meteor.methods({
   "addJobOrder": function(adderId, count) {
     if (recentlyAdded(adderId)) return -1;
-    var userCodeInProcess = Processing.find({
-      userId: adderId
-    }).count();
-    if (userCodeInProcess > 0) return -1;
     var dtnow = new Date();
     var dtStart = new Date();
     dtStart.setHours(11);
@@ -277,10 +273,12 @@ Meteor.methods({
         }
       });
       if (order) {
-        //  console.log('processing1: ' + order);
-        Meteor.call('processing.insert', adderId, order._id);
-        var jc = jobcount(order, count, adderId, dayStart);
-        count = count - jc;
+        Meteor.call('processing.insert', adderId, order._id, (error, result) => {
+          if (result) {
+            var jc = jobcount(order, count, adderId, dayStart);
+            count = count - jc;
+          }
+        });
       } else {
         codeAvailable = false;
       }
@@ -307,10 +305,12 @@ Meteor.methods({
         }
       });
       if (order) {
-        //  console.log('processing2: ' + order);
-        Meteor.call('processing.insert', adderId, order._id);
-        var jc = jobcount(order, count, adderId, dayStart);
-        count = count - jc;
+        Meteor.call('processing.insert', adderId, order._id, (error, result) => {
+          if (result) {
+            var jc = jobcount(order, count, adderId, dayStart);
+            count = count - jc;
+          }
+        });
       } else {
         codeAvailable = false;
       }
@@ -335,10 +335,12 @@ Meteor.methods({
         }
       });
       if (order) {
-        //    console.log('processing3: ' + order);
-        Meteor.call('processing.insert', adderId, order._id);
-        var jc = jobcount(order, count, adderId, dayStart);
-        count = count - jc;
+        Meteor.call('processing.insert', adderId, order._id, (error, result) => {
+          if (result) {
+            var jc = jobcount(order, count, adderId, dayStart);
+            count = count - jc;
+          }
+        });
       } else {
         codeAvailable = false;
       }
@@ -366,10 +368,12 @@ Meteor.methods({
         }
       });
       if (order) {
-        //  console.log('processing4: ' + order);
-        Meteor.call('processing.insert', adderId, order._id);
-        var jc = jobcount(order, count, adderId, dayStart);
-        count = count - jc;
+        Meteor.call('processing.insert', adderId, order._id, (error, result) => {
+          if (result) {
+            var jc = jobcount(order, count, adderId, dayStart);
+            count = count - jc;
+          }
+        });
       } else {
         codeAvailable = false;
       }
@@ -393,10 +397,12 @@ Meteor.methods({
         }
       });
       if (order) {
-        //    console.log('processing5: ' + order);
-        Meteor.call('processing.insert', adderId, order._id);
-        var jc = jobcount(order, count, adderId, dayStart);
-        count = count - jc;
+        Meteor.call('processing.insert', adderId, order._id, (error, result) => {
+          if (result) {
+            var jc = jobcount(order, count, adderId, dayStart);
+            count = count - jc;
+          }
+        });
       } else {
         codeAvailable = false;
       }
@@ -433,10 +439,12 @@ Meteor.methods({
         }
       });
       if (order) {
-        //  console.log('processing6: ' + order.code);
-        Meteor.call('processing.insert', adderId, order._id);
-        var jc = jobcount(order, count, adderId, dayStart);
-        count = count - jc;
+        Meteor.call('processing.insert', adderId, order._id, (error, result) => {
+          if (result) {
+            var jc = jobcount(order, count, adderId, dayStart);
+            count = count - jc;
+          }
+        });
       } else {
         codeAvailable = false;
       }
@@ -462,11 +470,12 @@ Meteor.methods({
         }
       });
       if (order) {
-        //    console.log('processing7: ' + order.code);
-        Meteor.call('processing.insert', adderId, order._id);
-        var jc = jobcount(order, count, adderId, dayStart);
-        console.log(jc);
-        count = count - jc;
+        Meteor.call('processing.insert', adderId, order._id, (error, result) => {
+          if (result) {
+            var jc = jobcount(order, count, adderId, dayStart);
+            count = count - jc;
+          }
+        });
       } else {
         codeAvailable = false;
       }

@@ -1,9 +1,15 @@
 Meteor.methods({
   "processing.insert": function(userId, orderId) {
-    return Processing.insert({
-      userId: userId,
-      orderId: orderId
-    });
+    try {
+      Processing.insert({
+        userId: userId,
+        orderId: orderId
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+
   },
   "processing.delete": function(adderId) {
     Processing.find({

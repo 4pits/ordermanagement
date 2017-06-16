@@ -159,7 +159,8 @@ Meteor.publish('orderSearch', function(search) {
         {
           paypalemail: regex
         }
-      ]
+      ],
+      deleted: false
     };
   }
   if (Roles.userIsInRole(this.userId, 'admin')) {

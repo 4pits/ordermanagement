@@ -5,7 +5,8 @@ Processing.schema = new SimpleSchema({
     type: String
   },
   orderId: {
-    type: String
+    type: String,
+    unique: true
   }
 });
 
