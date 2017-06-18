@@ -22,7 +22,6 @@ Meteor.publish("orders", function(id, orderStatus, search) {
       }
     ];
   }
-  console.log(query);
   if (Roles.userIsInRole(id, 'admin')) {
     if (orderStatus == 1) {
       return Orders.find({
