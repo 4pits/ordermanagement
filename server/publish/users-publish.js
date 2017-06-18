@@ -12,7 +12,7 @@ Meteor.publish('allUsers', function(search) {
       userCode: 1,
       firstOrder: 1
     },
-    limit: 20
+    limit: 25
   };
   if (search === '') {
     if (Roles.userIsInRole(this.userId, 'admin')) {

@@ -1,14 +1,35 @@
 Template.orders.onCreated(function() {
   // 1= pause, 2= pause+ new running, 3= pause+ all added, 4 = all new
   Session.set('orderStatus', 1);
+  this.searchQuery = new ReactiveVar();
+  this.searching = new ReactiveVar(false);
+
   this.autorun(() => {
     var id = FlowRouter.getParam('id');
     if (!id) id = Meteor.userId();
-    this.subscribe("orders", id, Session.get('orderStatus'));
+    //  this.subscribe("orders", id, Session.get('orderStatus'));
+    this.subscribe("orders", id, Session.get('orderStatus'), this.searchQuery.get(), () => {
+      setTimeout(() => {
+        this.searching.set(false);
+      }, 300);
+    });
+
   });
 });
 
 Template.orders.helpers({
+  searching: function() {
+    if (this.searching) {
+      return this.searching.get();
+    }
+    return false;
+  },
+  query: function() {
+    if (this.searchQuery.get()) {
+
+    }
+    return '';
+  },
   newOrders: function() {
     return Orders.find({
       done: false,
@@ -128,6 +149,17 @@ Template.orders.events({
   },
   'click .setStatus4': function() {
     Session.set('orderStatus', 4);
+  },
+  'keyup [name="searchOrder"]' (event, template) {
+    let value = event.target.value.trim();
+    if (value !== '' && value.length > 2) {
+      template.searchQuery.set(value);
+      template.searching.set(true);
+    }
+
+    if (value === '') {
+      template.searchQuery.set(value);
+    }
   }
 
 

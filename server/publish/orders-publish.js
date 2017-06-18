@@ -1,21 +1,39 @@
-Meteor.publish("orders", function(id, orderStatus) {
+var options = {
+  fields: {
+    paypalemail: 0,
+    txnId: 0,
+    paidAmount: 0,
+    comment: 0
+  }
+};
+
+Meteor.publish("orders", function(id, orderStatus, search) {
+  //console.log(search);
   // orderStatus 1= pause, 2= pause+ new running, 3= pause+ all added, 4 = all new
+  let query = [{}];
+  if (search && search.length > 2) {
+    let regex = new RegExp(search, 'i');
+
+    query = [{
+        name: regex
+      },
+      {
+        code: regex
+      }
+    ];
+  }
+  console.log(query);
   if (Roles.userIsInRole(id, 'admin')) {
     if (orderStatus == 1) {
       return Orders.find({
+        $or: query,
         done: false,
         deleted: false,
         pause: true
-      }, {
-        fields: {
-          paypalemail: 0,
-          txnId: 0,
-          paidAmount: 0,
-          comment: 0
-        }
-      });
+      }, options);
     } else if (orderStatus == 2) {
       return Orders.find({
+        $or: query,
         done: false,
         deleted: false,
         $or: [{
@@ -23,16 +41,10 @@ Meteor.publish("orders", function(id, orderStatus) {
         }, {
           $where: "this.rides != this.added"
         }]
-      }, {
-        fields: {
-          paypalemail: 0,
-          txnId: 0,
-          paidAmount: 0,
-          comment: 0
-        }
-      });
+      }, options);
     } else if (orderStatus == 3) {
       return Orders.find({
+        $or: query,
         done: false,
         deleted: false,
         $or: [{
@@ -40,47 +52,42 @@ Meteor.publish("orders", function(id, orderStatus) {
         }, {
           $where: "this.rides === this.added"
         }]
-      }, {
-        fields: {
-          paypalemail: 0,
-          txnId: 0,
-          paidAmount: 0,
-          comment: 0
-        }
-      });
+      }, options);
     } else if (orderStatus == 4) {
       return Orders.find({
+        $or: query,
         done: false,
         deleted: false
-      }, {
-        fields: {
-          paypalemail: 0,
-          txnId: 0,
-          paidAmount: 0,
-          comment: 0
-        }
-      });
+      }, options);
     }
   } else if (Roles.userIsInRole(id, 'buyer')) {
     return Orders.find({
+      $or: query,
       userId: id,
       done: false,
       deleted: false
-    }, {
-      fields: {
-        paypalemail: 0,
-        txnId: 0,
-        paidAmount: 0,
-        comment: 0
-      }
-    });
+    }, options);
   }
 
 });
 
-Meteor.publish("completedOrders", function(id, count) {
+Meteor.publish("completedOrders", function(id, count, search) {
+  let query = [{}];
+  if (search && search.length > 2) {
+    let regex = new RegExp(search, 'i');
+
+    query = [{
+        name: regex
+      },
+      {
+        code: regex
+      }
+    ];
+  }
+
   if (Roles.userIsInRole(id, 'admin')) {
     return Orders.find({
+      $or: query,
       deleted: false,
       done: true
     }, {
@@ -88,17 +95,10 @@ Meteor.publish("completedOrders", function(id, count) {
         createdAt: -1
       },
       limit: count
-    }, {
-      fields: {
-        paypalemail: 0,
-        txnId: 0,
-        paidAmount: 0,
-        comment: 0
-      }
-    });
+    }, options);
   } else if (Roles.userIsInRole(id, 'buyer')) {
-    console.log('elif' + count);
     return Orders.find({
+      $or: query,
       userId: id,
       deleted: false,
       done: true
@@ -107,14 +107,7 @@ Meteor.publish("completedOrders", function(id, count) {
         createdAt: -1
       },
       limit: count
-    }, {
-      fields: {
-        paypalemail: 0,
-        txnId: 0,
-        paidAmount: 0,
-        comment: 0
-      }
-    });
+    }, options);
   }
 });
 

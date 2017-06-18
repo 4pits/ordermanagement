@@ -1,9 +1,18 @@
 Template.completedOrders.onCreated(function() {
-  Session.set('limit', 5);
+  Session.set('limit', 10);
+  this.searchQuery = new ReactiveVar();
+  this.searching = new ReactiveVar(false);
+
   this.autorun(() => {
     var id = FlowRouter.getParam('id');
     if (!id) id = Meteor.userId();
-    this.subscribe("completedOrders", id, Session.get('limit'));
+    //  this.subscribe("completedOrders", id, Session.get('limit'));
+    this.subscribe("completedOrders", id, Session.get('limit'), this.searchQuery.get(), () => {
+      setTimeout(() => {
+        this.searching.set(false);
+      }, 300);
+    });
+
     this.subscribe("completedOrderCount", id);
   });
 
@@ -46,6 +55,17 @@ Template.completedOrders.events({
   },
   'click .showMore' () {
     Session.set('limit', Session.get('limit') + 5);
+  },
+  'keyup [name="searchOrder"]' (event, template) {
+    let value = event.target.value.trim();
+    if (value !== '' && value.length > 2) {
+      template.searchQuery.set(value);
+      template.searching.set(true);
+    }
+
+    if (value === '') {
+      template.searchQuery.set(value);
+    }
   }
 });
 
