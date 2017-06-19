@@ -15,7 +15,7 @@ Meteor.publish("jobsRunning", function(userId) {
 });
 Meteor.publish("jobsDeleted", function(userId) {
   var dt = new Date();
-  dt.setDate(dt.getDate() - 2);
+  dt.setDate(dt.getDate() - 5);
   if (Roles.userIsInRole(userId, 'admin')) {
     return Jobs.find({
       deleted: true,
