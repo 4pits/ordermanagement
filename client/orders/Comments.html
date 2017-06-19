@@ -1,5 +1,8 @@
 <template name="Comments">
-  <p class="lead">Comments from all orders in reverse order</p>
+  <div class="page-header">
+  <h1>Only Comments<br>
+    <small>Comments from all orders in reverse order</small></h1>
+</div>
 
   {{#each orders}}
   <p class="lead">{{code}}: {{comment}}</p>

@@ -1,11 +1,16 @@
 <template name="orders">
-<p class="lead">Orders</p>
+  <div class="page-header">
+  <h1>Orders<br><small>Add and monitor progress</small></h1>
+</div>
   <div class="alert alert-info" role="alert">Wanna add new order. Click "New Order" button. Please make sure you have already paid for the number of rides. <br> If any correction required, let me know. Add comments if you have any instructions or anything we agreed upon and want me to remember. </div>
     <div id="order-insert">
         {{#if insertMode}}
-            <button id="showHide" class="btn btn-primary btn-lg">Close Order Form</button>
+            <button id="showHide" class="btn btn-primary btn-lg">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Close Order Form</button>
         {{else}}
-            <button id="showHide" class="btn btn-primary btn-lg">New Order</button>
+            <button id="showHide" class="btn btn-primary btn-lg">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Order
+            </button>
         {{/if}}
         <div class="pull-right">
             <input type="text" name="searchOrder" class="form-control" width="250px" placeholder="Find order ...">
@@ -41,9 +46,9 @@
         {{/if}}
 
         {{#if isInRole 'admin'}}
-          <h4>New Orders #{{newOrderCount}}</h4>
-          <h4>Running Orders #{{runningOrderCount}}</h4>
-        <a href="#all-added-orders"><h4>All added #{{allAddedCount}}</h4></a>
+          <h4>New Orders <span class="badge">{{newOrderCount}}</span> </h4>
+          <h4>Running Orders <span class="badge">{{runningOrderCount}}</span></h4>
+        <a href="#all-added-orders"><h4>All added <span class="badge">{{allAddedCount}}</span></h4></a>
         {{/if}}
         <table class="table table-hover table-condensed">
             <thead><th>Status</th>
