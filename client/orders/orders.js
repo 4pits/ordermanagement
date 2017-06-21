@@ -85,7 +85,7 @@ Template.orders.helpers({
     return Session.get('showJobs');
   },
   autoSaveMode: function() {
-    return Session.get("autoSaveMode") ? true : false;
+    return true;
   },
   selectedOrderDoc: function() {
     return Orders.findOne(Session.get("selectedOrderId"));
@@ -129,6 +129,7 @@ Template.orders.helpers({
 Template.orders.events({
   'click #showHide': function() {
     Session.set('insertMode', !Session.get('insertMode'));
+    Session.set('showEditOrder', false);
   },
   'change .autosave-toggle': function() {
     Session.set("autoSaveMode", !Session.get("autoSaveMode"));
@@ -202,6 +203,7 @@ Template.order.events({
   'click .order-row': function() {
     Session.set('selectedOrderId', this._id);
     Session.set('showEditOrder', true);
+    Session.set('insertMode', false);
   }
 });
 
