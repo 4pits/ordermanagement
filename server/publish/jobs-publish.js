@@ -1,4 +1,7 @@
 Meteor.publish("jobsRunning", function(userId) {
+  if (!this.userId || !userId) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(userId, 'admin')) {
     return Jobs.find({
       done: false,
@@ -14,6 +17,9 @@ Meteor.publish("jobsRunning", function(userId) {
 
 });
 Meteor.publish("jobsDeleted", function(userId) {
+  if (!this.userId || !userId) {
+    return this.ready();
+  }
   var dt = new Date();
   dt.setDate(dt.getDate() - 5);
   if (Roles.userIsInRole(userId, 'admin')) {
@@ -46,6 +52,9 @@ var yesterday = function() {
 };
 
 Meteor.publish("jobsCompletedRecently", function(id) {
+  if (!this.userId || !id) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(id, 'admin')) {
     return Jobs.find({
       done: true,
@@ -70,6 +79,9 @@ Meteor.publish("jobsCompletedRecently", function(id) {
 });
 
 Meteor.publish("jobsCompletedOld", function(id) {
+  if (!this.userId || !id) {
+    return this.ready();
+  }
   //    console.log('server date time: ' + dt);
   if (Roles.userIsInRole(id, 'admin')) {
     return Jobs.find({
@@ -93,6 +105,9 @@ Meteor.publish("jobsCompletedOld", function(id) {
   }
 });
 Meteor.publish("jobsPaid", function(id) {
+  if (!this.userId || !id) {
+    return this.ready();
+  }
   //    console.log('server date time: ' + dt);
   if (Roles.userIsInRole(id, 'admin')) {
     return PaidJobs.find({
@@ -108,6 +123,9 @@ Meteor.publish("jobsPaid", function(id) {
 
 // display counts for each user
 Meteor.publish('jobsUnpaid', function() {
+  if (!this.userId) {
+    return this.ready();
+  }
   var user = this.userId;
   if (Roles.userIsInRole(user, 'admin')) {
     return Jobs.find({
@@ -119,6 +137,9 @@ Meteor.publish('jobsUnpaid', function() {
 
 //jobs related to only one order
 Meteor.publish('orderJobs', function(id) {
+  if (!this.userId || !id) {
+    return this.ready();
+  }
   //    console.log(id + ' orderjobs');
   return Jobs.find({
     orderId: id,
@@ -128,6 +149,9 @@ Meteor.publish('orderJobs', function(id) {
 
 //jobs related to only one order
 Meteor.publish('orderPaidJobs', function(id) {
+  if (!this.userId || !id) {
+    return this.ready();
+  }
   //    console.log(id + ' orderjobs');
   return PaidJobs.find({
     orderId: id,

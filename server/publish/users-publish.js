@@ -1,4 +1,7 @@
 Meteor.publish('allUsers', function(search) {
+  if (!this.userId) {
+    return this.ready();
+  }
   check(search, Match.OneOf(String, null, undefined));
   let options = {
     sort: {
@@ -55,6 +58,9 @@ Meteor.publish('allUsers', function(search) {
 });
 
 Meteor.publish('allBuyers', function(search) {
+  if (!this.userId) {
+    return this.ready();
+  }
   check(search, Match.OneOf(String, null, undefined));
   let query = {};
   if (search) {
@@ -89,6 +95,9 @@ Meteor.publish('allBuyers', function(search) {
   }
 });
 Meteor.publish('jobAdders', function(orderId) {
+  if (!this.userId) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(this.userId, 'admin')) {
     var ids = [];
     Jobs.find({
@@ -124,6 +133,9 @@ Meteor.publish('jobAdders', function(orderId) {
 
 
 Meteor.publish('allSellers', function() {
+  if (!this.userId) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(this.userId, 'admin')) {
     var options = {
       fields: {
@@ -137,6 +149,9 @@ Meteor.publish('allSellers', function() {
 });
 
 Meteor.publish('profile', function(id) {
+  if (!this.userId) {
+    return this.ready();
+  }
   let options = {
     fields: {
       emails: 1,

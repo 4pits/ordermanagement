@@ -1,9 +1,13 @@
 <template name="AppLayout">
 
-    {{> Header}}
-<div class="container">
+  {{> Header}}
+  <div class="container">
     <main class="app-layout">
+      {{#if Template.subscriptionsReady}}
         {{> Template.dynamic template=main}}
+      {{else}}
+        {{> AppLoading}}
+      {{/if}}
     </main>
   </div>
 </template>

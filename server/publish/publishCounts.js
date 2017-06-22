@@ -1,4 +1,7 @@
 Meteor.publish('jobsCount', function(id) {
+  if (!this.userId) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(id, 'admin')) {
     Counts.publish(this, 'jobsC', Jobs.find({
       deleted: false
@@ -91,6 +94,9 @@ Meteor.publish('jobsCount', function(id) {
 
 });
 Meteor.publish('ordersCount', function(id, d, yd) {
+  if (!this.userId) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(id, 'admin')) {
 
   } else {
@@ -152,6 +158,9 @@ Meteor.publish('ordersCount', function(id, d, yd) {
 });
 
 Meteor.publish('userCount', function(id) {
+  if (!this.userId) {
+    return this.ready();
+  }
   Counts.publish(this, 'buyersCount', Meteor.users.find({
     roles: 'buyer'
   }));
@@ -162,6 +171,9 @@ Meteor.publish('userCount', function(id) {
 });
 
 Meteor.publish('completedOrderCount', function(id) {
+  if (!this.userId) {
+    return this.ready();
+  }
   if (Roles.userIsInRole(id, 'admin')) {
     Counts.publish(this, 'orderCount', Orders.find({
       deleted: false,

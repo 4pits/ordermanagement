@@ -8,6 +8,9 @@ var options = {
 };
 
 Meteor.publish("orders", function(id, orderStatus, search) {
+  if (!this.userId) {
+    return this.ready();
+  }
   //console.log(search);
   // orderStatus 1= pause, 2= pause+ new running, 3= pause+ all added, 4 = all new
   let query = [{}];
@@ -71,6 +74,9 @@ Meteor.publish("orders", function(id, orderStatus, search) {
 });
 
 Meteor.publish("completedOrders", function(id, count, search) {
+  if (!this.userId) {
+    return this.ready();
+  }
   let query = [{}];
   if (search && search.length > 2) {
     let regex = new RegExp(search, 'i');
@@ -111,6 +117,9 @@ Meteor.publish("completedOrders", function(id, count, search) {
 });
 
 Meteor.publish('oneOrder', function(id) {
+  if (!this.userId) {
+    return this.ready();
+  }
   //    console.log(id + ' oneorder');
   var user = this.userId;
   if (Roles.userIsInRole(user, 'admin')) {
@@ -119,6 +128,9 @@ Meteor.publish('oneOrder', function(id) {
       //        deleted: false
     });
   } else if (Roles.userIsInRole(user, 'buyer')) {
+    if (!this.userId) {
+      return this.ready();
+    }
     return Orders.find({
       _id: id,
       userId: user,
@@ -128,6 +140,9 @@ Meteor.publish('oneOrder', function(id) {
 });
 
 Meteor.publish('allOrders', function() {
+  if (!this.userId) {
+    return this.ready();
+  }
   var user = this.userId;
   if (Roles.userIsInRole(user, 'admin')) {
     return Orders.find({});
@@ -135,6 +150,9 @@ Meteor.publish('allOrders', function() {
 });
 
 Meteor.publish('orderSearch', function(search) {
+  if (!this.userId) {
+    return this.ready();
+  }
   check(search, Match.OneOf(String, null, undefined));
   let query = {};
   if (!search || search.length < 4) return;
