@@ -259,7 +259,7 @@ Meteor.methods({
     if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return -1;
     if (allowedRides(adderId, dayStart) <= userRunningRides(adderId)) return -1;
     if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return -1;
-    if (count < 1) return count;
+    if (count < 1) return -1;
     var codeAvailable = true;
     while (codeAvailable && count > 0) {
       var order = Orders.findOne({

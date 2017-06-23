@@ -2,7 +2,11 @@ Meteor.publish('allUsers', function(search) {
   if (!this.userId) {
     return this.ready();
   }
+  if (!Roles.userIsInRole(this.userId, 'admin')) {
+    return this.ready();
+  }
   check(search, Match.OneOf(String, null, undefined));
+  if (search) search = search.toLowerCase();
   let options = {
     sort: {
       createdAt: -1
@@ -18,25 +22,21 @@ Meteor.publish('allUsers', function(search) {
     limit: 25
   };
   if (search === '') {
-    if (Roles.userIsInRole(this.userId, 'admin')) {
-      return Meteor.users.find({}, options);
-    }
-  } else if (search === 'users') {
-    if (Roles.userIsInRole(this.userId, 'admin')) {
-      return Meteor.users.find({}, options);
-    }
-  } else if (search === 'sellers') {
-    if (Roles.userIsInRole(this.userId, 'admin')) {
-      return Meteor.users.find({
-        roles: 'seller'
-      }, options);
-    }
-  } else if (search === 'buyers') {
-    if (Roles.userIsInRole(this.userId, 'admin')) {
-      return Meteor.users.find({
-        roles: 'buyer'
-      }, options);
-    }
+    return Meteor.users.find({}, options);
+  } else if (search === 'sell') {
+    return Meteor.users.find({
+      roles: 'seller'
+    }, options);
+  } else if (search === 'buy') {
+    return Meteor.users.find({
+      roles: 'buyer'
+    }, options);
+  } else if (search === 'new') {
+    return Meteor.users.find({
+      roles: {
+        $nin: ['admin', 'seller', 'buyer']
+      }
+    }, options);
   } else {
     let query = {};
     if (search) {
@@ -52,8 +52,7 @@ Meteor.publish('allUsers', function(search) {
         ]
       };
     }
-    if (Roles.userIsInRole(this.userId, 'admin'))
-      return Meteor.users.find(query, options);
+    return Meteor.users.find(query, options);
   }
 });
 
