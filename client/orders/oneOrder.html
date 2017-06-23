@@ -6,9 +6,7 @@
         <div class="alert alert-info" role="alert">
             You will receive promotions worth same as what it shows in your app. I don't control the promotion worth.
         </div>
-        <p class="lead">Buyer Name:
-            {{order.name}}
-            <br>
+        <p class="lead">
             {{#if order.pause}}
                 Your order is under review, such as payment verification. <br> If you have already paid and see delay , let us know via email or facbook page message.
             {{else}}
@@ -25,7 +23,17 @@
                 {{/if}}
             {{/if}}
         </p>
-        <table class="table">
+
+  <div class="panel {{orderPanel}}">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#collapseOne">
+          Buyer Name: {{order.name}} / Code: {{order.code}} ({{order.added}}/{{order.rides}})
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">  <table class="table">
             <tbody>
                 {{#if order.done}}
                     <tr class="success">
@@ -33,10 +41,6 @@
                         <td>{{formatDate order.updatedAt}}</td>
                     </tr>
                 {{/if}}
-                <tr>
-                    <td>Uber Code :</td>
-                    <td>{{order.code}}</td>
-                </tr>
                 <tr>
                     <td>Added/Ordered #</td>
                     <td>{{order.added}}/{{order.rides}}</td>
@@ -61,12 +65,17 @@
                 </tr>
             </tbody>
         </table>
+      </div>
+    </div>
+  </div>
 
         {{#if isInRole 'admin'}}
             <h1>Admin Area</h1>
-            {{#unless order.done}}
-                <button type="button" class="mark-completed btn btn-default" name="button">Mark Completed</button>
-            {{/unless}}
+            {{#if order.done}}
+              <button type="button" class="btn btn-success" name="button">It's Completed</button>
+            {{else}}
+              <button type="button" class="mark-completed btn btn-default" name="button">Mark Completed</button>
+            {{/if}}
             {{#if order.deleted}}
                 <button type="button" class="delete-toggle btn btn-danger" name="button">Restore</button>
             {{else}}

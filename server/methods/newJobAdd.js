@@ -160,7 +160,7 @@ var deletedCount = function(userId) {
   return count;
 }
 
-var allowedRides = function(id) {
+var allowedRides = function(id, dayStart) {
   let count = 0;
   if (Roles.userIsInRole(id, 'two-ride-seller')) {
     count = 2;
@@ -173,6 +173,10 @@ var allowedRides = function(id) {
   } else if (Roles.userIsInRole(id, 'admin')) {
     count = 1000;
   }
+  var diff = now.getTime() - dayStart.getTime();
+  //    console.log(diff);
+  if (diff < 1 * 60 * 1000) count = 10; // allow max 10 in first 1 min window
+  if (diff < 2 * 60 * 1000) count = 20; // allow max 20 in first 2 min window
   //  console.log(deletedCount(id) + ' ad c');
   return count - deletedCount(id);
 };
@@ -242,8 +246,8 @@ Meteor.methods({
     var dtnow = new Date();
     var dtStart = new Date();
     dtStart.setHours(11);
-    dtStart.setMinutes(31);
-    dtStart.setSeconds(0);
+    dtStart.setMinutes(30);
+    dtStart.setSeconds(30);
     if (dtStart.getTime() > dtnow.getTime()) {
       dtStart = new Date(dtStart.getTime() - (24 * 60 * 60 * 1000));
     }
@@ -252,7 +256,7 @@ Meteor.methods({
     //return -1;
     if (!dayStart || !adderId) return -1; // return if undefined
     if (!Roles.userIsInRole(adderId, ['admin', 'seller'])) return -1;
-    if (allowedRides(adderId) <= userRunningRides(adderId)) return count;
+    if (allowedRides(adderId, dayStart) <= userRunningRides(adderId)) return -1;
     if (sellerDailyLimit(adderId) <= userDailyRunningRidesCount(adderId, dayStart)) return -1;
     if (count < 1) return count;
     var codeAvailable = true;

@@ -84,6 +84,12 @@ Template.oneOrder.helpers({
       _id: id
     }).emails[0].address;
     //  return user.emails[0].address + ' / ' + user.profile.firstName;
+  },
+  orderPanel() {
+    var order = Orders.findOne({});
+    if (order && order.done)
+      return "panel-success";
+    return "panel-default";
   }
 });
 
