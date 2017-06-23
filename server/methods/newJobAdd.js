@@ -173,7 +173,8 @@ var allowedRides = function(id, dayStart) {
   } else if (Roles.userIsInRole(id, 'admin')) {
     count = 1000;
   }
-  var diff = now.getTime() - dayStart.getTime();
+  var dtnow = new Date();
+  var diff = dtnow.getTime() - dayStart.getTime();
   //    console.log(diff);
   if (diff < 1 * 60 * 1000) count = 10; // allow max 10 in first 1 min window
   if (diff < 2 * 60 * 1000) count = 20; // allow max 20 in first 2 min window
